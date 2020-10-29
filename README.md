@@ -1,1 +1,1 @@
-# dean-meatings-reservations
+# dean-meetings-reservations
