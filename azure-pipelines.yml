@@ -27,4 +27,4 @@ stages:
         dockerRegistryEndpoint: 'Docker HUB ystejamx'
         dockerComposeFile: '**/docker-compose.yml'
         action: 'Run a Docker Compose command'
-        dockerComposeCommand: 'docker-compose up'
+        dockerComposeCommand: 'up'
