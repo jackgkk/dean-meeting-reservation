@@ -20,12 +20,11 @@ stages:
       vmImage: 'ubuntu-latest'
     steps:
 
-    - task: Docker@2
-      displayName: 'Build and push image to my registry'
+    
+    - task: DockerCompose@0
       inputs:
-        containerRegistry: 'Docker HUB ystejamx'
-        repository: 'ytsejamx/ytsejamx-registry'
-        command: 'buildAndPush'
-        Dockerfile: '**/frontend/Dockerfile'
-        # Build a Docker image 
-        # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
+        containerregistrytype: 'Container Registry'
+        dockerRegistryEndpoint: 'Docker HUB ystejamx'
+        dockerComposeFile: '**/docker-compose.yml'
+        action: 'Run a Docker Compose command'
+        dockerComposeCommand: 'docker-compose up'
