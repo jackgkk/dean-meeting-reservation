@@ -1,4 +1,10 @@
 # Docker
+- task: Docker@2
+  inputs:
+    containerRegistry: 'Docker HUB ystejamx'
+    repository: 'ytsejamx-registry'
+    command: 'buildAndPush'
+    Dockerfile: '**/frontend/Dockerfile'
 # Build a Docker image 
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
