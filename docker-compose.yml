@@ -1,0 +1,8 @@
+version: "2"
+services:
+  frontend:
+    image: ytsejamx/ytsejamx-registry:frontend
+    restart: always
+    ports:
+      - "80:80"
+    working_dir: /frontend  
