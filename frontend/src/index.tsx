@@ -1,8 +1,8 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Navigation from "./Components/Navigation";
+import React from 'react'
+import ReactDOM from 'react-dom'
+import Navigation from './Components/Navigation'
 import './index.sass'
-import {RecoilRoot} from 'recoil'
+import { RecoilRoot } from 'recoil'
 
 ReactDOM.render(
   <React.StrictMode>
@@ -11,7 +11,7 @@ ReactDOM.render(
     </RecoilRoot>
   </React.StrictMode>,
   document.getElementById('root')
-);
+)
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
