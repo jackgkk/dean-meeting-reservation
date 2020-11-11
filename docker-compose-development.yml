@@ -1,8 +1,17 @@
 version: "2"
 services:
   frontend:
+    environment:
+      - DB_USERNAME=${WEBAPPS_DB_USERNAME}
     build: ./frontend
     restart: always
     ports:
       - "80:80"
     working_dir: /frontend
+
+  backend:
+    build: .
+    environment:
+      - DB_URL=papaja
+    ports:
+      - "5000:5001"
