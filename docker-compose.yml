@@ -5,13 +5,15 @@ services:
     restart: always
     ports:
       - "80:80"
-    working_dir: /frontend  
+    working_dir: /frontend
 
   db:
     image: store/oracle/database-enterprise:12.2.0.1-slim
     restart: always
     ports:
-    - "1521:1521"
+      - "1521:1521"
+    volumes:
+      - /opt/oracle/oradata:/home/oracle
 
   backend:
     build: .
