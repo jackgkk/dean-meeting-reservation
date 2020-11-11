@@ -23,8 +23,16 @@ stages:
     
     - task: Docker@2
       inputs:
-        containerRegistry: 'Docker HUB ystejamx'
-        repository: 'ytsejamx/ytsejamx-registry'
+        containerRegistry: $(CONTAINER_REGISTRY)
+        repository: $(IMAGES_REPOSITORY)
         command: 'buildAndPush'
         Dockerfile: '**/frontend/Dockerfile'
         tags: 'frontend'
+        
+    - task: Docker@2
+      inputs:
+        containerRegistry: $(CONTAINER_REGISTRY)
+        repository: $(IMAGES_REPOSITORY)
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
+        tags: 'backend'
