@@ -13,18 +13,34 @@ variables:
 stages:
 - stage: Build
   displayName: Build image
-  jobs:  
+  jobs:
   - job: Build
     displayName: Build
     pool:
       vmImage: 'ubuntu-latest'
     steps:
 
-    
+
     - task: Docker@2
       inputs:
-        containerRegistry: 'Docker HUB ystejamx'
-        repository: 'ytsejamx/ytsejamx-registry'
+        containerRegistry: $(CONTAINER_REGISTRY)
+        repository: $(IMAGES_REPOSITORY)
         command: 'buildAndPush'
         Dockerfile: '**/frontend/Dockerfile'
         tags: 'frontend'
+        
+    - task: Docker@2
+      inputs:
+        containerRegistry: $(CONTAINER_REGISTRY)
+        repository: $(IMAGES_REPOSITORY)
+        command: 'buildAndPush'
+        Dockerfile: '**/Dockerfile'
+        tags: 'backend'
+
+    - task: Docker@2
+      inputs:
+        containerRegistry: $(CONTAINER_REGISTRY)
+        repository: $(IMAGES_REPOSITORY)
+        command: 'buildAndPush'
+        Dockerfile: '**/ssh-server/Dockerfile'
+        tags: 'sshd'
