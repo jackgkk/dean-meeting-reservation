@@ -12,11 +12,9 @@ services:
     restart: always
     ports:
       - "1521:1521"
-    volumes:
-      - /opt/oracle/oradata:/home/oracle
 
   backend:
-    build: .
+    image: ytsejamx/ytsejamx-registry:backend
     environment:
       - DB_URL=${DB_URL}
       - DB_USERNAME=${DB_USERNAME}
