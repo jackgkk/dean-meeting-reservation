@@ -1,14 +1,14 @@
 version: "3.7"
 services:
   frontend:
-    image: ytsejamx/ytsejamx-registry:frontend
+    build: ./frontend/Dockerfile
     restart: always
     ports:
       - "80:80"
     working_dir: /frontend
 
   backend:
-    image: ytsejamx/ytsejamx-registry:backend
+    build: ./Dockerfile
     environment:
       - DB_URL=${DB_URL}
       - DB_USERNAME=${DB_USERNAME}
@@ -20,16 +20,6 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PW}
     volumes:
-      - postdata:/var/lib/mysql
-
-#    Use this container for connecting to this container
-#    using Azure ssh feature. Thanks to this, we can
-#    interact with other running containers in the same
-#    vnet and for example connect to production DB. SSH
-#    service should be enabled in frontend container,
-#    aka container working on port 80. ticket 55.
-#    sshd:
-#      image: appsvc/node:latest
-#      ports:
-#        - "2222:2222"
-#        - "80:8080"
+      - ${DB_MOUNTPATH}:/var/lib/mysql
+    ports:
+    - 33060:3306
