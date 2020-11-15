@@ -1,8 +1,0 @@
-version: "2"
-services:
-  frontend:
-    build: ./frontend
-    restart: always
-    ports:
-      - "80:80"
-    working_dir: /frontend
