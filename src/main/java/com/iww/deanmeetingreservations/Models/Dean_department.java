@@ -3,7 +3,7 @@ package com.iww.deanmeetingreservations.Models;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "DEANS_DEPARTMENTS", schema = "TEST")
+@Table(name = "DEANS_DEPARTMENTS")
 public class Dean_department {
 
     @Id

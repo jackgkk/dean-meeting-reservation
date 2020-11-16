@@ -9,12 +9,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "DEANS", schema = "TEST")
+@Table(name = "DEANS")
 public class Dean {
 
     @Id
     @Column(name = "DEAN_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO )
     private Long dean_id;
 
     @Basic
