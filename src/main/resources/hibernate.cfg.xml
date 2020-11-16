@@ -6,9 +6,9 @@
 <hibernate-configuration>
 
     <session-factory>
-        <property name="connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
-        <property name="connection.url">jdbc:oracle:thin:@localhost:1521:XE</property>
-        <property name="dialect">org.hibernate.dialect.Oracle12cDialect</property>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.url">${DB_URL}</property>
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="hibernate.hbm2ddl.auto">update</property>
 
         <mapping class="com.iww.deanmeetingreservations.Models.Dean"/>
