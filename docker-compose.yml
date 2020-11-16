@@ -1,23 +1,25 @@
-version: "2"
+version: "3.7"
 services:
   frontend:
-    image: ytsejamx/ytsejamx-registry:frontend
+    build: ./frontend/Dockerfile
     restart: always
     ports:
       - "80:80"
     working_dir: /frontend
 
-  db:
-    image: store/oracle/database-enterprise:12.2.0.1-slim
-    restart: always
-    ports:
-      - "1521:1521"
-
   backend:
-    image: ytsejamx/ytsejamx-registry:backend
+    build: ./Dockerfile
     environment:
       - DB_URL=${DB_URL}
       - DB_USERNAME=${DB_USERNAME}
       - DB_PASSWORD=${DB_PASSWORD}
+
+  db:
+    image: mysql:5.7.32
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PW}
+    volumes:
+      - ${DB_MOUNTPATH}:/var/lib/mysql
     ports:
-    - "5000:5000"
+    - 33060:3306
