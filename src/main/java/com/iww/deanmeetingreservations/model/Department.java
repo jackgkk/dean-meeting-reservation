@@ -1,6 +1,4 @@
-package com.iww.deanmeetingreservations.Models;
-
-import com.sun.istack.NotNull;
+package com.iww.deanmeetingreservations.model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -24,7 +22,7 @@ public class Department {
     private String address;
 
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Dean_department> dean_departments = new ArrayList<Dean_department>();
+    private List<DeanDepartment> dean_departments = new ArrayList<DeanDepartment>();
 
     public Department() {
     }
@@ -59,11 +57,11 @@ public class Department {
         this.address = address;
     }
 
-    public List<Dean_department> getDean_departments() {
+    public List<DeanDepartment> getDean_departments() {
         return dean_departments;
     }
 
-    public void setDean_departments(List<Dean_department> dean_departments) {
+    public void setDean_departments(List<DeanDepartment> dean_departments) {
         this.dean_departments = dean_departments;
     }
 }

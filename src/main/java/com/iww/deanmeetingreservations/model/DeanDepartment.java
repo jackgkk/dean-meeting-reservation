@@ -1,10 +1,10 @@
-package com.iww.deanmeetingreservations.Models;
+package com.iww.deanmeetingreservations.model;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "DEANS_DEPARTMENTS")
-public class Dean_department {
+public class DeanDepartment {
 
     @Id
     @Column(name = "DEAN_DEPARTMENT_ID")
@@ -19,10 +19,10 @@ public class Dean_department {
     @JoinColumn(name = "department_id")
     private Department department;
 
-    public Dean_department() {
+    public DeanDepartment() {
     }
 
-    public Dean_department(Long dean_department_id, Dean dean, Department department) {
+    public DeanDepartment(Long dean_department_id, Dean dean, Department department) {
         this.dean_department_id = dean_department_id;
         this.dean = dean;
         this.department = department;

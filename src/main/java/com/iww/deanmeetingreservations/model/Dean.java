@@ -1,12 +1,10 @@
-package com.iww.deanmeetingreservations.Models;
+package com.iww.deanmeetingreservations.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "DEANS")
@@ -39,7 +37,7 @@ public class Dean {
     private String email;
 
     @OneToMany(mappedBy = "dean", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Dean_department> dean_departments = new ArrayList<Dean_department>();
+    private List<DeanDepartment> dean_departments = new ArrayList<DeanDepartment>();
 
     public Dean() {
     }
@@ -101,11 +99,11 @@ public class Dean {
         this.email = email;
     }
 
-    public List<Dean_department> getDean_departments() {
+    public List<DeanDepartment> getDean_departments() {
         return dean_departments;
     }
 
-    public void setDean_departments(List<Dean_department> dean_departments) {
+    public void setDean_departments(List<DeanDepartment> dean_departments) {
         this.dean_departments = dean_departments;
     }
 }
