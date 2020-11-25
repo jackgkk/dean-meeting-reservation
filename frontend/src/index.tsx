@@ -3,11 +3,23 @@ import ReactDOM from 'react-dom'
 import Navigation from './Components/Navigation'
 import './index.sass'
 import { RecoilRoot } from 'recoil'
+import { ThemeProvider } from '@material-ui/styles'
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme'
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: '#e5231b', light: '#ff6146', dark: '#aa0000' },
+    secondary: { main: '#fff', light: '#fff', dark: '#fff' },
+    error: { main: '#dc6204' }
+  }
+})
 
 ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>
-      <Navigation />
+      <ThemeProvider theme={theme}>
+        <Navigation />
+      </ThemeProvider>
     </RecoilRoot>
   </React.StrictMode>,
   document.getElementById('root')

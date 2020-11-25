@@ -11,7 +11,7 @@ import DutyType from '../../../../../../Duty'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
 import { useRecoilState } from 'recoil'
-import { meetingForm, showMeetingForm } from '../../../state'
+import { meetingDeanState, meetingDutyState, meetingForm, showMeetingForm } from '../../../state'
 import MeetingProposition from '../../../../../../MeetingProposition'
 import Guest from '../../../../../../Guest'
 
@@ -36,11 +36,14 @@ export default function Duty (props: DutyProps) {
     return createStyles(Style(theme))
   })()
 
-  const { dayOfWeek, begins, ends } = props.duty
+  const { duty } = props
+  const { dayOfWeek, begins, ends } = duty
   const { show, dean } = props
 
-  const [meetingState, setMeetingState] = useRecoilState(meetingForm)
+  const [_meetingState, setMeetingState] = useRecoilState(meetingForm)
   const setIsFormOpen = useRecoilState(showMeetingForm)[1]
+  const setMeetingDuty = useRecoilState(meetingDutyState)[1]
+  const setMeetingDean = useRecoilState(meetingDeanState)[1]
 
   return (
     <Collapse in={show} timeout="auto" unmountOnExit>
@@ -53,10 +56,12 @@ export default function Duty (props: DutyProps) {
           />
           <Button
             style={{ backgroundColor: '#e5231b', color: '#fff' }}
-            onClick={function handleClick (e) {
-              setMeetingState(currVal =>
-                new MeetingProposition(new Guest('', '', '', ''), dean.id, '', '00:00', 0, false))
+            onClick={function handleClick () {
+              setMeetingState(() =>
+                new MeetingProposition(new Guest('', '', '', 'Student'), dean.id, '', '00:00', 0, false, false))
               setIsFormOpen(true)
+              setMeetingDuty(duty)
+              setMeetingDean(dean)
             }}
           >
             set a meeting</Button>

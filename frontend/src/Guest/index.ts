@@ -2,8 +2,10 @@ interface GuestInterface {
   isEmailAtUniDomain(): boolean
 }
 
+type Status = 'Student'|'Faculty employee'|'University employee'|'Other'
+
 export default class Guest implements GuestInterface {
-  constructor (name: string, surname: string, email: string, status: string) {
+  constructor (name: string, surname: string, email: string, status: Status) {
     this.name = name
     this.surname = surname
     this.email = email
@@ -17,5 +19,5 @@ export default class Guest implements GuestInterface {
   name: string;
   surname: string;
   email: string;
-  status: string;
+  status: Status;
 }

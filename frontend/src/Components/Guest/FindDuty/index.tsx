@@ -27,10 +27,6 @@ export default function FindDuty () {
 
   useEffect(getDepartments, [])
 
-  useEffect(function () {
-    console.log(meetingState)
-  }, [meetingState])
-
   function getDepartments () {
     fetch('/api/departments/all')
       .then(handleResponse)

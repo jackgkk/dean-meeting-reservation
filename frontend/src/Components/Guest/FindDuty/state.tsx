@@ -1,25 +1,27 @@
-import React from 'react'
-import {atom, selector, useRecoilState} from 'recoil'
+import { atom } from 'recoil'
 import Guest from '../../../Guest'
 import MeetingProposition from '../../../MeetingProposition'
+import Dean from '../../../Dean'
+import Duty from '../../../Duty'
 
-const meetingForm = atom({
+export const meetingForm = atom({
   key: 'meetingFormState',
   default: new MeetingProposition(
-    new Guest('', '', '', ''), '', '', '00:00', 0, false
+    new Guest('', '', '', 'Student'),
+    '', '', '00:00', 0, false, false
   )
 })
 
-const showMeetingFormState = atom({
+export const showMeetingForm = atom({
   key: 'showMeetingFormState', default: false
 })
 
-const showMeetingForm = selector({
-  key: 'showMeetingForm',
-  get: ({get}) => get(showMeetingForm)
-  set:
+export const meetingDutyState = atom({
+  key: 'meetingDutyState',
+  default: new Duty(0, '', '')
 })
 
-const closeMeetingForm = useRecoilState(showMeetingForm)[1]
-
-export { meetingForm, showMeetingForm }
+export const meetingDeanState = atom({
+  key: 'meetingDeanState',
+  default: new Dean('', '', '', '', '', [new Duty(0, '', '')])
+})
