@@ -8,6 +8,7 @@ COPY src src
 
 RUN chmod 744 mvnw
 
+RUN dos2unix mvnw
 RUN ./mvnw install -DskipTests
 
 FROM openjdk:15-jdk-alpine
