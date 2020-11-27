@@ -1,6 +1,7 @@
 package com.iww.deanmeetingreservations.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,9 +12,13 @@ import java.util.List;
 public class Dean {
 
     @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     @Column(name = "DEAN_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO )
-    private Long dean_id;
+    private String dean_id;
 
     @Basic
     @Column(name = "USERNAME", unique = true, nullable = false)
@@ -42,7 +47,7 @@ public class Dean {
     public Dean() {
     }
 
-    public Dean(Long dean_id, String username, String password, String firstname, String lastname, String email) {
+    public Dean(String dean_id, String username, String password, String firstname, String lastname, String email) {
         this.dean_id = dean_id;
         this.username = username;
         this.password = password;
@@ -51,11 +56,11 @@ public class Dean {
         this.email = email;
     }
 
-    public Long getDean_id() {
+    public String getDean_id() {
         return dean_id;
     }
 
-    public void setDean_id(Long dean_id) {
+    public void setDean_id(String dean_id) {
         this.dean_id = dean_id;
     }
 
@@ -65,10 +70,6 @@ public class Dean {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public void setPassword(String password) {
