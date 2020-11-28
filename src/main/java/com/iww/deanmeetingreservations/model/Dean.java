@@ -1,11 +1,13 @@
 package com.iww.deanmeetingreservations.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "DEANS")
@@ -18,7 +20,7 @@ public class Dean {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(name = "DEAN_ID")
-    private String dean_id;
+    private String deanId;
 
     @Basic
     @Column(name = "USERNAME", unique = true, nullable = false)
@@ -48,7 +50,7 @@ public class Dean {
     }
 
     public Dean(String dean_id, String username, String password, String firstname, String lastname, String email) {
-        this.dean_id = dean_id;
+        this.deanId = dean_id;
         this.username = username;
         this.password = password;
         this.firstname = firstname;
@@ -56,12 +58,20 @@ public class Dean {
         this.email = email;
     }
 
-    public String getDean_id() {
-        return dean_id;
+    public Dean(String username, String password, String firstname, String lastname, String email) {
+        this.username = username;
+        this.password = password;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
     }
 
-    public void setDean_id(String dean_id) {
-        this.dean_id = dean_id;
+    public String getDeanId() {
+        return deanId;
+    }
+
+    public void setDeanId(String dean_id) {
+        this.deanId = dean_id;
     }
 
     public String getUsername() {
@@ -100,11 +110,19 @@ public class Dean {
         this.email = email;
     }
 
+    @JsonIgnore
     public List<DeanDepartment> getDean_departments() {
         return dean_departments;
     }
 
     public void setDean_departments(List<DeanDepartment> dean_departments) {
         this.dean_departments = dean_departments;
+    }
+
+    public void addDean_department(DeanDepartment deanDepartment){this.dean_departments.add(deanDepartment);}
+
+    @JsonGetter("DepartmentNames")
+    public List<String> getDepartmentsNames(){
+        return dean_departments.stream().map(DeanDepartment :: getDepartmentName).collect(Collectors.toList());
     }
 }

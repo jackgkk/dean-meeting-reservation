@@ -15,7 +15,7 @@ public class DeanDepartment {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(name = "DEAN_DEPARTMENT_ID")
-    private String dean_department_id;
+    private String deanDepartmentId;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "dean_id")
@@ -29,17 +29,22 @@ public class DeanDepartment {
     }
 
     public DeanDepartment(String dean_department_id, Dean dean, Department department) {
-        this.dean_department_id = dean_department_id;
+        this.deanDepartmentId = dean_department_id;
         this.dean = dean;
         this.department = department;
     }
 
-    public String getDean_department_id() {
-        return dean_department_id;
+    public DeanDepartment(Dean dean, Department department) {
+        this.dean = dean;
+        this.department = department;
     }
 
-    public void setDean_department_id(String dean_department_id) {
-        this.dean_department_id = dean_department_id;
+    public String getDeanDepartmentId() {
+        return deanDepartmentId;
+    }
+
+    public void setDeanDepartmentId(String dean_department_id) {
+        this.deanDepartmentId = dean_department_id;
     }
 
     public Dean getDean() {
@@ -57,4 +62,6 @@ public class DeanDepartment {
     public void setDepartment(Department department) {
         this.department = department;
     }
+
+    public String getDepartmentName(){return this.department.getDepartmentName();}
 }
