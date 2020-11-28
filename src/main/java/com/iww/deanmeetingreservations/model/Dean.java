@@ -44,6 +44,9 @@ public class Dean {
     @OneToMany(mappedBy = "dean", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<DeanDepartment> dean_departments = new ArrayList<DeanDepartment>();
 
+    @OneToMany(mappedBy = "dean", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<DutyDean> dutyDeans = new ArrayList<DutyDean>();
+
     public Dean() {
     }
 
