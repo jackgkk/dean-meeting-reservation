@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "DEANS")
@@ -18,7 +19,7 @@ public class Dean {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(name = "DEAN_ID")
-    private String dean_id;
+    private UUID dean_id;
 
     @Basic
     @Column(name = "USERNAME", unique = true, nullable = false)
@@ -47,7 +48,7 @@ public class Dean {
     public Dean() {
     }
 
-    public Dean(String dean_id, String username, String password, String firstname, String lastname, String email) {
+    public Dean(UUID dean_id, String username, String password, String firstname, String lastname, String email) {
         this.dean_id = dean_id;
         this.username = username;
         this.password = password;
@@ -56,11 +57,11 @@ public class Dean {
         this.email = email;
     }
 
-    public String getDean_id() {
+    public UUID getDean_id() {
         return dean_id;
     }
 
-    public void setDean_id(String dean_id) {
+    public void setDean_id(UUID dean_id) {
         this.dean_id = dean_id;
     }
 
