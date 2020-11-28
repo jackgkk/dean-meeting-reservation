@@ -1,8 +1,7 @@
 import * as React from 'react'
 import { CurrentDay } from './data'
 import './index.scss'
-import Attendant from './AttendantList/Attendant'
-import AttendantList from './AttendantList'
+import MeetingList from './MeetingList'
 
 const weekday = new Array(7)
 weekday[0] = 'Sunday'
@@ -43,8 +42,8 @@ export default function Calendar () {
         </div>
         <button onClick={tommorowUpdateHandler}>next day</button>
       </div>
-      <div className="attendantList">
-        <AttendantList date={currentDate}/>
+      <div className="meetingList">
+        <MeetingList date={currentDate}/>
       </div>
     </div>
   )

@@ -3,11 +3,16 @@ import ReactDOM from 'react-dom'
 import Navigation from './Components/Navigation'
 import './index.sass'
 import { RecoilRoot } from 'recoil'
+import './Components/Guest/Calendar/MeetingList'
+import { theme } from './style'
+import { ThemeProvider } from '@material-ui/core/styles'
 
 ReactDOM.render(
   <React.StrictMode>
     <RecoilRoot>
-      <Navigation />
+      <ThemeProvider theme={theme}>
+        <Navigation />
+      </ThemeProvider>
     </RecoilRoot>
   </React.StrictMode>,
   document.getElementById('root')

@@ -13,7 +13,7 @@
     display: flex;
     justify-content: space-between;
     background-color: #E5231B;
-    padding: 13px 20px;
+    padding: 13px 15px;
     color: white;
 
     h2{
@@ -29,8 +29,9 @@
         background-color: transparent;
         cursor: pointer;
         font-style: normal;
-        font-weight: normal;
+        font-weight: 300;
         font-size: 12px;
         line-height: 15px;
+        outline: none;
     }
 }

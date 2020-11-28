@@ -1,4 +1,4 @@
-export { currentDate, Attendant }
+export { currentDate, Meeting }
 
 class currentDate {
   constructor () {
@@ -10,7 +10,7 @@ class currentDate {
   date: Date
 }
 
-class AttendatList {
+class MeetingList {
   date: Date
   constructor (date: Date) {
     this.date = date
@@ -18,7 +18,7 @@ class AttendatList {
   }
 }
 
-class Attendant {
+class Meeting {
   id: string
   email: string
   name: string
@@ -26,8 +26,9 @@ class Attendant {
   goal: string
   date: Date
   endDate: Date
+  deanId: string
 
-  constructor (id: string, name: string, surname: string, email: string, goal: string, date: Date, endDate: Date) {
+  constructor (id: string, name: string, surname: string, email: string, goal: string, date: Date, endDate: Date, deanId: string) {
     this.id = id
     this.name = name
     this.surname = surname
@@ -35,6 +36,7 @@ class Attendant {
     this.goal = goal
     this.date = date
     this.endDate = endDate
+    this.deanId = deanId
 
     Object.freeze(this)
   }
