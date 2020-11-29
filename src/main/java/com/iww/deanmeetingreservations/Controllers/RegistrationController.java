@@ -30,6 +30,7 @@ public class RegistrationController {
     Logger logger = LoggerFactory.getLogger(RegistrationController.class);
 
 
+    //should hash password?
     @RequestMapping(value = "/api/dean/register",method = RequestMethod.POST)
     @ResponseBody
     public ResponseEntity<Dean> registerRequest(@RequestBody @Valid RegistrationForm registrationForm) {
