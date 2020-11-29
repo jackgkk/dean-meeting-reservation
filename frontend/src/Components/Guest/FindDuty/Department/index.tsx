@@ -3,7 +3,9 @@ import AccordionSummary from '@material-ui/core/AccordionSummary'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { Accordion, Card, createStyles, Theme, Typography } from '@material-ui/core'
 import AccordionDetails from '@material-ui/core/AccordionDetails'
-import { Dean as DeanType, Department as DepartmentType, Duty as DutyType } from '../types'
+import DeanType from '../../../../Dean'
+import DepartmentType from '../../../../Department'
+import DutyType from '../../../../Duty'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import Tooltip from '@material-ui/core/Tooltip'
 import Dean from './Dean'
@@ -39,10 +41,10 @@ export default function Department ({ department }: DepartmentProps) {
   const { name: departmentName } = department
   const [deans, setDeans] = useState<Array<DeanType>|undefined>([
     new DeanType(
-      '234234',
-      'Marry',
-      'Jane',
-      'marry.jane@uni.org',
+      '82cfb68d-9019-4b2a-af69-22ca93889ccb',
+      'Izabella',
+      'Nowakowska',
+      'izabella.nowakowska@wmii.uni.lodz.pl',
       'professor',
       [
         new DutyType(

@@ -2,6 +2,7 @@ package com.iww.deanmeetingreservations.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -18,7 +19,8 @@ public class Dean {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "DEAN_ID")
+    @Column(name = "DEAN_ID", length = 16)
+    @Type(type="org.hibernate.type.UUIDBinaryType")
     private UUID dean_id;
 
     @Basic
