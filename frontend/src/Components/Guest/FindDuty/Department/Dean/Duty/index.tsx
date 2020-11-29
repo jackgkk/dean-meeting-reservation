@@ -11,7 +11,7 @@ import DutyType from '../../../../../../Duty'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
 import { useRecoilState } from 'recoil'
-import { meetingDeanState, meetingDutyState, meetingForm, showMeetingForm } from '../../../state'
+import { meetingDeanState, meetingDutyState, meetingForm, showMeetingFormState } from '../../../state'
 import MeetingProposition from '../../../../../../MeetingProposition'
 import Guest from '../../../../../../Guest'
 
@@ -41,7 +41,7 @@ export default function Duty (props: DutyProps) {
   const { show, dean } = props
 
   const [_meetingState, setMeetingState] = useRecoilState(meetingForm)
-  const setIsFormOpen = useRecoilState(showMeetingForm)[1]
+  const setIsFormOpen = useRecoilState(showMeetingFormState)[1]
   const setMeetingDuty = useRecoilState(meetingDutyState)[1]
   const setMeetingDean = useRecoilState(meetingDeanState)[1]
 

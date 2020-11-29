@@ -12,7 +12,7 @@ export const meetingForm = atom({
   )
 })
 
-export const showMeetingForm = atom({
+export const showMeetingFormState = atom({
   key: 'showMeetingFormState', default: false
 })
 
@@ -24,4 +24,9 @@ export const meetingDutyState = atom({
 export const meetingDeanState = atom({
   key: 'meetingDeanState',
   default: new Dean('', '', '', '', '', [new Duty(0, '', '')])
+})
+
+export const submittingStatusState = atom<'ready'|'submitting'|'error'|'success'>({
+  key: 'submittingStatusState',
+  default: 'ready'
 })

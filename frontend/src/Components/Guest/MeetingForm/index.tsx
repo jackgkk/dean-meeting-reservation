@@ -1,5 +1,5 @@
 import Dialog from '@material-ui/core/Dialog/Dialog'
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import DialogTitle from '@material-ui/core/DialogTitle'
 import TextField from '@material-ui/core/TextField'
 import makeStyles from '@material-ui/core/styles/makeStyles'
@@ -24,13 +24,9 @@ import IconButton from '@material-ui/core/IconButton'
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import { useRecoilState } from 'recoil'
 import Guest from '../../../Guest'
-import { meetingDutyState, meetingForm } from '../FindDuty/state'
+import { meetingDutyState, meetingForm, showMeetingFormState, submittingStatusState } from '../FindDuty/state'
 import MeetingProposition from '../../../MeetingProposition'
 import CircularProgress from '@material-ui/core/CircularProgress'
-import Snackbar from '@material-ui/core/Snackbar'
-import MuiAlert from '@material-ui/lab/Alert'
-import Icon from '@material-ui/core/Icon'
-import CloseIcon from '@material-ui/icons/Close'
 
 interface MeetingFormData {
   guest: Guest,
@@ -49,14 +45,20 @@ export default function MeetingForm () {
   const fullScreen = useMediaQuery(useTheme().breakpoints.down('xs'))
 
   const [formData, setFormData] = useRecoilState(meetingForm)
-
   const [meetingDuty] = useRecoilState(meetingDutyState)
+  const [showMeetingForm, setShowMeetingForm] = useRecoilState(showMeetingFormState)
 
   const [meetingTimeOutOfRange, setMeetingTimeOutOfRange] = useState(false)
 
-  const [submittingState, setSubmittingState] = useState<'ready'|'submitting'|'errored'>('ready')
+  const [submittingStatus, setSubmittingStatus] = useRecoilState(submittingStatusState)
 
   const [submittingError, setSubmittingError] = useState<Error>()
+
+  useEffect(function () {
+    if (submittingStatus === 'success' || submittingStatus === 'error') {
+      setShowMeetingForm(false)
+    }
+  }, [submittingStatus])
 
   function handleChange (ev: ChangeEvent<{name?: string, value: unknown}>) {
     const { name, value } = ev.target
@@ -104,9 +106,23 @@ export default function MeetingForm () {
 
     if (meetingTimeOutOfRange) return
 
-    setSubmittingState('submitting')
+    setSubmittingStatus('submitting')
+
+    fetch('/api/meeting/create-proposition', {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(formData)
+    }).then(handleSuccessfulSubmit).catch(console.warn)
 
     console.log(formData)
+  }
+
+  function handleSuccessfulSubmit (response: Response) {
+    if (response.status === 200) {
+      setSubmittingStatus('success')
+    }
   }
 
   const meetingTimeMarks = [
@@ -335,15 +351,16 @@ export default function MeetingForm () {
           <p>
             <Button
               style={{ alignItems: 'center' }}
-              disabled={submittingState === 'submitting'}
+              disabled={submittingStatus === 'submitting'}
               color='primary'
               variant={'contained'}
               type='submit'
             >
-              <span style={{ paddingRight: submittingState === 'submitting' ? '1rem' : '' }}>
+              <span style={{ paddingRight: submittingStatus === 'submitting' ? '1rem' : '' }}>
               Send meeting request
               </span>
-              {submittingState === 'submitting' && <CircularProgress
+              {submittingStatus === 'submitting' &&
+              <CircularProgress
                 size={20}
                 color='primary'
               />}
@@ -351,26 +368,6 @@ export default function MeetingForm () {
           </p>
         </form>
       </DialogContent>
-      <Snackbar
-        open
-        autoHideDuration={6000}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left'
-        }}
-        action={
-          <IconButton>
-            <CloseIcon />
-          </IconButton>
-        }
-      >
-        <>
-          {/* @ts-ignore */}
-          <MuiAlert variant="filled" severity="success">
-            Meeting request send successfully
-          </MuiAlert>
-        </>
-      </Snackbar>
     </Dialog>
   )
 }

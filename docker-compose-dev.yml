@@ -18,7 +18,7 @@ services:
       - DB_PASSWORD=${DB_PASSWORD}
 
   db:
-    image: mysql:5.7.32
+    image: mysql:8.0.22
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=${DB_ROOT_PW}
