@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Dean as DeanType } from '../../types'
+import DeanType from '../../../../../Dean'
 import ListItem from '@material-ui/core/ListItem'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { createStyles, Theme } from '@material-ui/core'
@@ -25,6 +25,6 @@ export default function Dean (dean: DeanType) {
       <ListItemText />
       {showDuties ? <ExpandLess /> : <ExpandMore />}
     </ListItem>
-    { dean.duties.map((duty, key) => <Duty duty={duty} show={showDuties} key={key} />) }
+    { dean.duties.map((duty, key) => <Duty duty={duty} dean={dean} show={showDuties} key={key} />) }
   </>
 }

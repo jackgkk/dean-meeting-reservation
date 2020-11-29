@@ -5,7 +5,6 @@ function Style (theme: Theme) {
     dean: { backgroundColor: '#fff' },
     listOfDeans: {
       width: '100%',
-      // backgroundColor: '#fafafa',
       padding: 0
     },
     duty: { paddingLeft: theme.spacing(6), backgroundColor: '#fff' }
