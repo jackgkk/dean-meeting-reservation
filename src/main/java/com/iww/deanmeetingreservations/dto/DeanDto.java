@@ -1,10 +1,5 @@
 package com.iww.deanmeetingreservations.dto;
 
-import com.iww.deanmeetingreservations.model.DutyDean;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public class DeanDto {
 
     private String firstname;
@@ -13,12 +8,16 @@ public class DeanDto {
 
     private String email;
 
-    private List<DutyDean> dutyDeans = new ArrayList<DutyDean>();
+    private String password;
 
-    public DeanDto(String firstname, String lastname, String email) {
+    private String department;
+
+    public DeanDto(String firstname, String lastname, String email, String password, String department) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.email = email;
+        this.password = password;
+        this.department = department;
     }
 
     public String getFirstname() {
@@ -45,11 +44,19 @@ public class DeanDto {
         this.email = email;
     }
 
-    public List<DutyDean> getDutyDeans() {
-        return dutyDeans;
+    public String getPassword() {
+        return password;
     }
 
-    public void setDutyDeans(List<DutyDean> dutyDeans) {
-        this.dutyDeans = dutyDeans;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
     }
 }

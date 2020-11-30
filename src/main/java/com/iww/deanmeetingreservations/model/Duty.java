@@ -17,22 +17,22 @@ public class Duty {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(name = "DUTY_ID")
-    private String duty_id;
+    private String dutyId;
 
     @Basic
     @Column(name = "DAY_OF_THE_WEEK")
-    private String day_of_the_week;
+    private String dayOfTheWeek;
 
     @Basic
     @Column(name = "STARTS_AT")
-    private String starts_at;
+    private String startsAt;
 
     @Basic
     @Column(name = "ENDS_AT")
-    private String ends_at;
+    private String endsAt;
 
     @OneToMany(mappedBy = "dean", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<DutyDean> duties_deans = new ArrayList<DutyDean>();
+    private List<DutyDean> dutiesDeans = new ArrayList<DutyDean>();
 
     public Duty() {
     }

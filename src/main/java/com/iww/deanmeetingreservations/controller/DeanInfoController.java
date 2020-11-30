@@ -2,36 +2,42 @@ package com.iww.deanmeetingreservations.controller;
 
 import com.iww.deanmeetingreservations.DeanMeetingReservationsApplication;
 import com.iww.deanmeetingreservations.dto.DeanDto;
-import com.iww.deanmeetingreservations.service.DeanInfoService;
+import com.iww.deanmeetingreservations.dto.DeanInfoDto;
 import com.iww.deanmeetingreservations.service.DeanInfoServiceImpl;
-import javassist.NotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class DeanInfoController {
 
+    private final Logger logger = LoggerFactory.getLogger(DeanMeetingReservationsApplication.class);
+    @Autowired
     private DeanInfoServiceImpl deanInfoService;
 
-    private Logger logger= LoggerFactory.getLogger(DeanMeetingReservationsApplication.class);
-
-    @GetMapping("/api/dean/{id}")
-    public ResponseEntity<DeanDto> getDeanWithId (@PathVariable String id) throws ResourceNotFoundException {
-        DeanDto deanDto;
+    @RequestMapping(value = "/api/dean/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<DeanInfoDto> getDeanWithId(@PathVariable("id") String id) throws ResourceNotFoundException {
         try {
-            deanDto = deanInfoService.findUserById(id);
+            DeanInfoDto deanInfoDto = deanInfoService.findUserById(id);
+            return ResponseEntity.ok(deanInfoDto);
         } catch (ResourceNotFoundException e) {
-            logger.error("No dean found with given id / @Get \"/api/dean/"+id+"\"");
-            throw e;
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
         }
-        return ResponseEntity.ok(deanDto);
+    }
+
+    @RequestMapping(value = "/api/dean/update-info/{id}", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<DeanDto> updateDeanInfo(@PathVariable String id, @RequestBody DeanDto deanDto) throws ResourceNotFoundException {
+        try {
+            DeanDto resultDto = deanInfoService.updateProfile(deanDto, id);
+            return ResponseEntity.ok(resultDto);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity(HttpStatus.NOT_FOUND);
+        }
     }
 }

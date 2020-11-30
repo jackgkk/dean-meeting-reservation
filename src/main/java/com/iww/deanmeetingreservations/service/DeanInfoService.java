@@ -1,11 +1,10 @@
 package com.iww.deanmeetingreservations.service;
 
 import com.iww.deanmeetingreservations.dto.DeanDto;
+import com.iww.deanmeetingreservations.dto.DeanInfoDto;
 
 public interface DeanInfoService {
     DeanDto updateProfile(DeanDto deanDto, String id);
 
-    DeanDto changePassword(DeanDto deanDto, String newPassword);
-
-    DeanDto findUserById(String id);
+    DeanInfoDto findUserById(String id);
 }

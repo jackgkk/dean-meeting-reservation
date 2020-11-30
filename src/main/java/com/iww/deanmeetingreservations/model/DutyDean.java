@@ -15,7 +15,7 @@ public class DutyDean {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(name = "DUTY_DEAN_ID")
-    private String duty_dean_id;
+    private String dutyDeanId;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "dean_id")

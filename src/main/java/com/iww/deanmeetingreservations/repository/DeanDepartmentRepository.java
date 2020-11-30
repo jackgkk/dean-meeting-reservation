@@ -4,8 +4,11 @@ import com.iww.deanmeetingreservations.model.DeanDepartment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
 public interface DeanDepartmentRepository extends JpaRepository<DeanDepartment, UUID> {
+
+    List<DeanDepartment> findAllByDeanDeanId(String id);
 }

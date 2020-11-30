@@ -19,9 +19,9 @@ public class Dean {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "DEAN_ID", length = 16)
-    @Type(type="org.hibernate.type.UUIDBinaryType")
-    private UUID dean_id;
+    @Column(name = "DEAN_ID")
+    //@Type(type = "org.hibernate.type.UUIDBinaryType")
+    private String deanId;
 
     @Basic
     @Column(name = "USERNAME", unique = true, nullable = false)
@@ -45,7 +45,7 @@ public class Dean {
     private String email;
 
     @OneToMany(mappedBy = "dean", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<DeanDepartment> dean_departments = new ArrayList<DeanDepartment>();
+    private List<DeanDepartment> deanDepartments = new ArrayList<DeanDepartment>();
 
     @OneToMany(mappedBy = "dean", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<DutyDean> dutyDeans = new ArrayList<DutyDean>();
@@ -53,8 +53,8 @@ public class Dean {
     public Dean() {
     }
 
-    public Dean(UUID dean_id, String username, String password, String firstname, String lastname, String email) {
-        this.dean_id = dean_id;
+    public Dean(String deanId, String username, String password, String firstname, String lastname, String email) {
+        this.deanId = deanId;
         this.username = username;
         this.password = password;
         this.firstname = firstname;
@@ -62,12 +62,12 @@ public class Dean {
         this.email = email;
     }
 
-    public UUID getDean_id() {
-        return dean_id;
+    public String getDeanId() {
+        return deanId;
     }
 
-    public void setDean_id(UUID dean_id) {
-        this.dean_id = dean_id;
+    public void setDeanId(String deanId) {
+        this.deanId = deanId;
     }
 
     public String getUsername() {
@@ -76,10 +76,6 @@ public class Dean {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFirstname() {
@@ -98,6 +94,14 @@ public class Dean {
         this.lastname = lastname;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -106,11 +110,21 @@ public class Dean {
         this.email = email;
     }
 
-    public List<DeanDepartment> getDean_departments() {
-        return dean_departments;
+    public List<DeanDepartment> getDeanDepartments() {
+        return deanDepartments;
     }
 
-    public void setDean_departments(List<DeanDepartment> dean_departments) {
-        this.dean_departments = dean_departments;
+    public void setDeanDepartments(List<DeanDepartment> deanDepartments) {
+        this.deanDepartments = deanDepartments;
     }
+
+    public List<DutyDean> getDutyDeans() {
+        return dutyDeans;
+    }
+
+    public void setDutyDeans(List<DutyDean> dutyDeans) {
+        this.dutyDeans = dutyDeans;
+    }
+
+    public void addDeanDepartment(DeanDepartment deanDepartment){this.deanDepartments.add(deanDepartment);}
 }
