@@ -11,6 +11,7 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 
 @RestController
 public class DeanInfoController {
@@ -30,14 +31,16 @@ public class DeanInfoController {
         }
     }
 
-    @RequestMapping(value = "/api/dean/update-info/{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/dean/update-info/{id}", method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<DeanDto> updateDeanInfo(@PathVariable String id, @RequestBody DeanDto deanDto) throws ResourceNotFoundException {
+    public ResponseEntity<String> updateDeanInfo(@PathVariable String id, @RequestBody DeanDto deanDto) throws ResourceNotFoundException {
         try {
-            DeanDto resultDto = deanInfoService.updateProfile(deanDto, id);
-            return ResponseEntity.ok(resultDto);
+            deanInfoService.updateProfile(deanDto, id);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (HttpClientErrorException.BadRequest badRequest) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }

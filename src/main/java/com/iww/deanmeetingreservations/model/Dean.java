@@ -2,12 +2,10 @@ package com.iww.deanmeetingreservations.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "DEANS")
@@ -19,8 +17,7 @@ public class Dean {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "DEAN_ID")
-    //@Type(type = "org.hibernate.type.UUIDBinaryType")
+    @Column(name = "DEAN_ID", length = 36)
     private String deanId;
 
     @Basic
@@ -45,10 +42,10 @@ public class Dean {
     private String email;
 
     @OneToMany(mappedBy = "dean", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<DeanDepartment> deanDepartments = new ArrayList<DeanDepartment>();
+    private List<DeanDepartment> deanDepartments = new ArrayList<>();
 
     @OneToMany(mappedBy = "dean", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<DutyDean> dutyDeans = new ArrayList<DutyDean>();
+    private List<Duty> duties = new ArrayList<>();
 
     public Dean() {
     }
@@ -118,13 +115,15 @@ public class Dean {
         this.deanDepartments = deanDepartments;
     }
 
-    public List<DutyDean> getDutyDeans() {
-        return dutyDeans;
+    public List<Duty> getDuties() {
+        return duties;
     }
 
-    public void setDutyDeans(List<DutyDean> dutyDeans) {
-        this.dutyDeans = dutyDeans;
+    public void setDuties(List<Duty> duties) {
+        this.duties = duties;
     }
 
-    public void addDeanDepartment(DeanDepartment deanDepartment){this.deanDepartments.add(deanDepartment);}
+    public void addDeanDepartment(DeanDepartment deanDepartment) {
+        this.deanDepartments.add(deanDepartment);
+    }
 }

@@ -32,7 +32,7 @@ public class DeanInfoServiceImpl implements DeanInfoService {
     ModelMapper modelMapper;
 
     @Override
-    public DeanDto updateProfile(DeanDto deanDto, String id) {
+    public void updateProfile(DeanDto deanDto, String id) {
         Optional<Dean> dean = deanRepository.findById(id);
         if (dean.isPresent()) {
             Dean deanModel = dean.get();
@@ -51,7 +51,7 @@ public class DeanInfoServiceImpl implements DeanInfoService {
             if (deanDto.getDepartment() != null) {
                 Department department = departmentRepository.getFirstByDepartmentNameEquals(deanDto.getDepartment()).orElse(null);
                 if (department == null) {
-                    department = new Department(deanDto.getDepartment(), "");
+                    department = new Department(deanDto.getDepartment());
                     departmentRepository.save(department);
                     departmentRepository.flush();
                     department = departmentRepository.getFirstByDepartmentNameEquals(deanDto.getDepartment()).get();
@@ -63,9 +63,6 @@ public class DeanInfoServiceImpl implements DeanInfoService {
                 departmentRepository.saveAndFlush(department);
             }
             deanRepository.saveAndFlush(deanModel);
-
-            return new DeanDto(deanModel.getFirstname(), deanModel.getLastname(), deanModel.getEmail(),
-                    deanModel.getPassword(), deanDto.getDepartment());
         } else {
             throw new ResourceNotFoundException();
         }
@@ -75,7 +72,7 @@ public class DeanInfoServiceImpl implements DeanInfoService {
     public DeanInfoDto findUserById(String id) {
         Optional<Dean> dean = deanRepository.findById(id);
         if (dean.isPresent()) {
-            return new DeanInfoDto(dean.get().getFirstname(), dean.get().getLastname(), dean.get().getEmail(), dean.get().getDutyDeans());
+            return new DeanInfoDto(dean.get().getFirstname(), dean.get().getLastname(), dean.get().getEmail(), dean.get().getDuties());
         } else {
             throw new ResourceNotFoundException();
         }

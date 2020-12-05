@@ -4,7 +4,7 @@ import com.iww.deanmeetingreservations.dto.DeanDto;
 import com.iww.deanmeetingreservations.dto.DeanInfoDto;
 
 public interface DeanInfoService {
-    DeanDto updateProfile(DeanDto deanDto, String id);
+    void updateProfile(DeanDto deanDto, String id);
 
     DeanInfoDto findUserById(String id);
 }

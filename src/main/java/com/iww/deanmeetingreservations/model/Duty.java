@@ -3,8 +3,6 @@ package com.iww.deanmeetingreservations.model;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "DUTIES")
@@ -31,8 +29,9 @@ public class Duty {
     @Column(name = "ENDS_AT")
     private String endsAt;
 
-    @OneToMany(mappedBy = "dean", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<DutyDean> dutiesDeans = new ArrayList<DutyDean>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dean_id")
+    private Dean dean;
 
     public Duty() {
     }

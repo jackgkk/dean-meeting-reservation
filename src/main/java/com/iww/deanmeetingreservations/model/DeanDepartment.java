@@ -1,10 +1,8 @@
 package com.iww.deanmeetingreservations.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Table(name = "DEANS_DEPARTMENTS")
