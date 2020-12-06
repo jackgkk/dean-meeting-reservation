@@ -34,14 +34,14 @@ public class MeetingCreationController {
 
     @GetMapping("/hello")
     public String sayHello() {
-        Optional<Dean> dean = deanRepository.findById(UUID.fromString("82cfb68d-9019-4b2a-af69-22ca93889ccb"));
+        Optional<Dean> dean = deanRepository.findById(UUID.fromString("82cfb68d-9019-4b2a-af69-22ca93889ccb").toString());
 
         if (dean.isPresent()) {
             System.out.println(dean.get());
         } else {
             System.out.println("Not found!");
 
-            Dean newDean1 = new Dean(UUID.randomUUID(), "Twentone", "Mee6Koowoo", "Izabella", "Nowakowska", "izabella.nowakowska@wmii.uni.lodz.pl");
+            Dean newDean1 = new Dean(UUID.randomUUID().toString(), "Twentone", "Mee6Koowoo", "Izabella", "Nowakowska", "izabella.nowakowska@wmii.uni.lodz.pl");
             deanRepository.save(newDean1);
             /* Dean newDean2 = new Dean(UUID.randomUUID(), d.getUsername(), d.getPassword(), d.getFirstname(), d.getLastname(), d.getEmail());
             deanRepository.save(newDean2);

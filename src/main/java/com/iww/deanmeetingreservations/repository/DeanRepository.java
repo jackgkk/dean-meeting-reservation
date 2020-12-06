@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DeanRepository extends JpaRepository<Dean, String> {
+    Dean findByEmail (String email);
 }
