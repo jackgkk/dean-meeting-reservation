@@ -19,18 +19,23 @@ const theme = createMuiTheme({
       fontStyle: 'normal',
       fontWeight: 'normal',
       fontSize: '15px'
+    },
+    h3: {
+      fontFamily: 'Montserrat',
+      fontStyle: 'normal',
+      fontWeight: 500,
+      fontSize: '19px',
+      lineHeight: '23px'
     }
   },
   overrides: {
     MuiAccordionSummary: {
       root: {
         '&$expanded': {
-          marginTop: '-1rem',
-          transition: '0.2s',
+          // marginTop: '-1rem',
+          transition: '0.3s',
           transitionTimingFunction: 'ease'
-        },
-        transition: '0.3s',
-        transitionTimingFunction: 'ease'
+        }
       }
     }
   }

@@ -1,7 +1,8 @@
 import * as React from 'react'
-import { CurrentDay } from './data'
 import './index.scss'
 import MeetingList from './MeetingList'
+import { currentDate as CurrentDateType, Meeting as MeetingType } from '../types'
+import { MutableRefObject } from 'react'
 
 const weekday = new Array(7)
 weekday[0] = 'Sunday'
@@ -12,12 +13,18 @@ weekday[4] = 'Thursday'
 weekday[5] = 'Friday'
 weekday[6] = 'Saturday'
 const today = new Date()
+
 console.log(today)
+
 const getPrettyDate = (date: Date) => {
   return (date.getDate().toString() + '.' + (date.getMonth() + 1).toString() + '.' + date.getFullYear().toString())
 }
 
-export default function Calendar () {
+interface MeetingProps{
+  meetings: Array<MeetingType>|undefined
+}
+
+export default function Calendar ({ meetings }: MeetingProps) {
   const [currentDate, setCurrentDate] = React.useState(today)
   const [day, setDay] = React.useState({ day: weekday[currentDate.getDay()], date: getPrettyDate(currentDate) })
 
@@ -43,7 +50,7 @@ export default function Calendar () {
         <button onClick={tommorowUpdateHandler}>next day</button>
       </div>
       <div className="meetingList">
-        <MeetingList date={currentDate}/>
+        <MeetingList date={currentDate} meetings={meetings}/>
       </div>
     </div>
   )
