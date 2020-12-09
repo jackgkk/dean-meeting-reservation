@@ -12,6 +12,7 @@ import org.hibernate.engine.spi.SessionDelegatorBaseImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.persistence.EntityManager;
@@ -30,18 +31,21 @@ public class MeetingCreationController {
     MeetingPropositionService meetingPropositionService;
 
     @Autowired
+    BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
     DeanRepository deanRepository;
 
     @GetMapping("/hello")
     public String sayHello() {
-        Optional<Dean> dean = deanRepository.findById(UUID.fromString("82cfb68d-9019-4b2a-af69-22ca93889ccb").toString());
+        Optional<Dean> dean = deanRepository.findById(UUID.fromString("b49b68b6-c7ec-4a50-8fea-00aa66d00941").toString());
 
         if (dean.isPresent()) {
             System.out.println(dean.get());
         } else {
             System.out.println("Not found!");
 
-            Dean newDean1 = new Dean(UUID.randomUUID().toString(), "Twentone", "Mee6Koowoo", "Izabella", "Nowakowska", "izabella.nowakowska@wmii.uni.lodz.pl");
+            Dean newDean1 = new Dean(UUID.randomUUID().toString(), "Twentone", bCryptPasswordEncoder.encode("test"), "Izabella", "Nowakowska", "izabella.nowakowska@wmii.uni.lodz.pl");
             deanRepository.save(newDean1);
             /* Dean newDean2 = new Dean(UUID.randomUUID(), d.getUsername(), d.getPassword(), d.getFirstname(), d.getLastname(), d.getEmail());
             deanRepository.save(newDean2);

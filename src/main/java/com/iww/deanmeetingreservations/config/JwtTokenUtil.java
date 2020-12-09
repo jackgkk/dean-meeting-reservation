@@ -4,9 +4,12 @@ import com.iww.deanmeetingreservations.model.Dean;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -41,13 +44,14 @@ public class JwtTokenUtil implements Serializable {
         return expiration.before(new Date());
     }
 
-    public String generateToken(Dean dean) {
-        return doGenerateToken(dean.getEmail());
+    public String generateToken(Dean user) {
+        return doGenerateToken(user.getEmail());
     }
 
     private String doGenerateToken(String subject) {
 
         Claims claims = Jwts.claims().setSubject(subject);
+        claims.put("scopes", Arrays.asList(new SimpleGrantedAuthority("ROLE_USER")));
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -58,10 +62,10 @@ public class JwtTokenUtil implements Serializable {
                 .compact();
     }
 
-    public Boolean validateToken(String token, Dean dean) {
-        final String email = getEmailFromToken(token);
+    public Boolean validateToken(String token, UserDetails userDetails) {
+        final String username = getEmailFromToken(token);
         return (
-                email.equals(dean.getEmail())
+                username.equals(userDetails.getUsername())
                         && !isTokenExpired(token));
     }
 

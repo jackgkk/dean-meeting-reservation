@@ -10,7 +10,6 @@ import java.util.List;
 @Entity
 @Table(name = "DEANS")
 public class Dean {
-
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -46,6 +45,12 @@ public class Dean {
 
     @OneToMany(mappedBy = "dean", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Duty> duties = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "deans_roles",
+            joinColumns = {@JoinColumn(name = "dean_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")})
+    private List<Role> roles = new ArrayList<Role>();
 
     public Dean() {
     }
@@ -125,5 +130,13 @@ public class Dean {
 
     public void addDeanDepartment(DeanDepartment deanDepartment) {
         this.deanDepartments.add(deanDepartment);
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }
