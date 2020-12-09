@@ -39,7 +39,7 @@ public class MeetingPropositionServiceImpl implements MeetingPropositionService 
 
     @Override
     public Meeting addMeeting(MeetingPropositionDto meetingPropositionDto, String hostUrl) throws Exception {
-        UUID deanId = meetingPropositionDto.getDeanId();
+        String deanId = meetingPropositionDto.getDeanId().toString();
 
         Optional<Dean> dean = deanRepository.findById(deanId);
 
