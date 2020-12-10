@@ -24,10 +24,6 @@ public class Dean {
     private String deanId;
 
     @Basic
-    @Column(name = "USERNAME", unique = true, nullable = false)
-    private String username;
-
-    @Basic
     @Column(name = "PASSWORD", nullable = false)
     @JsonIgnore
     private String password;
@@ -53,9 +49,8 @@ public class Dean {
     public Dean() {
     }
 
-    public Dean(String deanId, String username, String password, String firstname, String lastname, String email) {
+    public Dean(String deanId, String password, String firstname, String lastname, String email) {
         this.deanId = deanId;
-        this.username = username;
         this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -68,14 +63,6 @@ public class Dean {
 
     public void setDeanId(String deanId) {
         this.deanId = deanId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getFirstname() {

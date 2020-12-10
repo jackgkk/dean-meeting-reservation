@@ -45,7 +45,7 @@ public class MeetingCreationController {
         } else {
             System.out.println("Not found!");
 
-            Dean newDean1 = new Dean(UUID.randomUUID().toString(), "Twentone", bCryptPasswordEncoder.encode("test"), "Izabella", "Nowakowska", "izabella.nowakowska@wmii.uni.lodz.pl");
+            Dean newDean1 = new Dean(UUID.randomUUID().toString(), bCryptPasswordEncoder.encode("test"), "Izabella", "Nowakowska", "izabella.nowakowska@wmii.uni.lodz.pl");
             deanRepository.save(newDean1);
             /* Dean newDean2 = new Dean(UUID.randomUUID(), d.getUsername(), d.getPassword(), d.getFirstname(), d.getLastname(), d.getEmail());
             deanRepository.save(newDean2);
