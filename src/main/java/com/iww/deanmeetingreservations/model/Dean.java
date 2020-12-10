@@ -2,9 +2,13 @@ package com.iww.deanmeetingreservations.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -45,12 +49,6 @@ public class Dean {
 
     @OneToMany(mappedBy = "dean", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<Duty> duties = new ArrayList<>();
-
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinTable(name = "deans_roles",
-            joinColumns = {@JoinColumn(name = "dean_id")},
-            inverseJoinColumns = {@JoinColumn(name = "role_id")})
-    private List<Role> roles = new ArrayList<Role>();
 
     public Dean() {
     }
@@ -132,11 +130,7 @@ public class Dean {
         this.deanDepartments.add(deanDepartment);
     }
 
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public Collection<? extends GrantedAuthority> getRole() {
+        return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
     }
 }

@@ -4,22 +4,15 @@ import com.iww.deanmeetingreservations.config.JwtTokenUtil;
 import com.iww.deanmeetingreservations.dto.DeanLoginDto;
 import com.iww.deanmeetingreservations.dto.TokenDto;
 import com.iww.deanmeetingreservations.model.Dean;
-import com.iww.deanmeetingreservations.model.Role;
 import com.iww.deanmeetingreservations.repository.DeanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class DeanServiceImpl implements DeanService {
@@ -41,13 +34,7 @@ public class DeanServiceImpl implements DeanService {
         }
         return new org.springframework.security.core.userdetails.User(dean.getEmail(),
                 dean.getPassword(),
-                mapRolesToAuthorities(dean.getRoles()));
-    }
-
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(List<Role> roles) {
-        return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getName()))
-                .collect(Collectors.toList());
+                dean.getRole());
     }
 
     @Override
@@ -61,7 +48,6 @@ public class DeanServiceImpl implements DeanService {
 
     @Override
     public Boolean isLogged(String token) {
-        token = token.substring(7);
         String email = jwtTokenUtil.getEmailFromToken(token);
         return jwtTokenUtil.validateToken(token, this.loadUserByUsername(email));
     }

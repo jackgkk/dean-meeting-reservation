@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 public interface DeanService extends UserDetailsService {
     Dean loadUserByEmail(String email) throws UsernameNotFoundException;
 
-    Boolean isLogged(String token);
+    Boolean isLogged(String token) throws Exception;
 
     TokenDto loginDean(DeanLoginDto deanLoginDto);
 }

@@ -3,6 +3,7 @@ package com.iww.deanmeetingreservations.controller;
 import com.iww.deanmeetingreservations.dto.DeanLoginDto;
 import com.iww.deanmeetingreservations.service.DeanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Controller;
@@ -23,7 +24,11 @@ public class DeanLoginController {
     }
 
     @RequestMapping(value = "/api/dean/isLogged", method = RequestMethod.GET)
-    public ResponseEntity isLogged(@RequestHeader String token) {
-        return ResponseEntity.ok(deanService.isLogged(token));
+    public ResponseEntity isLogged(@RequestHeader ("Authorization") String token) {
+        try {
+            return ResponseEntity.ok(deanService.isLogged(token));
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }
