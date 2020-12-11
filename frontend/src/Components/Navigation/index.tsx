@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import FindDuty from '../Guest/FindDuty'
 import Calendar from '../Guest/Calendar'
 import MeetingSuggestions from '../Guest/Meeting Suggestions'
 import { currentDate as CurrentDateType, Meeting as MeetingType } from '../Guest/types'
@@ -32,9 +31,6 @@ export default function Navigation () {
         <Route path='/calendar'>
           <MeetingSuggestions meetings={meetings} acceptHandler={acceptHandler} cancelHandler={cancelHandler} />
           <Calendar meetings={meetings} />
-        </Route>
-        <Route path='/find-duty'>
-          <FindDuty />
         </Route>
       </Switch>
     </Router>
