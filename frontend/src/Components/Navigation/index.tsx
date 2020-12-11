@@ -7,7 +7,6 @@ import { currentDate as CurrentDateType, Meeting as MeetingType } from '../Guest
 import { v4 as _id } from 'uuid'
 
 import { fakeMeetings } from '../Guest/Data'
-import RegistrationComponent from '../Guest/Registration'
 
 export default function Navigation () {
   const [meetings, setMeetings] = React.useState<Array<MeetingType>>(fakeMeetings)
@@ -36,9 +35,6 @@ export default function Navigation () {
         </Route>
         <Route path='/find-duty'>
           <FindDuty />
-        </Route>
-        <Route path='/registration'>
-          <RegistrationComponent />
         </Route>
       </Switch>
     </Router>
