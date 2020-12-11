@@ -6,7 +6,7 @@ import Collapse from '@material-ui/core/Collapse'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { createStyles, Theme } from '@material-ui/core'
 import Style from '../../style'
-import { Duty as DutyType } from '../../../types'
+import { Duty as DutyType } from '../../../../types'
 import Button from '@material-ui/core/Button'
 import Divider from '@material-ui/core/Divider'
 

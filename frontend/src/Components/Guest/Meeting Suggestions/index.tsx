@@ -1,7 +1,7 @@
 import { makeStyles, Typography } from '@material-ui/core'
 import * as React from 'react'
 import SuggestionList from './Suggestion List'
-import './index.scss'
+import './styling/index.scss'
 import { currentDate as CurrentDateType, Meeting as MeetingType } from '../types'
 import { Dispatch, SetStateAction } from 'react'
 import groupBy from 'lodash.groupby'
@@ -14,6 +14,7 @@ import TimelineContent from '@material-ui/lab/TimelineContent'
 import TimelineDot from '@material-ui/lab/TimelineDot'
 import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent'
 import clsx from 'clsx'
+import { useStyle } from './styling/style'
 
 interface MeetingProps{
   meetings: Array<MeetingType>|undefined
@@ -29,41 +30,6 @@ weekday[3] = 'Wednesday'
 weekday[4] = 'Thursday'
 weekday[5] = 'Friday'
 weekday[6] = 'Saturday'
-
-const useStyle = makeStyles({
-  oppositeContent: {
-    flex: 0,
-    padding: '0px'
-  },
-  timelineContainer: {
-    padding: '0px'
-  },
-  timeline: {
-    display: 'inline-grid',
-    gridTemplateColumns: '11% 4% 85%'
-  },
-  content: {
-    padding: '0px',
-    marginTop: '-1.3rem'
-  },
-  timelineDot: {
-    boxShadow: 'none',
-    borderWidth: '2px',
-    padding: '1.5px',
-    // marginTop: '1.1rem',
-    background: '#E5231B',
-    marginTop: '2rem'
-  },
-  timelineConnector: {
-    // marginLeft: '2px',
-    background: 'rgba(0,0,0,0.05)',
-    marginTop: '-1.2rem',
-    width: '1px '
-  },
-  timelineSeparator: {
-    margin: '0px auto'
-  }
-})
 
 export default function MeetingSuggestions ({ meetings, acceptHandler, cancelHandler }: MeetingProps) {
   const groupedByDateMeetings = _(meetings?.filter(meeting => meeting.isAccepted === false))

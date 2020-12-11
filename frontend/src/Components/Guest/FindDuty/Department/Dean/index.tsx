@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Dean as DeanType } from '../../types'
+import { Dean as DeanType } from '../../../types'
 import ListItem from '@material-ui/core/ListItem'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import { createStyles, Theme } from '@material-ui/core'

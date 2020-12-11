@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Card from '@material-ui/core/Card'
 import makeStyles from '@material-ui/core/styles/makeStyles'
-import { Department as DepartmentType } from './types'
+import { Department as DepartmentType } from '../types'
 import Department from './Department'
 
 const fakeDepartments = [
