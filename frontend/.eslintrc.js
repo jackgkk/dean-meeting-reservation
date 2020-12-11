@@ -22,6 +22,6 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-use-before-define': [2, { functions: false, classes: false }],
     'no-use-before-define': 'off',
-    'no-unused-vars': 'warn'
+    'no-unused-vars': 0
   }
 }
