@@ -1,5 +1,7 @@
 package com.iww.deanmeetingreservations.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 
 @Entity
@@ -7,9 +9,13 @@ import javax.persistence.*;
 public class DeanDepartment {
 
     @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
     @Column(name = "DEAN_DEPARTMENT_ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long dean_department_id;
+    private String deanDepartmentId;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "dean_id")
@@ -22,18 +28,17 @@ public class DeanDepartment {
     public DeanDepartment() {
     }
 
-    public DeanDepartment(Long dean_department_id, Dean dean, Department department) {
-        this.dean_department_id = dean_department_id;
+    public DeanDepartment(Dean dean, Department department) {
         this.dean = dean;
         this.department = department;
     }
 
-    public Long getDean_department_id() {
-        return dean_department_id;
+    public String getDeanDepartmentId() {
+        return deanDepartmentId;
     }
 
-    public void setDean_department_id(Long dean_department_id) {
-        this.dean_department_id = dean_department_id;
+    public void setDeanDepartmentId(String deanDepartmentId) {
+        this.deanDepartmentId = deanDepartmentId;
     }
 
     public Dean getDean() {

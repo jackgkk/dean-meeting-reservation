@@ -6,6 +6,8 @@ import { currentDate as CurrentDateType, Meeting as MeetingType } from '../Guest
 import { v4 as _id } from 'uuid'
 
 import { fakeMeetings } from '../Guest/Data'
+import FindDuty from '../Guest/FindDuty'
+import MeetingConfirmation from '../Guest/MeetingConfirmation'
 
 export default function Navigation () {
   const [meetings, setMeetings] = React.useState<Array<MeetingType>>(fakeMeetings)
@@ -31,6 +33,9 @@ export default function Navigation () {
         <Route path='/calendar'>
           <MeetingSuggestions meetings={meetings} acceptHandler={acceptHandler} cancelHandler={cancelHandler} />
           <Calendar meetings={meetings} />
+        </Route>
+        <Route path='/confirm-meeting/:token'>
+          <MeetingConfirmation />
         </Route>
       </Switch>
     </Router>
