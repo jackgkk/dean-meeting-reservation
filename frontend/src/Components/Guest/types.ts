@@ -85,13 +85,14 @@ class Meeting {
 }
 
 class DeanUnregistered {
-  constructor (name: string, surname: string, email: string, password: string, passwordCheck: string, department: Department) {
+  constructor (name: string, surname: string, email: string, password: string, passwordCheck: string, department: Department, errorStack: Object) {
     this.name = name
     this.surname = surname
     this.email = email
     this.password = password
     this.passwordCheck = passwordCheck
     this.department = department
+    this.errorStack = errorStack
 
     Object.freeze(this)
   }
@@ -102,4 +103,5 @@ class DeanUnregistered {
   email: string;
   password: string
   passwordCheck: string
+  errorStack: Object
 }
