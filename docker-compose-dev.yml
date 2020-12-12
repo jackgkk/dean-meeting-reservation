@@ -1,0 +1,28 @@
+version: "3.7"
+services:
+  frontend:
+    image: node:15.2.1-buster
+    command: sh -c "npm install && npm rebuild node-sass && npm start"
+    restart: always
+    ports:
+      - 80:3000
+    working_dir: /frontend
+    volumes:
+    - ./frontend:/frontend
+
+  backend:
+    build: .
+    environment:
+      - DB_URL=${DB_URL}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
+
+  db:
+    image: mysql:8.0.22
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PW}
+    volumes:
+      - ${DB_MOUNTPATH}:/var/lib/mysql
+    ports:
+    - 33060:3306
