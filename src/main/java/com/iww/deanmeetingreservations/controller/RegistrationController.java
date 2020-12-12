@@ -1,9 +1,9 @@
-package com.iww.deanmeetingreservations.Controllers;
+package com.iww.deanmeetingreservations.controller;
 
-import com.iww.deanmeetingreservations.DTO.RegistrationForm;
+import com.iww.deanmeetingreservations.dto.RegistrationForm;
 import com.iww.deanmeetingreservations.exceptions.ResourceAlreadyExistsError;
 import com.iww.deanmeetingreservations.model.Dean;
-import com.iww.deanmeetingreservations.services.DeanService;
+import com.iww.deanmeetingreservations.service.DeanService;
 import org.apache.coyote.Response;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -16,24 +16,20 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 import java.text.ParseException;
 
 @Controller
 public class RegistrationController {
-
-    /*@Autowired
-    ModelMapper modelMapper;*/
 
     @Autowired
     DeanService deanService;
 
     Logger logger = LoggerFactory.getLogger(RegistrationController.class);
 
-
-    //should hash password?
     @RequestMapping(value = "/api/dean/register",method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<Dean> registerRequest(@RequestBody @Valid RegistrationForm registrationForm) {
+    public ResponseEntity<Dean> registerRequest(@Valid @RequestBody RegistrationForm registrationForm) {
         try {
             Dean dean = deanService.saveDeanThroughForm(registrationForm);
             return ResponseEntity.ok(dean);
@@ -48,16 +44,4 @@ public class RegistrationController {
     public ResponseEntity<Boolean> checkExistByEmail(@PathVariable("email") String email){
         return ResponseEntity.ok(deanService.checkExistsByEmail(email));
     }
-
-
-
-    /*private Dean convertToEntity(RegistrationForm registrationForm) throws ParseException {
-        Dean dean = modelMapper.map(registrationForm,Dean.class);
-        return dean;
-    }*/
-
-    /*private RegistrationForm convertToDto(Dean dean) throws ParseException{
-        RegistrationForm form = modelMapper.map(dean, RegistrationForm.class);
-        return form;
-    }*/
 }

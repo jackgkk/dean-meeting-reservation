@@ -1,6 +1,6 @@
-package com.iww.deanmeetingreservations.services;
+package com.iww.deanmeetingreservations.service;
 
-import com.iww.deanmeetingreservations.DTO.RegistrationForm;
+import com.iww.deanmeetingreservations.dto.RegistrationForm;
 import com.iww.deanmeetingreservations.exceptions.ResourceAlreadyExistsError;
 import com.iww.deanmeetingreservations.model.Dean;
 import com.iww.deanmeetingreservations.model.DeanDepartment;
@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DeanServiceImpl implements DeanService {
+public class DeanServiceImpl implements com.iww.deanmeetingreservations.service.DeanService {
 
     @Autowired
     DeanRepository deanRepository;
@@ -23,16 +23,6 @@ public class DeanServiceImpl implements DeanService {
     @Autowired
     DepartmentRepository departmentRepository;
 
-    //check if exists first
-    /*@Override
-    public Dean saveDean(Dean dean) {
-        Dean newDean = deanRepository.save(dean);
-        deanRepository.flush();
-        return deanRepository.findById(newDean.getDean_id()).orElse(null);
-    }*/
-
-    //Slow, could lead to database discrepancies. Checks should be made on database side.
-    //Multiple insertions should be made in one transaction?
     @Override
     public Dean saveDeanThroughForm(RegistrationForm form) throws ResourceAlreadyExistsError {
         if(deanRepository.existsByUsernameEquals(form.getUsername()))
@@ -42,22 +32,16 @@ public class DeanServiceImpl implements DeanService {
         Dean newDean = new Dean(form.getUsername(), form.getPassword(), form.getName(), form.getSurname(),form.getEmail());
         Department department = departmentRepository.getFirstByDepartmentNameEquals(form.getDepartment()).orElse(null);
         if(department == null){
-            department = new Department(form.getDepartment(),"");
-            departmentRepository.save(department);
-            departmentRepository.flush();
-            department = departmentRepository.getFirstByDepartmentNameEquals(form.getDepartment()).get();
+            department = new Department(form.getDepartment());
+            department = departmentRepository.save(department);
         }
         deanRepository.save(newDean);
-        deanRepository.flush();
-        newDean = deanRepository.getFirstByUsernameEquals(form.getUsername()).get();
         DeanDepartment deanDepartment = new DeanDepartment(newDean,department);
         newDean.addDean_department(deanDepartment);
         department.addDean_department(deanDepartment);
         deanDepartmentRepository.save(deanDepartment);
         departmentRepository.save(department);
-        deanRepository.save(newDean);
-        deanRepository.flush();
-        newDean = deanRepository.getFirstByUsernameEquals(form.getUsername()).get();
+        newDean = deanRepository.save(newDean);
         return newDean;
     }
 
@@ -65,4 +49,5 @@ public class DeanServiceImpl implements DeanService {
     public Boolean checkExistsByEmail(String email) {
         return deanRepository.existsByEmailEquals(email);
     }
+
 }
