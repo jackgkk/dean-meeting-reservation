@@ -2,15 +2,18 @@ package com.iww.deanmeetingreservations.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "DEANS")
 public class Dean {
-
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -19,10 +22,6 @@ public class Dean {
     )
     @Column(name = "DEAN_ID", length = 36)
     private String deanId;
-
-    @Basic
-    @Column(name = "USERNAME", unique = true, nullable = false)
-    private String username;
 
     @Basic
     @Column(name = "PASSWORD", nullable = false)
@@ -50,9 +49,8 @@ public class Dean {
     public Dean() {
     }
 
-    public Dean(String deanId, String username, String password, String firstname, String lastname, String email) {
+    public Dean(String deanId, String password, String firstname, String lastname, String email) {
         this.deanId = deanId;
-        this.username = username;
         this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;
@@ -65,14 +63,6 @@ public class Dean {
 
     public void setDeanId(String deanId) {
         this.deanId = deanId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getFirstname() {
@@ -125,5 +115,9 @@ public class Dean {
 
     public void addDeanDepartment(DeanDepartment deanDepartment) {
         this.deanDepartments.add(deanDepartment);
+    }
+
+    public Collection<? extends GrantedAuthority> getRole() {
+        return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
     }
 }
