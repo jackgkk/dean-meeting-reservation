@@ -13,6 +13,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import com.iww.deanmeetingreservations.dto.RegistrationForm;
+import com.iww.deanmeetingreservations.exceptions.ResourceAlreadyExistsError;
+import com.iww.deanmeetingreservations.model.DeanDepartment;
+import com.iww.deanmeetingreservations.model.Department;
+import com.iww.deanmeetingreservations.repository.DeanDepartmentRepository;
+import com.iww.deanmeetingreservations.repository.DepartmentRepository;
 
 @Service
 public class DeanServiceImpl implements DeanService {
@@ -25,6 +31,12 @@ public class DeanServiceImpl implements DeanService {
 
     @Autowired
     private DeanRepository deanRepository;
+
+    @Autowired
+    DeanDepartmentRepository deanDepartmentRepository;
+
+    @Autowired
+    DepartmentRepository departmentRepository;
 
     @Override
     public UserDetails loadUserByUsername(String email) {
@@ -64,5 +76,32 @@ public class DeanServiceImpl implements DeanService {
         final Dean dean = this.loadUserByEmail(deanLoginDto.getEmail());
         final String token = jwtTokenUtil.generateToken(dean);
         return new TokenDto(token, dean.getEmail());
+    }
+
+    @Override
+    public Dean saveDeanThroughForm(RegistrationForm form) throws ResourceAlreadyExistsError {
+        if(deanRepository.existsByUsernameEquals(form.getUsername()))
+            throw new ResourceAlreadyExistsError("User with " + form.getUsername() +" username already exists");
+        if(deanRepository.existsByEmailEquals(form.getEmail()))
+            throw new ResourceAlreadyExistsError("User with " + form.getEmail() + " email already exists");
+        Dean newDean = new Dean(form.getUsername(), form.getPassword(), form.getName(), form.getSurname(),form.getEmail());
+        Department department = departmentRepository.getFirstByDepartmentNameEquals(form.getDepartment()).orElse(null);
+        if(department == null){
+            department = new Department(form.getDepartment());
+            department = departmentRepository.save(department);
+        }
+        deanRepository.save(newDean);
+        DeanDepartment deanDepartment = new DeanDepartment(newDean,department);
+        newDean.addDeanDepartment(deanDepartment);
+        department.addDeanDepartment(deanDepartment);
+        deanDepartmentRepository.save(deanDepartment);
+        departmentRepository.save(department);
+        newDean = deanRepository.save(newDean);
+        return newDean;
+    }
+
+    @Override
+    public Boolean checkExistsByEmail(String email) {
+        return deanRepository.existsByEmailEquals(email);
     }
 }
