@@ -1,21 +1,23 @@
-package com.iww.deanmeetingreservations.DTO;
+package com.iww.deanmeetingreservations.dto;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 public class RegistrationForm {
 
-    @NotBlank
+    @Size(message = "username must be between 4 and 32 character long",min = 4,max = 32)
     String username;
     @NotBlank
     String name;
     @NotBlank
     String surname;
-    @NotBlank
+    @Email(message = "email must be valid")
     String email;
-    @NotBlank
+    @Size(message = "password must be between 4 and 32 character long",min = 4,max = 32)
     String password;
     @NotBlank
     String department;

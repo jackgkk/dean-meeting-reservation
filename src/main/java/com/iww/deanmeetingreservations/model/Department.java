@@ -5,7 +5,6 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
 @Table(name = "DEPARTMENTS")
@@ -18,64 +17,49 @@ public class Department {
             strategy = "org.hibernate.id.UUIDGenerator"
     )
     @Column(name = "DEPARTMENT_ID")
-    private UUID departmentId;
+    private String departmentId;
 
     @Basic
     @Column(name = "NAME", nullable = false)
     private String departmentName;
 
-    @Basic
-    @Column(name = "ADDRESS", nullable = false)
-    private String address;
-
     @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<DeanDepartment> dean_departments = new ArrayList<DeanDepartment>();
+    private List<DeanDepartment> deanDepartments = new ArrayList<>();
 
     public Department() {
     }
 
-    public Department(UUID department_id, String department_name, String address) {
-        this.departmentId = department_id;
-        this.departmentName = department_name;
-        this.address = address;
+    public Department(String departmentName) {
+        this.departmentName = departmentName;
     }
 
-    public Department(String department_name, String address) {
-        this.departmentName = department_name;
-        this.address = address;
-    }
-
-    public UUID getDepartmentId() {
+    public String getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(UUID department_id) {
-        this.departmentId = department_id;
+    public void setDepartmentId(String departmentId) {
+        this.departmentId = departmentId;
     }
 
     public String getDepartmentName() {
         return departmentName;
     }
 
-    public void setDepartmentName(String department_name) {
-        this.departmentName = department_name;
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 
-    public String getAddress() {
-        return address;
+    public List<DeanDepartment> getDeanDepartments() {
+        return deanDepartments;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setDeanDepartments(List<DeanDepartment> deanDepartments) {
+        this.deanDepartments = deanDepartments;
     }
 
-    public List<DeanDepartment> getDean_departments() {
-        return dean_departments;
+    public void addDeanDepartment(DeanDepartment deanDepartment) {
+        this.deanDepartments.add(deanDepartment);
     }
 
-    public void setDean_departments(List<DeanDepartment> dean_departments) {
-        this.dean_departments = dean_departments;
-    }
-
-    public void addDean_department(DeanDepartment deanDepartment){this.dean_departments.add(deanDepartment);}
+    public void addDean_department(DeanDepartment deanDepartment){this.deanDepartments.add(deanDepartment);}
 }

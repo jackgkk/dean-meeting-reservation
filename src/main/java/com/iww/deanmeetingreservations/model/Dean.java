@@ -7,7 +7,6 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Entity
@@ -20,8 +19,8 @@ public class Dean {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "DEAN_ID")
-    private UUID deanId;
+    @Column(name = "DEAN_ID", length = 36)
+    private String deanId;
 
     @Basic
     @Column(name = "USERNAME", unique = true, nullable = false)
@@ -45,13 +44,13 @@ public class Dean {
     private String email;
 
     @OneToMany(mappedBy = "dean", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<DeanDepartment> dean_departments = new ArrayList<DeanDepartment>();
+    private List<DeanDepartment> deanDepartments = new ArrayList<>();
 
     public Dean() {
     }
 
-    public Dean(UUID dean_id, String username, String password, String firstname, String lastname, String email) {
-        this.deanId = dean_id;
+    public Dean(String deanId, String username, String password, String firstname, String lastname, String email) {
+        this.deanId = deanId;
         this.username = username;
         this.password = password;
         this.firstname = firstname;
@@ -67,12 +66,12 @@ public class Dean {
         this.email = email;
     }
 
-    public UUID getDeanId() {
+    public String getDeanId() {
         return deanId;
     }
 
-    public void setDeanId(UUID dean_id) {
-        this.deanId = dean_id;
+    public void setDeanId(String deanId) {
+        this.deanId = deanId;
     }
 
     public String getUsername() {
@@ -81,10 +80,6 @@ public class Dean {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getFirstname() {
@@ -103,6 +98,14 @@ public class Dean {
         this.lastname = lastname;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
     public String getEmail() {
         return email;
     }
@@ -112,18 +115,22 @@ public class Dean {
     }
 
     @JsonIgnore
-    public List<DeanDepartment> getDean_departments() {
-        return dean_departments;
+    public List<DeanDepartment> getDeanDepartments() {
+        return deanDepartments;
     }
 
-    public void setDean_departments(List<DeanDepartment> dean_departments) {
-        this.dean_departments = dean_departments;
+    public void setDeanDepartments(List<DeanDepartment> deanDepartments) {
+        this.deanDepartments = deanDepartments;
     }
 
-    public void addDean_department(DeanDepartment deanDepartment){this.dean_departments.add(deanDepartment);}
+    public void addDeanDepartment(DeanDepartment deanDepartment) {
+        this.deanDepartments.add(deanDepartment);
+    }
+
+    public void addDean_department(DeanDepartment deanDepartment){this.deanDepartments.add(deanDepartment);}
 
     @JsonGetter("DepartmentNames")
     public List<String> getDepartmentsNames(){
-        return dean_departments.stream().map(DeanDepartment :: getDepartmentName).collect(Collectors.toList());
+        return deanDepartments.stream().map(DeanDepartment :: getDepartmentName).collect(Collectors.toList());
     }
 }
