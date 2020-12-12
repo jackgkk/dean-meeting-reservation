@@ -31,6 +31,12 @@ const theme = createMuiTheme({
       fontWeight: 'normal',
       fontSize: '15px'
     },
+    subtitle1: {
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      fontSize: '12px',
+      lineHeight: '15px'
+    },
     h3: {
       fontFamily: 'Montserrat',
       fontStyle: 'normal',

@@ -1,4 +1,4 @@
-export { Duty, Dean, Department, currentDate, Meeting, DeanUnregistered }
+export { Duty, Dean, Department, currentDate, Meeting, DeanUnregistered, errorStack }
 
 class Department {
   constructor (name: string, id: string) {
@@ -84,8 +84,20 @@ class Meeting {
   }
 }
 
+class errorStack {
+  constructor (email: string, password: string, passwordCheck: string) {
+    this.email = email
+    this.password = password
+    this.passwordCheck = passwordCheck
+  }
+
+  email: string
+  password: string
+  passwordCheck: string
+}
+
 class DeanUnregistered {
-  constructor (name: string, surname: string, email: string, password: string, passwordCheck: string, department: Department, errorStack: Object) {
+  constructor (name: string, surname: string, email: string, password: string, passwordCheck: string, department: Department, errorStack: errorStack) {
     this.name = name
     this.surname = surname
     this.email = email
@@ -103,5 +115,5 @@ class DeanUnregistered {
   email: string;
   password: string
   passwordCheck: string
-  errorStack: Object
+  errorStack: errorStack
 }
