@@ -46,4 +46,3 @@ yarn-error.log*
 /.env
 /frontend/.env
 /sendgrid.env
-src/main/java/com/iww/deanmeetingreservations/security/SecurityConstants.java
