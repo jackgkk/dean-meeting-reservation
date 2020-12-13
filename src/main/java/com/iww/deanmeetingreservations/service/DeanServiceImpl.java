@@ -39,7 +39,8 @@ public class DeanServiceImpl implements DeanService {
     @Autowired
     DepartmentRepository departmentRepository;
 
-    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    @Autowired
+    BCryptPasswordEncoder encoder;
 
     @Override
     public UserDetails loadUserByUsername(String email) {
@@ -75,6 +76,7 @@ public class DeanServiceImpl implements DeanService {
                         deanLoginDto.getPassword()
                 )
         );
+        System.out.println("test");
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final Dean dean = this.loadUserByEmail(deanLoginDto.getEmail());
         final String token = jwtTokenUtil.generateToken(dean);
