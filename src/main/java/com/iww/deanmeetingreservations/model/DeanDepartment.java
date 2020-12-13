@@ -56,4 +56,6 @@ public class DeanDepartment {
     public void setDepartment(Department department) {
         this.department = department;
     }
+
+    public String getDepartmentName(){return this.department.getDepartmentName();}
 }

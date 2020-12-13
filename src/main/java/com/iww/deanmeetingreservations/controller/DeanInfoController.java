@@ -10,21 +10,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
 @RestController
 public class DeanInfoController {
 
-    private final Logger logger = LoggerFactory.getLogger(DeanMeetingReservationsApplication.class);
     @Autowired
     private DeanInfoServiceImpl deanInfoService;
 
     @RequestMapping(value = "/api/dean/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<DeanInfoDto> getDeanWithId(@PathVariable("id") String id) throws ResourceNotFoundException {
+    public ResponseEntity<DeanInfoDto> getDeanWithId(@PathVariable("id") String id, @RequestHeader ("Authorization") String token) throws ResourceNotFoundException {
         try {
-            DeanInfoDto deanInfoDto = deanInfoService.findUserById(id);
+            DeanInfoDto deanInfoDto = deanInfoService.findUserById(id, token);
             return ResponseEntity.ok(deanInfoDto);
         } catch (ResourceNotFoundException e) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -33,14 +33,27 @@ public class DeanInfoController {
 
     @RequestMapping(value = "/api/dean/update-info/{id}", method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<String> updateDeanInfo(@PathVariable String id, @RequestBody DeanDto deanDto) throws ResourceNotFoundException {
+    public ResponseEntity<String> updateDeanInfo(@PathVariable String id, @RequestBody DeanDto deanDto,  @RequestHeader ("Authorization") String token) throws ResourceNotFoundException {
         try {
-            deanInfoService.updateProfile(deanDto, id);
+            deanInfoService.updateProfile(deanDto, id, token);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (HttpClientErrorException.BadRequest badRequest) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @RequestMapping(value = "/api/dean/duty/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<String> deleteDeanDuty(@PathVariable String id,  @RequestHeader ("Authorization") String token) throws ResourceNotFoundException {
+        try {
+            deanInfoService.deleteByDutyId(id, token);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (BadCredentialsException badCredentialsException) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
     }
 }

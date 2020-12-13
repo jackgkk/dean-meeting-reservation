@@ -1,16 +1,21 @@
 package com.iww.deanmeetingreservations.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "DEANS")
 public class Dean {
-
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(
@@ -66,6 +71,13 @@ public class Dean {
     public void setDeanId(String deanId) {
         this.deanId = deanId;
     }
+    public Dean(String username, String password, String firstname, String lastname, String email) {
+        this.username = username;
+        this.password = password;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
+    }
 
     public String getUsername() {
         return username;
@@ -107,6 +119,7 @@ public class Dean {
         this.email = email;
     }
 
+    @JsonIgnore
     public List<DeanDepartment> getDeanDepartments() {
         return deanDepartments;
     }
@@ -126,4 +139,20 @@ public class Dean {
     public void addDeanDepartment(DeanDepartment deanDepartment) {
         this.deanDepartments.add(deanDepartment);
     }
+
+    public Collection<? extends GrantedAuthority> getRole() {
+        return Arrays.asList(new SimpleGrantedAuthority("ROLE_USER"));
+    }
+
+    @JsonGetter("DepartmentNames")
+    public List<String> getDepartmentsNames(){
+        return deanDepartments.stream().map(DeanDepartment :: getDepartmentName).collect(Collectors.toList());
+    }
+
+    public void addDuty(Duty duty)
+    {
+        this.duties.add(duty);
+        duty.setDean(this);
+    }
+
 }
