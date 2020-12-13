@@ -4,10 +4,7 @@ import com.iww.deanmeetingreservations.DeanMeetingReservationsApplication;
 import com.iww.deanmeetingreservations.dto.DeanDto;
 import com.iww.deanmeetingreservations.dto.DeanInfoDto;
 import com.iww.deanmeetingreservations.dto.MeetingReturnDto;
-import com.iww.deanmeetingreservations.model.Meeting;
-import com.iww.deanmeetingreservations.security.SecurityConstants;
 import com.iww.deanmeetingreservations.service.DeanInfoServiceImpl;
-import org.apache.tomcat.util.http.parser.Authorization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.HttpClientErrorException;
 
@@ -29,15 +27,16 @@ import static com.iww.deanmeetingreservations.security.SecurityConstants.HEADER_
 @RestController
 public class DeanInfoController {
 
-    private final Logger logger = LoggerFactory.getLogger(DeanMeetingReservationsApplication.class);
     @Autowired
     private DeanInfoServiceImpl deanInfoService;
 
+    Logger logger = LoggerFactory.getLogger(DeanMeetingReservationsApplication.class);
+
     @RequestMapping(value = "/api/dean/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<DeanInfoDto> getDeanWithId(@PathVariable("id") String id) throws ResourceNotFoundException {
+    public ResponseEntity<DeanInfoDto> getDeanWithId(@PathVariable("id") String id, @RequestHeader ("Authorization") String token) throws ResourceNotFoundException {
         try {
-            DeanInfoDto deanInfoDto = deanInfoService.findUserById(id);
+            DeanInfoDto deanInfoDto = deanInfoService.findUserById(id, token);
             return ResponseEntity.ok(deanInfoDto);
         } catch (ResourceNotFoundException e) {
             return new ResponseEntity(HttpStatus.NOT_FOUND);
@@ -46,9 +45,9 @@ public class DeanInfoController {
 
     @RequestMapping(value = "/api/dean/update-info/{id}", method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<String> updateDeanInfo(@PathVariable String id, @RequestBody DeanDto deanDto) throws ResourceNotFoundException {
+    public ResponseEntity<String> updateDeanInfo(@PathVariable String id, @RequestBody DeanDto deanDto,  @RequestHeader ("Authorization") String token) throws ResourceNotFoundException {
         try {
-            deanInfoService.updateProfile(deanDto, id);
+            deanInfoService.updateProfile(deanDto, id, token);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -66,17 +65,30 @@ public class DeanInfoController {
     }
 
     @RequestMapping(value = "/api/dean/calendar/cancel-meeting/{id}",method = RequestMethod.DELETE)
-    public ResponseEntity deleteMeeting(@PathVariable UUID id){
+    public ResponseEntity deleteMeeting(@PathVariable UUID id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        try{
-        deanInfoService.deleteMeeting(id,authentication.getName());
-        }catch (ResourceNotFoundException e){
+        try {
+            deanInfoService.deleteMeeting(id, authentication.getName());
+        } catch (ResourceNotFoundException e) {
             logger.info(e.getClass().getName() + " " + e.getMessage());
-            return new ResponseEntity(e.getMessage(),HttpStatus.NOT_FOUND);
-        }catch (AccessDeniedException e){
+            return new ResponseEntity(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (AccessDeniedException e) {
             logger.info(e.getClass().getName() + " " + e.getMessage());
-            return new ResponseEntity(e.getMessage(),HttpStatus.FORBIDDEN);
+            return new ResponseEntity(e.getMessage(), HttpStatus.FORBIDDEN);
         }
         return new ResponseEntity(HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/api/dean/duty/{id}", method = RequestMethod.DELETE)
+    @ResponseBody
+    public ResponseEntity<String> deleteDeanDuty(@PathVariable String id,  @RequestHeader ("Authorization") String token) throws ResourceNotFoundException {
+        try {
+            deanInfoService.deleteByDutyId(id, token);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (BadCredentialsException badCredentialsException) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
     }
 }

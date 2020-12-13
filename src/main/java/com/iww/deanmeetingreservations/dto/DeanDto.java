@@ -1,5 +1,9 @@
 package com.iww.deanmeetingreservations.dto;
 
+import com.iww.deanmeetingreservations.model.Duty;
+
+import java.util.List;
+
 public class DeanDto {
 
     private String firstname;
@@ -11,6 +15,8 @@ public class DeanDto {
     private String password;
 
     private String department;
+
+    private List<Duty> duties;
 
     public DeanDto(String firstname, String lastname, String email, String password, String department) {
         this.firstname = firstname;
@@ -58,5 +64,13 @@ public class DeanDto {
 
     public void setDepartment(String department) {
         this.department = department;
+    }
+
+    public List<Duty> getDuties() {
+        return duties;
+    }
+
+    public void setDuties(List<Duty> duties) {
+        this.duties = duties;
     }
 }

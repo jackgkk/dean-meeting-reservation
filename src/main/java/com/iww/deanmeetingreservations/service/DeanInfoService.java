@@ -10,8 +10,9 @@ import java.util.List;
 import java.util.UUID;
 
 public interface DeanInfoService {
-    void updateProfile(DeanDto deanDto, String id);
     List<MeetingReturnDto> getConfirmedMeetings(String email, boolean accepted);
-    DeanInfoDto findUserById(String id);
     void deleteMeeting(UUID meetingId,String email) throws ResourceNotFoundException, AccessDeniedException;
+    void updateProfile(DeanDto deanDto, String id, String token);
+    DeanInfoDto findUserById(String id, String token);
+    void deleteByDutyId(String dutyId, String email);
 }

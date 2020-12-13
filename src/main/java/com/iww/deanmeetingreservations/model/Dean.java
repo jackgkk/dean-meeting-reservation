@@ -148,4 +148,11 @@ public class Dean {
     public List<String> getDepartmentsNames(){
         return deanDepartments.stream().map(DeanDepartment :: getDepartmentName).collect(Collectors.toList());
     }
+
+    public void addDuty(Duty duty)
+    {
+        this.duties.add(duty);
+        duty.setDean(this);
+    }
+
 }
