@@ -37,8 +37,27 @@ export const useStyles = makeStyles({
     '&:before, &.MuiInput-underline:hover:not(.Mui-disabled):before, &:after': {
       border: 'none'
     },
+    '& div:focus': {
+      background: 'transparent'
+    },
     '&#error': {
       border: '1px solid #E5231B'
+    }
+  },
+  errorTemp: {
+    width: '32rem',
+    height: '2.75rem',
+    background: '#F7F7F7',
+    border: '1px solid #E5231B',
+    boxSizing: 'border-box',
+    borderRadius: '5px',
+    fontSize: '17px',
+    paddingLeft: '1rem',
+    '&:before, &.MuiInput-underline:hover:not(.Mui-disabled):before, &:after': {
+      border: 'none'
+    },
+    '& div:focus': {
+      background: 'transparent'
     }
   },
   label: {

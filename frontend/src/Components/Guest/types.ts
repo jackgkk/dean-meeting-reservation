@@ -1,4 +1,4 @@
-export { Duty, Dean, Department, currentDate, Meeting, DeanUnregistered, errorStack }
+export { Duty, Dean, Department, currentDate, Meeting, DeanUnregistered, DeanVerifiedReg }
 
 class Department {
   constructor (name: string, id: string) {
@@ -116,4 +116,24 @@ class DeanUnregistered {
   password: string
   passwordCheck: string
   errorStack: errorStack
+}
+
+class DeanVerifiedReg {
+  constructor (username: string, name: string, surname: string, email: string, password: string, department: Department) {
+    this.name = name
+    this.surname = surname
+    this.email = email
+    this.password = password
+    this.department = department
+    this.username = username
+
+    Object.freeze(this)
+  }
+
+  username: string
+  department: Department
+  name: string;
+  surname: string;
+  email: string;
+  password: string
 }
