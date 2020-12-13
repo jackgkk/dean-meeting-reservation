@@ -14,12 +14,16 @@ import com.iww.deanmeetingreservations.repository.DutyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
 public class DeanInfoServiceImpl implements DeanInfoService {
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
     private DeanRepository deanRepository;
@@ -56,7 +60,7 @@ public class DeanInfoServiceImpl implements DeanInfoService {
                     deanModel.setEmail(deanDto.getEmail());
                 }
                 if (deanDto.getPassword() != null) {
-                    deanModel.setPassword(deanDto.getPassword());
+                    deanModel.setPassword(bCryptPasswordEncoder.encode(deanDto.getPassword()));
                 }
                 if (deanDto.getDepartment() != null) {
                     Department department = departmentRepository.getFirstByDepartmentNameEquals(deanDto.getDepartment()).orElse(null);
