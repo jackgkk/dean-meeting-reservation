@@ -1,5 +1,6 @@
 package com.iww.deanmeetingreservations.controller;
 
+import com.iww.deanmeetingreservations.config.JwtTokenUtil;
 import com.iww.deanmeetingreservations.dto.RegistrationForm;
 import com.iww.deanmeetingreservations.exceptions.ResourceAlreadyExistsError;
 import com.iww.deanmeetingreservations.model.Dean;

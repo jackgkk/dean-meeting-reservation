@@ -2,19 +2,26 @@ package com.iww.deanmeetingreservations.service;
 
 import com.iww.deanmeetingreservations.dto.DeanDto;
 import com.iww.deanmeetingreservations.dto.DeanInfoDto;
+import com.iww.deanmeetingreservations.dto.MeetingReturnDto;
 import com.iww.deanmeetingreservations.model.Dean;
 import com.iww.deanmeetingreservations.model.DeanDepartment;
 import com.iww.deanmeetingreservations.model.Department;
+import com.iww.deanmeetingreservations.model.Meeting;
 import com.iww.deanmeetingreservations.repository.DeanDepartmentRepository;
 import com.iww.deanmeetingreservations.repository.DeanRepository;
 import com.iww.deanmeetingreservations.repository.DepartmentRepository;
+import com.iww.deanmeetingreservations.repository.MeetingRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class DeanInfoServiceImpl implements DeanInfoService {
@@ -30,6 +37,9 @@ public class DeanInfoServiceImpl implements DeanInfoService {
 
     @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    MeetingRepository meetingRepository;
 
     @Override
     public void updateProfile(DeanDto deanDto, String id) {
@@ -81,5 +91,22 @@ public class DeanInfoServiceImpl implements DeanInfoService {
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
+    }
+
+    @Override
+    public List<MeetingReturnDto> getConfirmedMeetings(String email, boolean accepted) {
+        return meetingRepository.getAllByDeanEmailEqualsAndConfirmedEquals(email,accepted).stream().
+                map(Meeting::getReturnDto).collect(Collectors.toUnmodifiableList());
+    }
+
+    @Override
+    public void deleteMeeting(UUID meetingId, String email) throws ResourceNotFoundException, AccessDeniedException {
+        Optional<Meeting> meeting = meetingRepository.findById(meetingId);
+        if(!meeting.isPresent())
+            throw new ResourceNotFoundException("No meeting with given id was found");
+        if(!meeting.get().getDean().getEmail().equals(email))
+            throw new org.springframework.security.access.AccessDeniedException("Stop right there criminal scum!");
+        meeting = null;
+        meetingRepository.deleteById(meetingId);
     }
 }

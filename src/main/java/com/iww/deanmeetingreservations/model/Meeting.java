@@ -1,12 +1,11 @@
 package com.iww.deanmeetingreservations.model;
 
-import com.iww.deanmeetingreservations.repository.DeanRepository;
+import com.iww.deanmeetingreservations.dto.MeetingReturnDto;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Entity
@@ -45,7 +44,7 @@ public class Meeting {
 
     private String guestVerificationToken;
 
-    private boolean guestAndMeetingConfirmed;
+    private boolean confirmed;
 
     public Meeting() {}
 
@@ -69,7 +68,7 @@ public class Meeting {
         this.duration = duration;
         this.isOnline = isOnline;
         this.guestVerificationToken = guestVerificationToken;
-        this.guestAndMeetingConfirmed = guestAndMeetingConfirmed;
+        this.confirmed = guestAndMeetingConfirmed;
     }
 
     public UUID getId() {
@@ -128,8 +127,8 @@ public class Meeting {
         isOnline = online;
     }
 
-    public void setGuestAndMeetingConfirmed(boolean guestAndMeetingConfirmed) {
-        this.guestAndMeetingConfirmed = guestAndMeetingConfirmed;
+    public void setConfirmed(boolean guestAndMeetingConfirmed) {
+        this.confirmed = guestAndMeetingConfirmed;
     }
 
     public boolean isAcceptedByDean() {
@@ -140,7 +139,13 @@ public class Meeting {
         return guestVerificationToken;
     }
 
-    public boolean isGuestAndMeetingConfirmed() {
-        return guestAndMeetingConfirmed;
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public MeetingReturnDto getReturnDto(){
+        return new MeetingReturnDto(id.toString(),description,
+                beginsAt.format(DateTimeFormatter.ofPattern("yyyy/MM/dd/kk:mm")),duration
+                ,guest.getName(),guest.getSurname(),guest.getEmail(),guest.getStatus(),isOnline);
     }
 }
