@@ -27,10 +27,6 @@ public class Dean {
     private UUID deanId;
 
     @Basic
-    @Column(name = "USERNAME", unique = true, nullable = false)
-    private String username;
-
-    @Basic
     @Column(name = "PASSWORD", nullable = false)
     @JsonIgnore
     private String password;
@@ -57,7 +53,6 @@ public class Dean {
     }
 
     public Dean(String username, String password, String firstname, String lastname, String email) {
-        this.username = username;
         this.password = password;
         this.firstname = firstname;
         this.lastname = lastname;

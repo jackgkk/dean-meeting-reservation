@@ -9,8 +9,6 @@ import javax.validation.constraints.Size;
 
 public class RegistrationForm {
 
-    @Size(message = "username must be between 4 and 32 character long",min = 4,max = 32)
-    String username;
     @NotBlank
     String name;
     @NotBlank
@@ -25,8 +23,7 @@ public class RegistrationForm {
     public RegistrationForm() {
     }
 
-    public RegistrationForm(@NotBlank String username, @NotBlank String name, @NotBlank String surname, @NotBlank String email, @NotBlank String password, @NotBlank String department) {
-        this.username = username;
+    public RegistrationForm(@NotBlank String name, @NotBlank String surname, @NotBlank String email, @NotBlank String password, @NotBlank String department) {
         this.name = name;
         this.surname = surname;
         this.email = email;
@@ -76,18 +73,9 @@ public class RegistrationForm {
         this.department = department;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     @Override
     public String toString() {
         return "RegistrationForm{" +
-                "username='" + username + '\'' +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", email='" + email + '\'' +
