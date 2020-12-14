@@ -37,6 +37,9 @@ export default function Navigation () {
         <Route path='/confirm-meeting/:token'>
           <MeetingConfirmation />
         </Route>
+        <Route path="/find-duty">
+          <FindDuty />
+        </Route>
       </Switch>
     </Router>
 

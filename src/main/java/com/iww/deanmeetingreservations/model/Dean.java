@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Entity
@@ -22,8 +23,8 @@ public class Dean {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "DEAN_ID", length = 36)
-    private String deanId;
+    @Column(name = "DEAN_ID", columnDefinition = "BINARY(16)")
+    private UUID deanId;
 
     @Basic
     @Column(name = "USERNAME", unique = true, nullable = false)
@@ -55,22 +56,6 @@ public class Dean {
     public Dean() {
     }
 
-    public Dean(String deanId, String username, String password, String firstname, String lastname, String email) {
-        this.deanId = deanId;
-        this.username = username;
-        this.password = password;
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.email = email;
-    }
-
-    public String getDeanId() {
-        return deanId;
-    }
-
-    public void setDeanId(String deanId) {
-        this.deanId = deanId;
-    }
     public Dean(String username, String password, String firstname, String lastname, String email) {
         this.username = username;
         this.password = password;
@@ -79,12 +64,19 @@ public class Dean {
         this.email = email;
     }
 
-    public String getUsername() {
-        return username;
+    public Dean(String password, String firstname, String lastname, String email) {
+        this.password = password;
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.email = email;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public UUID getDeanId() {
+        return deanId;
+    }
+
+    public void setDeanId(UUID deanId) {
+        this.deanId = deanId;
     }
 
     public String getFirstname() {

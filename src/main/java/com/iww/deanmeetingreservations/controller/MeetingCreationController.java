@@ -38,7 +38,7 @@ public class MeetingCreationController {
 
     @GetMapping("/hello")
     public String sayHello() {
-        Optional<Dean> dean = deanRepository.findById(UUID.fromString("b49b68b6-c7ec-4a50-8fea-00aa66d00941").toString());
+        Optional<Dean> dean = deanRepository.findById(UUID.fromString("b49b68b6-c7ec-4a50-8fea-00aa66d00941"));
 
         if (dean.isPresent()) {
             System.out.println(dean.get());
@@ -67,15 +67,6 @@ public class MeetingCreationController {
 
         try {
             URL refererUrl = new URL(referer);
-
-            System.out.println(refererUrl.getProtocol() + "://" + refererUrl.getAuthority());
-        } catch (MalformedURLException e) {
-            System.out.println(e.getMessage());
-        }
-
-        try {
-            URL refererUrl = new URL(referer);
-
             String hostUrl  = refererUrl.getProtocol() + "://" + refererUrl.getAuthority();
 
              meetingPropositionService.addMeeting(meetingProposition, hostUrl);
@@ -84,31 +75,13 @@ public class MeetingCreationController {
         }
     }
 
-    @GetMapping("/meeting/confirm-meeting/{confirmationToken}")
-    ResponseEntity<String> confirmMeeting(@PathVariable String confirmationToken) {
+    @GetMapping("/meeting/confirm-meeting/{id}")
+    ResponseEntity<String> confirmMeeting(@PathVariable String id) {
         try {
-            meetingPropositionService.confirmMeeting(confirmationToken);
+            meetingPropositionService.confirmMeeting(id);
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-    }
-}
-
-class MeetingForm {
-    Guest guest;
-    UUID deanId;
-    String description;
-    String beginsAt;
-    int duration;
-    boolean isOnline;
-
-    public MeetingForm(Guest guest, UUID deanId, String description, String beginsAt, int duration, boolean isOnline) {
-        this.guest = guest;
-        this.deanId = deanId;
-        this.description = description;
-        this.beginsAt = beginsAt;
-        this.duration = duration;
-        this.isOnline = isOnline;
     }
 }

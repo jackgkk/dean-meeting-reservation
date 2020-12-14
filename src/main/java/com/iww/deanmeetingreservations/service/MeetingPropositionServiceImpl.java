@@ -38,49 +38,38 @@ public class MeetingPropositionServiceImpl implements MeetingPropositionService 
 
     @Override
     public Meeting addMeeting(MeetingPropositionDto meetingPropositionDto, String hostUrl) throws Exception {
-        String deanId = meetingPropositionDto.getDeanId().toString();
-
+        UUID deanId = meetingPropositionDto.getDeanId();
         Optional<Dean> dean = deanRepository.findById(deanId);
-
-        String guestVerificationToken = UUID.randomUUID().toString().replace("-", "");
-
-        String confirmationLink = hostUrl.concat("/confirm-meeting/").concat(guestVerificationToken);
-
-
-        System.out.println(confirmationLink);
-
-
         GuestDto guestDto = meetingPropositionDto.getGuest();
-
         String guestEmail = guestDto.getEmail();
-
-        sendConfirmationEmail(confirmationLink, guestEmail);
 
         if (dean.isEmpty())
             throw new Exception("Dean with provided ID do not exists");
 
         Guest guest;
+        UUID guestId;
 
         Optional<Guest> optionalGuest = guestRepository.findByEmail(guestEmail);
 
         if (optionalGuest.isPresent()) {
             guest = optionalGuest.get();
+            guestId = guest.getId();
         } else {
             String name = guestDto.getName();
             String surname = guestDto.getSurname();
             String status = guestDto.getStatus();
-            UUID id = UUID.randomUUID();
+            guestId = UUID.randomUUID();
 
-            guest = new Guest(id, name, surname, guestEmail, status);
+            guest = new Guest(guestId, name, surname, guestEmail, status);
 
             guestRepository.save(guest);
         }
 
+        UUID meetingId = UUID.randomUUID();
         String meetingDescription = meetingPropositionDto.getDescription();
         String meetingBeginsAtHour = meetingPropositionDto.getBeginsAt();
         int meetingDuration = meetingPropositionDto.getDuration();
         boolean isMeetingOnline = meetingPropositionDto.isOnline();
-
 
         int meetingBeginsAtHours = Integer.parseInt(meetingBeginsAtHour.substring(0, meetingBeginsAtHour.indexOf(':')));
         int meetingBeginsAtMinutes = Integer.parseInt(meetingBeginsAtHour.substring(meetingBeginsAtHour.indexOf(':') + 1));
@@ -88,12 +77,14 @@ public class MeetingPropositionServiceImpl implements MeetingPropositionService 
         LocalDateTime meetingBeginsAt = LocalDate.now().atTime(meetingBeginsAtHours, meetingBeginsAtMinutes);
 
         Meeting meeting = new Meeting(
-                UUID.randomUUID(), guest, dean.get(),
+                meetingId, guest, dean.get(),
                 meetingDescription, meetingBeginsAt,
-                meetingDuration, isMeetingOnline,
-                guestVerificationToken);
+                meetingDuration, isMeetingOnline);
 
         meetingRepository.save(meeting);
+
+        String confirmationLink = hostUrl.concat("/confirm-meeting/").concat(meetingId.toString());
+        sendConfirmationEmail(confirmationLink, guestEmail);
 
         return meeting;
     }
@@ -108,7 +99,7 @@ public class MeetingPropositionServiceImpl implements MeetingPropositionService 
 
         mail.personalization.get(0).addDynamicTemplateData("confirmationLink", messageContent);
 
-        mail.setTemplateId(System.getenv("TEMPLATE_ID"));
+        mail.setTemplateId(System.getenv("GUEST_CONFIRM_TEMPLATE_ID"));
 
         System.out.println("SendGrid API: " + System.getenv("SENDGRID_API_KEY"));
 
@@ -125,15 +116,18 @@ public class MeetingPropositionServiceImpl implements MeetingPropositionService 
     }
 
     @Override
-    public void confirmMeeting(String confirmationToken) throws Exception {
+    public void confirmMeeting(String id) throws Exception {
         meetingRepository.flush();
 
-        Optional<Meeting> optionalMeeting = meetingRepository.findByGuestVerificationToken(confirmationToken);
+        Optional<Meeting> optionalMeeting = meetingRepository.findById(UUID.fromString(id));
 
         if (optionalMeeting.isPresent()) {
             Meeting meeting = optionalMeeting.get();
 
-            meeting.setConfirmed(true);
+            if (meeting.isGuestAndMeetingConfirmed())
+                throw new Exception("Meeting already confirmed");
+
+            meeting.setGuestAndMeetingConfirmed(true);
 
             meetingRepository.save(meeting);
         } else {
