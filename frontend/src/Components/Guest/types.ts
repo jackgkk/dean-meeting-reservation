@@ -56,11 +56,22 @@ class currentDate {
   date: Date
 }
 
-class Meeting {
+class Guest {
   id: string
   email: string
   name: string
   surname: string
+
+  constructor (id: string, email: string, name: string, surname: string) {
+    this.id = id
+    this.name = name
+    this.surname = surname
+    this.email = email
+  }
+}
+
+class Meeting {
+  guest: Guest
   goal: string
   date: string
   pickedTimeWindow: Date
@@ -68,17 +79,14 @@ class Meeting {
   isOnline: Boolean
   isAccepted: Boolean
 
-  constructor (id: string, name: string, surname: string, email: string, goal: string, pickedTimeWindow: Date, deanId: string, isOnline: Boolean, isAccepted: Boolean = false) {
-    this.id = id
-    this.name = name
-    this.surname = surname
-    this.email = email
+  constructor (guest: Guest, id: string, name: string, surname: string, email: string, goal: string, pickedTimeWindow: Date, deanId: string, isOnline: Boolean, isAccepted: Boolean = false) {
     this.goal = goal
     this.pickedTimeWindow = pickedTimeWindow
     this.date = this.pickedTimeWindow.getDay().toString() + '.' + this.pickedTimeWindow.getMonth().toString() + '.' + this.pickedTimeWindow.getFullYear().toString()
     this.deanId = deanId
     this.isOnline = isOnline
     this.isAccepted = isAccepted
+    this.guest = guest
 
     Object.freeze(this)
   }
