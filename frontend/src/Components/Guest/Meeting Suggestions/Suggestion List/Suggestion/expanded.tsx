@@ -68,7 +68,7 @@ export default function Expanded ({
               </div>
               <div>
                 <Typography variant="h2">
-                  {meeting.name} {meeting.surname}
+                  {meeting.guest.name} {meeting.guest.surname}
                 </Typography>
               </div>
             </div>

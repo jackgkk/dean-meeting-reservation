@@ -50,7 +50,7 @@ export default function NonExpanded ({
           <div className={styling.accordionSummaryContent}>
             <div className={styling.attendantName}>
               <Typography variant="h2">
-                {meeting.name} {meeting.surname}
+                {meeting.guest.name} {meeting.guest.surname}
               </Typography>
             </div>
             <div className={styling.isOnlineDiv}>
