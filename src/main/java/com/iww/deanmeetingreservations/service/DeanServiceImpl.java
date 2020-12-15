@@ -39,7 +39,8 @@ public class DeanServiceImpl implements DeanService {
     @Autowired
     DepartmentRepository departmentRepository;
 
-    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    @Autowired
+    BCryptPasswordEncoder encoder;
 
     @Override
     public UserDetails loadUserByUsername(String email) {
@@ -75,6 +76,7 @@ public class DeanServiceImpl implements DeanService {
                         deanLoginDto.getPassword()
                 )
         );
+        System.out.println("test");
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final Dean dean = this.loadUserByEmail(deanLoginDto.getEmail());
         final String token = jwtTokenUtil.generateToken(dean);
@@ -83,11 +85,9 @@ public class DeanServiceImpl implements DeanService {
 
     @Override
     public Dean saveDeanThroughForm(RegistrationForm form) throws ResourceAlreadyExistsError {
-        if(deanRepository.existsByUsernameEquals(form.getUsername()))
-            throw new ResourceAlreadyExistsError("User with " + form.getUsername() +" username already exists");
         if(deanRepository.existsByEmailEquals(form.getEmail()))
             throw new ResourceAlreadyExistsError("User with " + form.getEmail() + " email already exists");
-        Dean newDean = new Dean(form.getUsername(), encoder.encode(form.getPassword()), form.getName(), form.getSurname(),form.getEmail());
+        Dean newDean = new Dean(encoder.encode(form.getPassword()), form.getName(), form.getSurname(),form.getEmail());
         Department department = departmentRepository.getFirstByDepartmentNameEquals(form.getDepartment()).orElse(null);
         if(department == null){
             department = new Department(form.getDepartment());

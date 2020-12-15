@@ -18,7 +18,6 @@ import com.sendgrid.helpers.mail.objects.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -134,7 +133,7 @@ public class MeetingPropositionServiceImpl implements MeetingPropositionService 
         if (optionalMeeting.isPresent()) {
             Meeting meeting = optionalMeeting.get();
 
-            meeting.setGuestAndMeetingConfirmed(true);
+            meeting.setConfirmed(true);
 
             meetingRepository.save(meeting);
         } else {
