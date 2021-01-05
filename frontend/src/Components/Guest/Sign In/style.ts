@@ -2,7 +2,8 @@ import { createStyles, makeStyles } from '@material-ui/core'
 
 export const useStyles = makeStyles({
   signUpContainer: {
-    width: '54rem',
+    width: '46rem',
+    height: '30rem',
     overflow: 'auto',
     background: '#FFFFFF',
     boxShadow: '0px 15px 64px rgba(0, 0, 0, 0.26)',
@@ -10,23 +11,15 @@ export const useStyles = makeStyles({
     boxSizing: 'border-box',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     '& div': {
-      width: '100%',
-      '& div': {
-        width: 'auto'
-      },
-      '& form': {
-        margin: '2rem 0'
-      }
+      alignItems: 'center'
     }
   },
   inputContainer: {
     padding: 0,
     width: '100%',
     display: 'flex',
-    justifyContent: 'space-between',
+    flexDirection: 'column',
     alignContent: 'center',
     margin: '1rem 0px'
   },
@@ -72,11 +65,8 @@ export const useStyles = makeStyles({
   },
   label: {
     maxWidth: '7.8rem',
-    alignSelf: 'center',
-    '&#password': {
-      alignSelf: 'baseline',
-      marginTop: '10px'
-    }
+    alignSelf: 'baseline'
+
   },
   button: {
     border: '1px solid #E5231B',

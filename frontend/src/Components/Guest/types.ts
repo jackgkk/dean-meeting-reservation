@@ -1,4 +1,4 @@
-export { Duty, Dean, Department, currentDate, Meeting, DeanUnregistered, DeanVerifiedReg }
+export { Duty, Dean, Department, currentDate, Meeting, DeanUnregistered, DeanVerifiedReg, InputMeetingType }
 
 class Department {
   constructor (name: string, id: string) {
@@ -70,19 +70,21 @@ class Guest {
   }
 }
 
-class Meeting {
+class InputMeetingType {
+  id: string
   guest: Guest
   goal: string
-  date: string
-  pickedTimeWindow: Date
+  beginsAt: Date
+  duration: number
   deanId: string
   isOnline: Boolean
   isAccepted: Boolean
 
-  constructor (guest: Guest, id: string, name: string, surname: string, email: string, goal: string, pickedTimeWindow: Date, deanId: string, isOnline: Boolean, isAccepted: Boolean = false) {
+  constructor (id: string, guest: Guest, goal: string, beginsAt: Date, duration: number, deanId: string, isOnline: Boolean, isAccepted: Boolean = false) {
+    this.id = id
     this.goal = goal
-    this.pickedTimeWindow = pickedTimeWindow
-    this.date = this.pickedTimeWindow.getDay().toString() + '.' + this.pickedTimeWindow.getMonth().toString() + '.' + this.pickedTimeWindow.getFullYear().toString()
+    this.beginsAt = beginsAt
+    this.duration = duration
     this.deanId = deanId
     this.isOnline = isOnline
     this.isAccepted = isAccepted
@@ -90,6 +92,30 @@ class Meeting {
 
     Object.freeze(this)
   }
+}
+
+class Meeting {
+    id: string
+    guest: Guest
+    goal: string
+    beginsAt: Date
+    duration: number
+    deanId: string
+    isOnline: Boolean
+    isAccepted: Boolean
+    date: string
+
+    constructor (meeting: InputMeetingType) {
+      this.id = meeting.id
+      this.goal = meeting.goal
+      this.beginsAt = meeting.beginsAt
+      this.duration = meeting.duration
+      this.deanId = meeting.deanId
+      this.isOnline = meeting.isOnline
+      this.isAccepted = meeting.isAccepted
+      this.guest = meeting.guest
+      this.date = this.beginsAt.getDay().toString() + '.' + this.beginsAt.getMonth().toString() + '.' + this.beginsAt.getFullYear().toString()
+    }
 }
 
 class errorStack {

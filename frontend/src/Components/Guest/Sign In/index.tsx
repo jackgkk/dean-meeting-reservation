@@ -11,15 +11,7 @@ import * as React from 'react'
 import { Dean, DeanUnregistered, DeanVerifiedReg } from '../types'
 import { useStyles } from './style'
 
-export interface RegistrationProps {}
-
-const fakeDepartments = [
-  { name: 'Computer science and mathematics', id: 'k342bjh23y4u2y' },
-  { name: 'Biology', id: '09jdsfiu898ds' }
-]
-
 const emailRegex = /^[a-zA-Z0-9._-]+@(([a-zA-Z]+\.)?)+(uni.lodz.pl)$/
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/
 
 const formValid = (newDean: DeanUnregistered) => {
   let valid = true
@@ -37,7 +29,7 @@ const formValid = (newDean: DeanUnregistered) => {
   return valid
 }
 
-const Registration: React.SFC<RegistrationProps> = () => {
+export default function SignIn () {
   const [newDean, setNewDean] = React.useState<DeanUnregistered>({
     name: '',
     surname: '',
@@ -68,16 +60,6 @@ const Registration: React.SFC<RegistrationProps> = () => {
           emailRegex.test(value) && values.length > 0
             ? ''
             : 'Email should be registered on University domain - uni.lodz.pl'
-        break
-      case 'password':
-        formErrors.password =
-          passwordRegex.test(value) && values.length > 0
-            ? ''
-            : 'Your password must contain at least 8 characters, and at least at least one uppercase letter, one lowercase letter and one number'
-        if (newDean.passwordCheck.length > 0) {
-          formErrors.passwordCheck =
-            value === newDean.passwordCheck ? '' : 'Passwords should match'
-        }
         break
       case 'passwordCheck':
         formErrors.passwordCheck =
@@ -121,53 +103,17 @@ const Registration: React.SFC<RegistrationProps> = () => {
     }
   }
 
-  function handleDepChange (event: React.ChangeEvent<{ value: unknown }>) {
-    const desiredDep = fakeDepartments.find(
-      (dep) => event.target.value === dep.id
-    )
-    setNewDean({ ...newDean, department: desiredDep! })
-  }
-
   const styling = useStyles()
 
   return (
     <div className={styling.signUpContainer}>
       <div className={styling.header}>
-        <Button className={styling.button} id="alreadyHave" variant="contained">
-          I already have an account
-        </Button>
         <Typography className={styling.SignUp} variant="h2">
-          Sign Up
+          Log In
         </Typography>
       </div>
       <div>
         <form onSubmit={handleSubmit}>
-          <div className={styling.inputContainer}>
-            <Typography className={styling.label} variant="h2">
-              First Name
-            </Typography>
-            <input
-              className={styling.inputForm}
-              id={isValid || newDean.name.length > 0 ? '' : 'error'}
-              type="text"
-              name="name"
-              value={newDean.name}
-              onChange={handleChange}
-            />
-          </div>
-          <div className={styling.inputContainer}>
-            <Typography className={styling.label} variant="h2">
-              Last Name
-            </Typography>
-            <input
-              className={styling.inputForm}
-              id={isValid || newDean.surname.length > 0 ? '' : 'error'}
-              type="text"
-              name="surname"
-              value={newDean.surname}
-              onChange={handleChange}
-            />
-          </div>
           <div className={styling.inputContainer}>
             <Typography className={styling.label} variant="h2">
               Email
@@ -231,57 +177,6 @@ const Registration: React.SFC<RegistrationProps> = () => {
               )}
             </div>
           </div>
-          <div className={styling.inputContainer}>
-            <Typography className={styling.label} variant="h2">
-              Repeat Password
-            </Typography>
-            <div>
-              <input
-                className={styling.inputForm}
-                id={
-                  (!isValid && newDean.passwordCheck.length === 0) ||
-                  (!isValid && newDean.errorStack.passwordCheck.length > 0)
-                    ? 'error'
-                    : ''
-                }
-                type="password"
-                name="passwordCheck"
-                value={newDean.passwordCheck}
-                onChange={handleChange}
-              />
-              {newDean.errorStack.passwordCheck.length > 0 && (
-                <Typography
-                  style={{ padding: '0.1rem 0.5rem', color: '#E5231B' }}
-                  variant="subtitle1"
-                >
-                  {newDean.errorStack.passwordCheck}
-                </Typography>
-              )}
-            </div>
-          </div>
-          <div className={styling.inputContainer}>
-            <Typography className={styling.label} variant="h2">
-              Department
-            </Typography>
-            <Select
-              style={{ width: '32rem' }}
-              className={
-                isValid || newDean.department.name.length > 0
-                  ? styling.inputForm
-                  : styling.errorTemp
-              }
-              value={newDean.department.id}
-              onChange={handleDepChange}
-            >
-              {fakeDepartments.map((dep) => {
-                return (
-                  <MenuItem key={dep.id} value={dep.id}>
-                    {dep.name}
-                  </MenuItem>
-                )
-              })}
-            </Select>
-          </div>
           <Button className={styling.button} variant="outlined" type="submit">
             Sign Up
           </Button>
@@ -290,5 +185,3 @@ const Registration: React.SFC<RegistrationProps> = () => {
     </div>
   )
 }
-
-export default Registration
