@@ -32,7 +32,8 @@ const useStyles = makeStyles({
     }
   },
   actionButton: {
-    maxWidth: '1.8rem'
+    display: 'flex',
+    alignItems: 'center'
   },
   attendantName: {
   },
