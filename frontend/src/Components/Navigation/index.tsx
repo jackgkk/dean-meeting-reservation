@@ -6,6 +6,7 @@ import FindDuty from '../Guest/FindDuty'
 import MeetingConfirmation from '../Guest/MeetingConfirmation'
 import Registration from '../Guest/Registration'
 import SignIn from '../Guest/Sign In'
+import NavBar from '../Guest/NavBar'
 
 export default function Navigation () {
   return (
@@ -15,10 +16,16 @@ export default function Navigation () {
           <DeanView />
         </Route>
         <Route path="/registration">
-          <Registration />
+          <div style={{ width: '100%' }}>
+            <NavBar auth={false} />
+            <Registration />
+          </div>
         </Route>
         <Route path="/signin">
-          <SignIn />
+          <div style={{ width: '100%' }}>
+            <NavBar auth={false} />
+            <SignIn />
+          </div>
         </Route>
         <Route path="/confirm-meeting/:token">
           <MeetingConfirmation />

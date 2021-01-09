@@ -1,9 +1,18 @@
 import { createStyles, makeStyles } from '@material-ui/core'
 
 export const useStyles = makeStyles({
+  mainContentContainer: {
+    position: 'relative',
+    width: '100%',
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   signUpContainer: {
     width: '54rem',
-    overflow: 'auto',
+    minHeight: '30rem',
+    overflow: 'hidden',
     background: '#FFFFFF',
     boxShadow: '0px 15px 64px rgba(0, 0, 0, 0.26)',
     padding: '2.5rem 5rem',
@@ -12,8 +21,8 @@ export const useStyles = makeStyles({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'space-between',
+    position: 'relative',
     '& div': {
-      width: '100%',
       '& div': {
         width: 'auto'
       },
@@ -24,7 +33,6 @@ export const useStyles = makeStyles({
   },
   inputContainer: {
     padding: 0,
-    width: '100%',
     display: 'flex',
     justifyContent: 'space-between',
     alignContent: 'center',
@@ -105,9 +113,23 @@ export const useStyles = makeStyles({
     }
   },
   SignUp: {
-    float: 'right'
+    float: 'right',
+    color: 'white'
   },
   header: {
-    overflow: 'auto'
+    overflow: 'auto',
+    width: '100%',
+    zIndex: 1
+  },
+  circle: {
+    position: 'absolute',
+    borderRadius: '50%',
+    width: '15rem',
+    height: '15rem',
+    background: '#E5231B',
+    top: '-8rem',
+    right: '-2rem',
+    zIndex: 0
+
   }
 })

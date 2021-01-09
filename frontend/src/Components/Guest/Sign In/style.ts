@@ -1,27 +1,41 @@
 import { createStyles, makeStyles } from '@material-ui/core'
 
 export const useStyles = makeStyles({
+  mainContentContainer: {
+    position: 'relative',
+    width: '100%',
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   signUpContainer: {
     width: '46rem',
-    height: '30rem',
-    overflow: 'auto',
+    minHeight: '30rem',
     background: '#FFFFFF',
     boxShadow: '0px 15px 64px rgba(0, 0, 0, 0.26)',
     padding: '2.5rem 5rem',
     boxSizing: 'border-box',
     display: 'flex',
+    alignItems: 'center',
     flexDirection: 'column',
-    '& div': {
-      alignItems: 'center'
-    }
+    position: 'relative',
+    justifyContent: 'space-between',
+    overflow: 'hidden'
   },
   inputContainer: {
-    padding: 0,
-    width: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    alignContent: 'center',
-    margin: '1rem 0px'
+    // padding: 0,
+    // width: '100%',
+    // display: 'flex',
+    // flexDirection: 'column',
+    // alignContent: 'center',
+    margin: '1rem 0px',
+    '& #forgotPass': {
+      cursor: 'pointer',
+      '&:hover': {
+        textDecoration: 'underline'
+      }
+    }
   },
   inputForm: {
     width: '32rem',
@@ -32,6 +46,7 @@ export const useStyles = makeStyles({
     borderRadius: '5px',
     fontSize: '17px',
     paddingLeft: '1rem',
+    margin: '0.3rem 0',
     '&:focus': {
       outline: 'none',
       background: '#fafafa'
@@ -46,6 +61,7 @@ export const useStyles = makeStyles({
     '&#error': {
       border: '1px solid #E5231B'
     }
+
   },
   errorTemp: {
     width: '32rem',
@@ -66,7 +82,6 @@ export const useStyles = makeStyles({
   label: {
     maxWidth: '7.8rem',
     alignSelf: 'baseline'
-
   },
   button: {
     border: '1px solid #E5231B',
@@ -74,30 +89,50 @@ export const useStyles = makeStyles({
     borderRadius: '5px',
     width: '10rem',
     height: '3rem',
-    float: 'right',
     fontStyle: 'normal',
     fontWeight: 'normal',
     fontSize: '15px',
-    marginTop: '1rem',
+    margin: '0 2rem',
     boxShadow: 'none',
     '&:hover': {
       background: '#E5231B',
-      color: 'white'
+      color: 'white',
+      boxShadow: 'none'
     },
     '&#alreadyHave': {
-      margin: '0',
       background: '#E5231B',
-      color: 'white',
-      width: '17rem',
-      height: '3.7rem',
-      float: 'left'
-
+      color: 'white'
     }
   },
   SignUp: {
-    float: 'right'
+    float: 'right',
+    color: 'white'
   },
   header: {
-    overflow: 'auto'
+    overflow: 'auto',
+    width: '100%',
+    zIndex: 1
+  },
+  circle: {
+    position: 'absolute',
+    borderRadius: '50%',
+    width: '15rem',
+    height: '15rem',
+    background: '#E5231B',
+    top: '-8rem',
+    right: '-2rem',
+    zIndex: 0
+
+  },
+  buttonsDiv: {
+    display: 'flex',
+    justifyContent: 'center',
+    marginTop: '3rem'
+  },
+  responseErrorDiv: {
+    background: '#E5231B',
+    color: 'white',
+    padding: '0.3rem 0.5rem',
+    display: 'inline-block'
   }
 })

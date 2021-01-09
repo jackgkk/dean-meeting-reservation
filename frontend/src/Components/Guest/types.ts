@@ -1,4 +1,4 @@
-export { Duty, Dean, Department, currentDate, Meeting, DeanUnregistered, DeanVerifiedReg, InputMeetingType }
+export { Duty, Dean, Department, currentDate, Meeting, DeanUnregistered, DeanVerifiedReg, InputMeetingType, UnLogedInDean, LogInDean }
 
 class Department {
   constructor (name: string, id: string) {
@@ -170,4 +170,26 @@ class DeanVerifiedReg {
   surname: string;
   email: string;
   password: string
+}
+
+class UnLogedInDean {
+  email: string
+  password: string
+  errorStack: errorStack
+
+  constructor (email: string, password: string, errorStack: errorStack) {
+    this.email = email
+    this.password = password
+    this.errorStack = errorStack
+  }
+}
+
+class LogInDean {
+  email: string
+  password: string
+
+  constructor (email: string, password: string) {
+    this.email = email
+    this.password = password
+  }
 }
