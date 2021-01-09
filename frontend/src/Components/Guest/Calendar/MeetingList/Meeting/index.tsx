@@ -35,8 +35,8 @@ export default function Meeting ({ meeting }: meetingProps) {
 
   const endTime = new Date() // get current date
   endTime.setHours(
-    meeting.pickedTimeWindow.getHours(),
-    meeting.pickedTimeWindow.getMinutes() + 15,
+    meeting.beginsAt.getHours(),
+    meeting.beginsAt.getMinutes() + 15,
     0,
     0
   )
@@ -45,13 +45,13 @@ export default function Meeting ({ meeting }: meetingProps) {
     <div className={styling.meetingContainer}>
       <div className={styling.desiredPeriod}>
         <Typography variant="body2">
-          {meeting.pickedTimeWindow.getHours() < 10
-            ? '0' + meeting.pickedTimeWindow.getHours()
-            : meeting.pickedTimeWindow.getHours()}
+          {meeting.beginsAt.getHours() < 10
+            ? '0' + meeting.beginsAt.getHours()
+            : meeting.beginsAt.getHours()}
           :
-          {meeting.pickedTimeWindow.getMinutes() < 10
-            ? '0' + meeting.pickedTimeWindow.getMinutes()
-            : meeting.pickedTimeWindow.getMinutes()}
+          {meeting.beginsAt.getMinutes() < 10
+            ? '0' + meeting.beginsAt.getMinutes()
+            : meeting.beginsAt.getMinutes()}
         </Typography>
         <Typography variant="body2">
           {endTime.getHours() < 10

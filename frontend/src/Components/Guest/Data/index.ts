@@ -6,14 +6,14 @@ const fakeMeetings = [
   {
     id: _id(),
     guest: {
-      email: 'asasfgad@gmail.com',
-      name: 'Ritha',
-      surname: 'Methew',
-      status: 'Student'
+      id: _id(),
+      email: 'asd@gmail.com',
+      name: 'Andrew',
+      surname: 'Simpson'
     },
     goal: 'Need to sign some papers',
-    date: '02.02.2020',
-    pickedTimeWindow: new Date(2020, 11, 2, 14, 15),
+    beginsAt: new Date(2021, 0, 5, 11, 15),
+    duration: 15,
     deanId: 'abdf7a9b3830485b0g',
     isOnline: true,
     isAccepted: false
@@ -21,61 +21,46 @@ const fakeMeetings = [
   {
     id: _id(),
     guest: {
-      email: 'asasfgad@gmail.com',
-      name: 'Ritha',
-      surname: 'Methew',
-      status: 'Student'
+      id: _id(),
+      email: 'asd@gmail.com',
+      name: 'Mark',
+      surname: 'Tompson'
     },
-    goal: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    date: '02.02.2020',
-    pickedTimeWindow: new Date(2020, 11, 2, 14, 30),
+    goal: 'Need to sign some papers',
+    beginsAt: new Date(2021, 0, 5, 15, 15),
+    duration: 15,
     deanId: 'abdf7a9b3830485b0g',
-    isOnline: false,
+    isOnline: true,
     isAccepted: false
   },
   {
     id: _id(),
     guest: {
-      email: 'asasfgad@gmail.com',
-      name: 'Ritha',
-      surname: 'Methew',
-      status: 'Student'
+      id: _id(),
+      email: 'asd@gmail.com',
+      name: 'Sam',
+      surname: 'Kilton'
     },
     goal: 'Need to sign some papers',
-    date: '02.02.2020',
-    pickedTimeWindow: new Date(2020, 11, 2, 14, 45),
+    beginsAt: new Date(2021, 0, 5, 14, 15),
+    duration: 15,
     deanId: 'abdf7a9b3830485b0g',
-    isOnline: false,
+    isOnline: true,
     isAccepted: false
   },
   {
     id: _id(),
     guest: {
-      email: 'asasfgad@gmail.com',
-      name: 'Ritha',
-      surname: 'Methew',
-      status: 'Student'
-    },
-    goal: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. In fringilla eros nunc, sed tincidunt nunc eleifend vel. Sed iaculis, ante non porta pulvinar, arcu nisi maximus eros, egestas luctus est augue et urna',
-    date: '03.02.2020',
-    pickedTimeWindow: new Date(2020, 11, 2, 15),
-    deanId: 'abdf7a9b3830485b0g',
-    isOnline: false,
-    isAccepted: true
-  },
-  {
-    id: _id(),
-    guest: {
-      email: 'asasfgad@gmail.com',
-      name: 'Ritha',
-      surname: 'Methew',
-      status: 'Student'
+      id: _id(),
+      email: 'asd@gmail.com',
+      name: 'Jack',
+      surname: 'Daniels'
     },
     goal: 'Need to sign some papers',
-    date: '04.02.2020',
-    pickedTimeWindow: new Date(2020, 11, 4, 14),
+    beginsAt: new Date(2021, 0, 5, 12, 15),
+    duration: 30,
     deanId: 'abdf7a9b3830485b0g',
-    isOnline: false,
+    isOnline: true,
     isAccepted: false
   }
 ]

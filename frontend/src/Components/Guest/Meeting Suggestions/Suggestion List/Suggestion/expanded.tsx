@@ -26,8 +26,8 @@ export default function Expanded ({
 }: expandedProps) {
   const endTime = new Date() // get current date
   endTime.setHours(
-    meeting.pickedTimeWindow.getHours(),
-    meeting.pickedTimeWindow.getMinutes() + 15,
+    meeting.beginsAt.getHours(),
+    meeting.beginsAt.getMinutes() + 15,
     0,
     0
   )
@@ -49,13 +49,13 @@ export default function Expanded ({
             <div className={styling.nameAndTimeDiv}>
               <div className={styling.meetingPeriodDiv}>
                 <Typography variant="h3">
-                  {meeting.pickedTimeWindow.getHours() < 10
-                    ? '0' + meeting.pickedTimeWindow.getHours()
-                    : meeting.pickedTimeWindow.getHours()}
+                  {meeting.beginsAt.getHours() < 10
+                    ? '0' + meeting.beginsAt.getHours()
+                    : meeting.beginsAt.getHours()}
                   :
-                  {meeting.pickedTimeWindow.getMinutes() < 10
-                    ? '0' + meeting.pickedTimeWindow.getMinutes()
-                    : meeting.pickedTimeWindow.getMinutes()}
+                  {meeting.beginsAt.getMinutes() < 10
+                    ? '0' + meeting.beginsAt.getMinutes()
+                    : meeting.beginsAt.getMinutes()}
                   -
                   {endTime.getHours() < 10
                     ? '0' + endTime.getHours()
@@ -106,9 +106,7 @@ export default function Expanded ({
               >
                 <CancelIcon className={styling.actionButton} />
               </div>
-              <div>
-                <ChangeTimeIcon className={styling.actionButton} />
-              </div>
+              <ChangeTimeIcon className={styling.actionButton} />
             </div>
           </div>
         </AccordionSummary>

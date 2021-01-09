@@ -3,7 +3,8 @@ import Calendar from '../Calendar'
 import MeetingSuggestions from '../Meeting Suggestions'
 import {
   currentDate as CurrentDateType,
-  Meeting as MeetingType
+  InputMeetingType as MeetingType,
+  Meeting as NewMeetingType
 } from '../types'
 import { fakeMeetings } from '../Data'
 
@@ -11,6 +12,10 @@ export default function DeanView () {
   const [meetings, setMeetings] = React.useState<Array<MeetingType>>(
     fakeMeetings
   )
+
+  const meetingsToGroupByDate = meetings?.map((meeting) => {
+    return new NewMeetingType(meeting)
+  })
 
   function acceptHandler (id: string) {
     const index = meetings.findIndex((met) => met.id === id)
@@ -28,13 +33,13 @@ export default function DeanView () {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
+    <div>
       <MeetingSuggestions
-        meetings={meetings}
+        meetings={meetingsToGroupByDate}
         acceptHandler={acceptHandler}
         cancelHandler={cancelHandler}
       />
-      <Calendar meetings={meetings} />
+      <Calendar meetings={meetingsToGroupByDate} />
     </div>
   )
 }
