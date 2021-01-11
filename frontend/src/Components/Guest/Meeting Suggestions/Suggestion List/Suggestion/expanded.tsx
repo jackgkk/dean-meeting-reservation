@@ -108,7 +108,7 @@ export default function Expanded ({
               </div>
               <div
                 onClick={function (event) {
-                  cancelHandler(meeting.id)
+                  // cancelHandler(meeting.id)
                   event.stopPropagation()
                 }}
               >
