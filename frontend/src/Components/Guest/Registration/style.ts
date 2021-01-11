@@ -23,9 +23,6 @@ export const useStyles = makeStyles({
     justifyContent: 'space-between',
     position: 'relative',
     '& div': {
-      '& div': {
-        width: 'auto'
-      },
       '& form': {
         margin: '2rem 0'
       }
@@ -119,7 +116,8 @@ export const useStyles = makeStyles({
   header: {
     overflow: 'auto',
     width: '100%',
-    zIndex: 1
+    zIndex: 1,
+    minHeight: '2rem'
   },
   circle: {
     position: 'absolute',
@@ -130,6 +128,77 @@ export const useStyles = makeStyles({
     top: '-8rem',
     right: '-2rem',
     zIndex: 0
+
+  },
+  buttonsDiv: {
+  },
+  '@media (max-width: 992px)': {
+    inputContainer: {
+      padding: 0,
+      display: 'block',
+      margin: '1rem 0px'
+    },
+    label: {
+      alignSelf: 'baseline',
+      maxWidth: '100%'
+    },
+    inputForm: {
+      marginTop: '0.3rem',
+      width: '100%'
+    },
+    signUpContainer: {
+      width: '40rem'
+    },
+    buttonsDiv: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      marginTop: '3rem',
+      '& #alreadyHave': {
+        marginTop: '1rem',
+        background: '#E5231B',
+        color: 'white',
+        height: '3rem'
+      }
+    },
+    '@media (max-width: 768px)': {
+      circle: {
+        top: '-9rem',
+        right: '-4.5rem'
+      },
+      signUpContainer: {
+        height: '100vh',
+        padding: '2.5rem 10%',
+        '& form': {
+          margin: '0'
+        },
+        overflowY: 'scroll'
+      },
+      buttonsDiv: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        marginTop: '0rem',
+        alignItems: 'center',
+        '& button': {
+          width: '100%',
+          background: '#E5231B',
+          color: 'white'
+        },
+        '& #alreadyHave': {
+          order: '2',
+          width: '100%',
+          marginTop: '1rem',
+          background: 'white',
+          color: 'black',
+          height: '3rem'
+        }
+      }
+    },
+    '@media (min-width: 420px)': {
+      circle: {
+        right: '-3rem'
+      }
+    }
 
   }
 })

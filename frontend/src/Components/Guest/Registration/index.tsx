@@ -6,6 +6,7 @@ import {
   TextField,
   Typography
 } from '@material-ui/core'
+import { useMediaQueries } from '@react-hook/media-query'
 import { values } from 'lodash'
 import * as React from 'react'
 import { useHistory } from 'react-router-dom'
@@ -139,20 +140,32 @@ const Registration: React.SFC<RegistrationProps> = () => {
 
   const styling = useStyles()
 
+  const { matches, matchesAny, matchesAll } = useMediaQueries({
+    screen: 'screen',
+    width: '(max-width: 992px)'
+  })
+
+  function handleAsGuest () {
+    const path = '/find-duty'
+    history.push(path)
+  }
+
   return (
     <div style={{ width: '100%' }}>
       <div className={styling.mainContentContainer}>
         <div className={styling.signUpContainer}>
           <div className={styling.circle}></div>
           <div className={styling.header}>
-            <Button
-              className={styling.button}
-              onClick={handleLogIn}
-              id="alreadyHave"
-              variant="contained"
-            >
-              I already have an account
-            </Button>
+            {!matches.width && (
+              <Button
+                className={styling.button}
+                onClick={handleLogIn}
+                id="alreadyHave"
+                variant="contained"
+              >
+                I already have an account
+              </Button>
+            )}
             <Typography className={styling.SignUp} variant="h2">
               Sign Up
             </Typography>
@@ -221,7 +234,7 @@ const Registration: React.SFC<RegistrationProps> = () => {
                 >
                   Password
                 </Typography>
-                <div style={{ width: '32rem', display: 'block' }}>
+                <div>
                   <input
                     className={styling.inputForm}
                     id={
@@ -285,7 +298,6 @@ const Registration: React.SFC<RegistrationProps> = () => {
                   Department
                 </Typography>
                 <Select
-                  style={{ width: '32rem' }}
                   className={
                     isValid || newDean.department.name.length > 0
                       ? styling.inputForm
@@ -293,6 +305,7 @@ const Registration: React.SFC<RegistrationProps> = () => {
                   }
                   value={newDean.department.id}
                   onChange={handleDepChange}
+                  id="deparmentDropDown"
                 >
                   {fakeDepartments.map((dep) => {
                     return (
@@ -303,15 +316,36 @@ const Registration: React.SFC<RegistrationProps> = () => {
                   })}
                 </Select>
               </div>
-              <Button
-                className={styling.button}
-                variant="outlined"
-                type="submit"
-              >
-                Sign Up
-              </Button>
+              <div className={styling.buttonsDiv}>
+                {matches.width && (
+                  <Button
+                    className={styling.button}
+                    onClick={handleLogIn}
+                    id="alreadyHave"
+                    variant="contained"
+                  >
+                    I already have an account
+                  </Button>
+                )}
+                <Button
+                  className={styling.button}
+                  variant="outlined"
+                  type="submit"
+                >
+                  Sign Up
+                </Button>
+              </div>
             </form>
           </div>
+          {matches.width && (
+            <Typography
+              onClick={handleAsGuest}
+              style={{ cursor: 'pointer' }}
+              variant="subtitle1"
+            >
+              Continue as a guest
+            </Typography>
+          )}
         </div>
       </div>
     </div>
