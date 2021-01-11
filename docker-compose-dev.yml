@@ -26,3 +26,5 @@ services:
       - ${DB_MOUNTPATH}:/var/lib/mysql
     ports:
     - 33060:3306
+volumes:
+  dbvol:
