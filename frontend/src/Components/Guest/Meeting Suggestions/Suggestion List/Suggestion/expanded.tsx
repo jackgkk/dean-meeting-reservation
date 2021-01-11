@@ -106,7 +106,14 @@ export default function Expanded ({
               >
                 <CancelIcon className={styling.actionButton} />
               </div>
-              <ChangeTimeIcon className={styling.actionButton} />
+              <div
+                onClick={function (event) {
+                  cancelHandler(meeting.id)
+                  event.stopPropagation()
+                }}
+              >
+                <ChangeTimeIcon className={styling.actionButton} />
+              </div>
             </div>
           </div>
         </AccordionSummary>
