@@ -2,9 +2,15 @@ package com.iww.deanmeetingreservations.service;
 
 import com.iww.deanmeetingreservations.config.JwtTokenUtil;
 import com.iww.deanmeetingreservations.dto.DeanLoginDto;
+import com.iww.deanmeetingreservations.dto.RegistrationForm;
 import com.iww.deanmeetingreservations.dto.TokenDto;
+import com.iww.deanmeetingreservations.exceptions.ResourceAlreadyExistsError;
 import com.iww.deanmeetingreservations.model.Dean;
+import com.iww.deanmeetingreservations.model.DeanDepartment;
+import com.iww.deanmeetingreservations.model.Department;
+import com.iww.deanmeetingreservations.repository.DeanDepartmentRepository;
 import com.iww.deanmeetingreservations.repository.DeanRepository;
+import com.iww.deanmeetingreservations.repository.DepartmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,12 +20,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.iww.deanmeetingreservations.dto.RegistrationForm;
-import com.iww.deanmeetingreservations.exceptions.ResourceAlreadyExistsError;
-import com.iww.deanmeetingreservations.model.DeanDepartment;
-import com.iww.deanmeetingreservations.model.Department;
-import com.iww.deanmeetingreservations.repository.DeanDepartmentRepository;
-import com.iww.deanmeetingreservations.repository.DepartmentRepository;
 
 @Service
 public class DeanServiceImpl implements DeanService {
@@ -39,7 +39,8 @@ public class DeanServiceImpl implements DeanService {
     @Autowired
     DepartmentRepository departmentRepository;
 
-    BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+    @Autowired
+    BCryptPasswordEncoder encoder;
 
     @Override
     public UserDetails loadUserByUsername(String email) {
@@ -75,6 +76,7 @@ public class DeanServiceImpl implements DeanService {
                         deanLoginDto.getPassword()
                 )
         );
+        System.out.println("test");
         SecurityContextHolder.getContext().setAuthentication(authentication);
         final Dean dean = this.loadUserByEmail(deanLoginDto.getEmail());
         final String token = jwtTokenUtil.generateToken(dean);
@@ -83,11 +85,9 @@ public class DeanServiceImpl implements DeanService {
 
     @Override
     public Dean saveDeanThroughForm(RegistrationForm form) throws ResourceAlreadyExistsError {
-        if(deanRepository.existsByUsernameEquals(form.getUsername()))
-            throw new ResourceAlreadyExistsError("User with " + form.getUsername() +" username already exists");
         if(deanRepository.existsByEmailEquals(form.getEmail()))
             throw new ResourceAlreadyExistsError("User with " + form.getEmail() + " email already exists");
-        Dean newDean = new Dean(form.getUsername(), encoder.encode(form.getPassword()), form.getName(), form.getSurname(),form.getEmail());
+        Dean newDean = new Dean(encoder.encode(form.getPassword()), form.getName(), form.getSurname(),form.getEmail());
         Department department = departmentRepository.getFirstByDepartmentNameEquals(form.getDepartment()).orElse(null);
         if(department == null){
             department = new Department(form.getDepartment());

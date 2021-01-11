@@ -15,8 +15,10 @@ public class CustomErrorAttributes extends DefaultErrorAttributes {
         Throwable throwable = getError(webRequest);
         Map<String, Object> errorAttributes =
                 super.getErrorAttributes(webRequest, options);
+        if(throwable != null){
         errorAttributes.replace("message",throwable.getMessage());
         errorAttributes.put("exception",throwable.getClass().getName());
+        }
         return errorAttributes;
     }
 

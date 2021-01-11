@@ -10,6 +10,4 @@ import java.util.Optional;
 public interface DeanRepository extends JpaRepository<Dean, String> {
     Dean findByEmail (String email);
     Boolean existsByEmailEquals(String email);
-    Boolean existsByUsernameEquals(String username);
-    Optional<Dean> getFirstByUsernameEquals(String username);
 }
