@@ -8,7 +8,6 @@ export const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
-
   },
   signUpContainer: {
     width: '46rem',
@@ -132,6 +131,7 @@ export const useStyles = makeStyles({
     marginTop: '3rem'
   },
   responseErrorDiv: {
+    marginTop: '1rem',
     background: '#E5231B',
     color: 'white',
     padding: '0.3rem 0.5rem',
