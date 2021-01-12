@@ -159,46 +159,47 @@ export const useStyles = makeStyles({
         color: 'white',
         height: '3rem'
       }
+    }
+  },
+
+  '@media (max-width: 768px)': {
+    circle: {
+      top: '-9rem',
+      right: '-4.5rem'
     },
-    '@media (max-width: 768px)': {
-      circle: {
-        top: '-9rem',
-        right: '-4.5rem'
+    signUpContainer: {
+      height: '100vh',
+      padding: '2.5rem 10%',
+      '& form': {
+        margin: '0'
       },
-      signUpContainer: {
-        height: '100vh',
-        padding: '2.5rem 10%',
-        '& form': {
-          margin: '0'
-        },
-        overflowY: 'scroll'
-      },
-      buttonsDiv: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        marginTop: '0rem',
-        alignItems: 'center',
-        '& button': {
-          width: '100%',
-          background: '#E5231B',
-          color: 'white'
-        },
-        '& #alreadyHave': {
-          order: '2',
-          width: '100%',
-          marginTop: '1rem',
-          background: 'white',
-          color: 'black',
-          height: '3rem'
-        }
-      }
+      overflowY: 'scroll'
     },
-    '@media (min-width: 420px)': {
-      circle: {
-        right: '-3rem'
+    buttonsDiv: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      marginTop: '0rem',
+      alignItems: 'center',
+      '& button': {
+        width: '100%',
+        background: '#E5231B',
+        color: 'white'
+      },
+      '& #alreadyHave': {
+        order: '2',
+        width: '100%',
+        marginTop: '1rem',
+        background: 'white',
+        color: 'black',
+        height: '3rem'
       }
     }
-
+  },
+  '@media (min-width: 420px)': {
+    circle: {
+      right: '-3rem'
+    }
   }
+
 })

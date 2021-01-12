@@ -8,6 +8,7 @@ export const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center'
+
   },
   signUpContainer: {
     width: '46rem',
@@ -111,7 +112,8 @@ export const useStyles = makeStyles({
   header: {
     overflow: 'auto',
     width: '100%',
-    zIndex: 1
+    zIndex: 1,
+    minHeight: '3rem'
   },
   circle: {
     position: 'absolute',
@@ -134,5 +136,65 @@ export const useStyles = makeStyles({
     color: 'white',
     padding: '0.3rem 0.5rem',
     display: 'inline-block'
+  },
+  '@media (max-height: 30rem)': {
+    mainContentContainer: {
+      height: 'auto'
+    }
+  },
+  '@media (max-width: 992px)': {
+    inputContainer: {
+      padding: 0,
+      display: 'block',
+      margin: '1rem 0px'
+    },
+    inputForm: {
+      marginTop: '0.3rem',
+      width: '100%'
+    },
+    signUpContainer: {
+      width: '40rem'
+    }
+  },
+  '@media (max-width: 637px)': {
+    circle: {
+      top: '-9rem',
+      right: '-4.5rem'
+    },
+    header: {
+      minHeight: '4rem'
+    },
+    signUpContainer: {
+      height: '100vh',
+      padding: '2.5rem 10%',
+      '& form': {
+        margin: '0'
+      },
+      overflowY: 'scroll'
+    },
+    buttonsDiv: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      marginTop: '2rem',
+      alignItems: 'center',
+      '& button': {
+        width: '100%'
+      },
+      '& #alreadyHave': {
+        order: '2',
+        width: '100%',
+        marginTop: '1rem',
+        background: '#E5231B',
+        color: 'white',
+        height: '3rem'
+      }
+    }
+  },
+  '@media (min-width: 420px)': {
+    circle: {
+      right: '-3rem'
+    }
   }
+
 })
