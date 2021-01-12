@@ -8,8 +8,6 @@ import {
 } from '@material-ui/core'
 import * as React from 'react'
 import { Meeting as MeetingType } from '../../../types'
-import Expanded from './expanded'
-import NonExpanded from './nonExpanded'
 import { CheckIcon, CancelIcon, ChangeTimeIcon } from './icons'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { useStyles } from './style'
