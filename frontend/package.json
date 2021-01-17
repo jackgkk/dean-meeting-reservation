@@ -27,13 +27,13 @@
     "node-sass": "^4.14.1",
     "prettier": "^2.2.1",
     "prettier-eslint": "^12.0.0",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "react-google-recaptcha": "^2.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
     "recoil": "^0.1.1",
-    "typescript": "^4.0.3",
+    "typescript": "^4.0.5",
     "uuid": "^8.3.1",
     "web-vitals": "^0.2.4"
   },
@@ -74,5 +74,9 @@
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-react": "^7.21.5"
   },
-  "proxy": "http://localhost:5000"
+  "proxy": "http://localhost:5000",
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": ".eslintrc.js",
+  "author": "",
+  "license": "ISC"
 }
