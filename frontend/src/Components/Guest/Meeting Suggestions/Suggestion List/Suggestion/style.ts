@@ -8,11 +8,13 @@ const useStyles = makeStyles({
     boxShadow: 'none',
     '&$expanded': {
       background: '#E5231B'
-    }
+    },
+    transition: 'height 0.1s'
   },
   suggestionAccordionExpanded: {
     background: '#E5231B',
-    color: 'white'
+    color: 'white',
+    transition: 'height 0.1s'
   },
   accordionSummaryContent: {
     display: 'inline-grid',
@@ -46,6 +48,7 @@ const useStyles = makeStyles({
   isOnlineDiv: {
   },
   meetingGoal: {
+    padding: '0'
   },
   nameAndTimeDiv: {
     display: 'flex',
