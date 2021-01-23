@@ -13,6 +13,7 @@ import { useHistory } from 'react-router-dom'
 import NavBar from '../NavBar'
 import { Dean, DeanUnregistered, DeanVerifiedReg } from '../types'
 import { useStyles } from './style'
+import DepartmentType from '../../../Department'
 
 export interface RegistrationProps {}
 
@@ -41,6 +42,33 @@ const formValid = (newDean: DeanUnregistered) => {
 }
 
 const Registration: React.SFC<RegistrationProps> = () => {
+  const [departments, setDepartments] = React.useState<Array<DepartmentType>>(
+    fakeDepartments
+  )
+
+  React.useEffect(getDepartments, [])
+
+  function getDepartments () {
+    fetch('/api/departments/all')
+      .then(handleResponse)
+      .then(setDepartments)
+      .catch(handleError)
+
+    function handleResponse (res: Response) {
+      if (res.ok) {
+        return res.json() as Promise<Array<DepartmentType>>
+      } else {
+        throw new Error(
+          `Error while fetching departments: Request ended with: ${res.status}`
+        )
+      }
+    }
+
+    function handleError ({ message }: Error) {
+      console.error(message)
+    }
+  }
+
   const [newDean, setNewDean] = React.useState<DeanUnregistered>({
     name: '',
     surname: '',
@@ -121,13 +149,13 @@ const Registration: React.SFC<RegistrationProps> = () => {
   function handleSuccessfulSubmit (response: Response) {
     if (response.status === 200) {
       console.log(response)
+    } else {
+      console.log(response)
     }
   }
 
   function handleDepChange (event: React.ChangeEvent<{ value: unknown }>) {
-    const desiredDep = fakeDepartments.find(
-      (dep) => event.target.value === dep.id
-    )
+    const desiredDep = departments.find((dep) => event.target.value === dep.id)
     setNewDean({ ...newDean, department: desiredDep! })
   }
 
@@ -307,7 +335,7 @@ const Registration: React.SFC<RegistrationProps> = () => {
                   onChange={handleDepChange}
                   id="deparmentDropDown"
                 >
-                  {fakeDepartments.map((dep) => {
+                  {departments.map((dep) => {
                     return (
                       <MenuItem key={dep.id} value={dep.id}>
                         {dep.name}
