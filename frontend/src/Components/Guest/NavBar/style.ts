@@ -13,6 +13,16 @@ export const useStyles = makeStyles((theme: Theme) =>
     },
     title: {
       flexGrow: 1
+    },
+    '@media (max-width: 992px)': {
+      root: {
+        display: 'none'
+      }
+    },
+    '@media (max-height: 39rem)': {
+      root: {
+        display: 'none'
+      }
     }
   })
 )

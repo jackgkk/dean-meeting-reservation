@@ -109,7 +109,7 @@ export default function SignIn () {
             Log In
           </Typography>
         </div>
-        <div>
+        <div style={{ width: '100%' }}>
           {!isLogedIn && (
             <div className={styling.responseErrorDiv}>
               <Typography variant="body1">
@@ -205,7 +205,7 @@ export default function SignIn () {
         </div>
         <Typography
           onClick={handleAsGuest}
-          style={{ cursor: 'pointer' }}
+          style={{ cursor: 'pointer', paddingTop: '1rem' }}
           variant="subtitle1"
         >
           Continue as a guest
