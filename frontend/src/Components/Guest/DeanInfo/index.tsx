@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { useStyles } from './style'
 import Dean from '../../../Dean'
-import { Typography } from '@material-ui/core'
+import { IconButton, Typography } from '@material-ui/core'
+import CreateIcon from '@material-ui/icons/Create'
 
 interface DeanInfoProps {
   dean: Dean
@@ -20,11 +21,18 @@ export default function DeanInfo ({ dean }: DeanInfoProps) {
   const styles = useStyles()
   return (
     <div className={styles.container}>
-      <div>
+      <div className={styles.circle}></div>
+      <div className={styles.nameAndEdit}>
         <Typography variant="h1">
           {dean.name} {dean.surname}
         </Typography>
-        <IconButton></IconButton>
+        <IconButton
+          aria-label="accept"
+          style={{ height: '25px', color: 'white' }}
+        >
+          <CreateIcon style={{ height: '16px' }} />
+          <Typography variant="body1">edit</Typography>
+        </IconButton>
       </div>
       <div>
         <Typography variant="h2">{dean.status}</Typography>

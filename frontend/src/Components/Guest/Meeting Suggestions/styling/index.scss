@@ -1,28 +1,23 @@
-.MeetingSugDiv{
-    width: 46rem;
-    height: 30rem;
-    background: #FFFFFF;
-    box-shadow: 0px 15px 64px rgba(0, 0, 0, 0.26);
-    border-radius: 5px;
-    padding: 13px 20px;
-    margin-top: 20%;
-    overflow-y: scroll;
-    margin-right: 10%;
-    box-sizing: border-box;
+.MeetingSugDiv {
+  width: 43rem;
+  height: 100%;
+  background: #ffffff;
+  box-shadow: 0px 15px 64px rgba(0, 0, 0, 0.26);
+  border-radius: 5px;
+  padding: 13px 20px;
+  overflow-y: scroll;
+  box-sizing: border-box;
 }
 
-::-webkit-scrollbar-track
-{
-	background-color: transparent;
+::-webkit-scrollbar-track {
+  background-color: transparent;
 }
 
-::-webkit-scrollbar
-{
-	width: 0.3rem;
-	background-color: transparent;
+::-webkit-scrollbar {
+  width: 0.3rem;
+  background-color: transparent;
 }
 
-::-webkit-scrollbar-thumb
-{
-	background-color: #dadada;
+::-webkit-scrollbar-thumb {
+  background-color: #dadada;
 }

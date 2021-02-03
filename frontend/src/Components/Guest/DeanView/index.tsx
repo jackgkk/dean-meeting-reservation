@@ -10,6 +10,8 @@ import {
 import { fakeMeetings } from '../Data'
 import DeanInfo from '../DeanInfo'
 import { uniqueId } from 'lodash'
+import NavBar from '../NavBar'
+import { useStyles } from './style'
 
 export default function DeanView () {
   const [meetings, setMeetings] = React.useState<Array<MeetingType>>(
@@ -26,11 +28,6 @@ export default function DeanView () {
         dayOfWeek: 4,
         begins: '14:00',
         ends: '15.45'
-      },
-      {
-        dayOfWeek: 1,
-        begins: '11:00',
-        ends: '11.45'
       }
     ],
     status: 'Dean'
@@ -55,15 +52,25 @@ export default function DeanView () {
     setMeetings(items)
   }
 
+  const styles = useStyles()
+
   return (
-    <div>
-      <DeanInfo dean={dean} />
-      <MeetingSuggestions
-        meetings={meetingsToGroupByDate}
-        acceptHandler={acceptHandler}
-        cancelHandler={cancelHandler}
-      />
-      <Calendar meetings={meetingsToGroupByDate} />
+    <div className={styles.mainContainer}>
+      <NavBar auth={true} />
+      <div className={styles.contentContainer}>
+        <div className={styles.info}>
+          <DeanInfo dean={dean} />
+        </div>
+
+        <div className={styles.meetingsContainer}>
+          <MeetingSuggestions
+            meetings={meetingsToGroupByDate}
+            acceptHandler={acceptHandler}
+            cancelHandler={cancelHandler}
+          />
+          <Calendar meetings={meetingsToGroupByDate} />
+        </div>
+      </div>
     </div>
   )
 }
