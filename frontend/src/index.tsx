@@ -14,6 +14,12 @@ const theme = createMuiTheme({
   },
   typography: {
     fontFamily: 'Montserrat',
+    h1: {
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+      fontSize: '36px',
+      letterSpacing: '0.03em'
+    },
     h2: {
       fontStyle: 'normal',
       fontWeight: 'normal',
