@@ -14,13 +14,16 @@ const useStyles = makeStyles({
   suggestionAccordionExpanded: {
     background: '#E5231B',
     color: 'white',
-    transition: 'height 0.1s'
+    transition: 'height 0.1s',
+    '& .MuiIconButton-root': {
+      color: 'inherit'
+    }
   },
   accordionSummaryContent: {
     display: 'inline-grid',
     width: '100%',
     alignItems: 'center',
-    gridTemplateColumns: '0.8fr 0.3fr 0.8fr 7rem',
+    gridTemplateColumns: '0.8fr 0.3fr 0.8fr 8rem',
     gap: '1rem'
   },
   actionButtonsContainer: {
@@ -28,9 +31,12 @@ const useStyles = makeStyles({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    '& div': {
+    '& .MuiIconButton-root': {
       display: 'inline-block',
-      width: '1.8rem'
+      width: '1.8rem',
+      height: '1.8rem',
+      padding: '0',
+      color: 'inherit'
     }
   },
   actionButton: {
@@ -46,6 +52,8 @@ const useStyles = makeStyles({
     minWidth: '17%'
   },
   isOnlineDiv: {
+    display: 'flex',
+    alignItems: 'center'
   },
   meetingGoal: {
     padding: '0'
