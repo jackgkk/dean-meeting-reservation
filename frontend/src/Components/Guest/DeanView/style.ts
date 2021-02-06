@@ -7,7 +7,8 @@ export const useStyles = makeStyles({
     height: '100vh',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    overflow: 'scroll'
   },
   contentContainer: {
     display: 'flex',
@@ -25,6 +26,11 @@ export const useStyles = makeStyles({
     height: '30rem'
   },
   info: {
-    marginTop: '6rem'
+    marginTop: '0rem'
   }
+  // '@media (max-width: 1360px)': {
+  //   meetingsContainer: {
+  //     flexDirection: 'column'
+  //   }
+  // }
 })

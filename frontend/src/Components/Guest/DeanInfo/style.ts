@@ -7,7 +7,7 @@ export const useStyles = makeStyles({
     boxShadow: '0px 15px 64px rgba(0, 0, 0, 0.26)',
     borderRadius: '5px',
     display: 'flex',
-    padding: '0.6rem 1.1rem',
+    padding: '13px 20px',
     boxSizing: 'border-box',
     flexDirection: 'column',
     justifyContent: 'space-around',

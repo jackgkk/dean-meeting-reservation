@@ -19,6 +19,7 @@ import TimelineDot from '@material-ui/lab/TimelineDot'
 import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent'
 import clsx from 'clsx'
 import { useStyle } from './styling/style'
+import { useMediaQueries } from '@react-hook/media-query'
 
 interface MeetingProps {
   meetings: Array<MeetingType> | undefined
@@ -54,41 +55,69 @@ export default function MeetingSuggestions ({
 
   const style = useStyle()
 
+  const { matches, matchesAny, matchesAll } = useMediaQueries({
+    screen: 'screen',
+    width: '(max-width: 1300px)'
+  })
+
   return (
-    <div className="MeetingSugDiv" id="style-4">
+    <div className={style.meetingSugDiv} id="style-4">
       <Typography variant="h3">Meeting Suggestions</Typography>
       {groupedByDateMeetings.map((group) => {
         return (
           <div key={group.date}>
-            <Timeline className={clsx(style.timelineContainer)}>
-              <TimelineItem className={clsx(style.timeline)}>
-                <TimelineOppositeContent
-                  className={clsx(style.oppositeContent)}
-                >
+            {!matches.width && (
+              <Timeline className={clsx(style.timelineContainer)}>
+                <TimelineItem className={clsx(style.timeline)}>
+                  <TimelineOppositeContent
+                    className={clsx(style.oppositeContent)}
+                  >
+                    <Typography variant="body2" style={{ textAlign: 'left' }}>
+                      {weekday[group.meeting[0].beginsAt.getDay()]},
+                    </Typography>
+                    <Typography variant="body2" style={{ textAlign: 'left' }}>
+                      {group.date}
+                    </Typography>
+                  </TimelineOppositeContent>
+                  <TimelineSeparator className={clsx(style.timelineSeparator)}>
+                    <TimelineDot className={clsx(style.timelineDot)} />
+                    <TimelineConnector
+                      className={clsx(style.timelineConnector)}
+                    />
+                  </TimelineSeparator>
+                  <TimelineContent className={clsx(style.content)}>
+                    <Typography>
+                      <SuggestionList
+                        meetings={group.meeting}
+                        acceptHandler={acceptHandler}
+                        cancelHandler={cancelHandler}
+                      ></SuggestionList>
+                    </Typography>
+                  </TimelineContent>
+                </TimelineItem>
+              </Timeline>
+            )}
+            {matches.width && (
+              <div>
+                <div className={clsx(style.oppositeContent)}>
+                  <TimelineDot className={clsx(style.timelineDot)} />
+
                   <Typography variant="body2" style={{ textAlign: 'left' }}>
                     {weekday[group.meeting[0].beginsAt.getDay()]},
                   </Typography>
                   <Typography variant="body2" style={{ textAlign: 'left' }}>
                     {group.date}
                   </Typography>
-                </TimelineOppositeContent>
-                <TimelineSeparator className={clsx(style.timelineSeparator)}>
-                  <TimelineDot className={clsx(style.timelineDot)} />
-                  <TimelineConnector
-                    className={clsx(style.timelineConnector)}
-                  />
-                </TimelineSeparator>
-                <TimelineContent className={clsx(style.content)}>
-                  <Typography>
-                    <SuggestionList
-                      meetings={group.meeting}
-                      acceptHandler={acceptHandler}
-                      cancelHandler={cancelHandler}
-                    ></SuggestionList>
-                  </Typography>
-                </TimelineContent>
-              </TimelineItem>
-            </Timeline>
+                </div>
+                <Typography>
+                  <SuggestionList
+                    meetings={group.meeting}
+                    acceptHandler={acceptHandler}
+                    cancelHandler={cancelHandler}
+                  ></SuggestionList>
+                </Typography>
+              </div>
+            )}
           </div>
         )
       })}

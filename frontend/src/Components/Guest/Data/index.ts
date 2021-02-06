@@ -62,6 +62,21 @@ const fakeMeetings = [
     deanId: 'abdf7a9b3830485b0g',
     isOnline: true,
     isAccepted: false
+  },
+  {
+    id: _id(),
+    guest: {
+      id: _id(),
+      email: 'asd@gmail.com',
+      name: 'Jack',
+      surname: 'Daniels'
+    },
+    goal: 'Need to sign some papers',
+    beginsAt: new Date(2021, 0, 6, 12, 15),
+    duration: 30,
+    deanId: 'abdf7a9b3830485b0g',
+    isOnline: true,
+    isAccepted: false
   }
 ]
 
