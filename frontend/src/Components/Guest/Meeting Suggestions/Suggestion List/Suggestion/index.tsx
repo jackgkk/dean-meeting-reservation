@@ -14,6 +14,7 @@ import { CheckIcon, CancelIcon, ChangeTimeIcon } from './icons'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { useStyles } from './style'
 import teams from './icons/Teams.png'
+import { useMediaQueries } from '@react-hook/media-query'
 
 interface meetingProps {
   meeting: MeetingType
@@ -46,6 +47,11 @@ export default function MeetingSuggestion ({
   )
 
   const styling = useStyles()
+
+  const { matches, matchesAny, matchesAll } = useMediaQueries({
+    screen: 'screen',
+    width: '(max-width: 500px)'
+  })
 
   return (
     <div>
