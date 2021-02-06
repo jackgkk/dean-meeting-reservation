@@ -66,6 +66,37 @@ const useStyles = makeStyles({
     '& div': {
       margin: '0.2rem 0px'
     }
+  },
+  '@media (max-width: 600px)': {
+    accordionSummaryContent: {
+      gridTemplateColumns: '0.8fr 0.2fr 0.8fr 7rem',
+      gap: '1rem'
+    }
+  },
+  '@media (max-width: 500px)': {
+    // isOnlineDiv: {
+    //   gridColumn: 3
+    // },
+    meetingPeriodDiv: {
+      textAlign: 'center'
+    },
+    // meetingGoal: {
+    //   gridColumn: 5
+    // },
+    accordionSummaryContent: {
+      gridTemplateColumns: '1fr  0.3fr  0.9fr',
+      gap: '1rem',
+      rowGap: '0.5rem'
+    },
+    actionButtonsContainer: {
+      justifyContent: 'space-around',
+      gridColumn: '1 / span 3'
+    },
+    suggestionAccordion: {
+      '& .MuiAccordionSummary-expandIcon': {
+        padding: '5px'
+      }
+    }
   }
 })
 export { useStyles }

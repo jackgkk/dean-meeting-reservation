@@ -4,6 +4,7 @@ const useStyle = makeStyles({
   meetingSugDiv: {
     width: '43rem',
     minHeight: '25rem',
+    maxHeight: '30rem',
     background: '#ffffff',
     boxShadow: '0px 15px 64px rgba(0, 0, 0, 0.26)',
     borderRadius: '5px',
@@ -48,14 +49,17 @@ const useStyle = makeStyles({
     meetingSugDiv: {
       width: '38rem',
       padding: '13px 20px'
-
     }
   },
-  '@media (max-width: 1300px)': {
+  '@media (max-width: 1118px)': {
     meetingSugDiv: {
-      width: '38rem',
+      width: '100%',
       padding: '13px 20px'
-
+    }
+  },
+  '@media (max-width: 600px)': {
+    meetingSugDiv: {
+      padding: '13px 10px'
     },
     timelineDot: {
       // marginLeft: '2px',

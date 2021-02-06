@@ -57,7 +57,7 @@ export default function MeetingSuggestions ({
 
   const { matches, matchesAny, matchesAll } = useMediaQueries({
     screen: 'screen',
-    width: '(max-width: 1300px)'
+    width: '(max-width: 600px)'
   })
 
   return (
@@ -103,7 +103,7 @@ export default function MeetingSuggestions ({
                   <TimelineDot className={clsx(style.timelineDot)} />
 
                   <Typography variant="body2" style={{ textAlign: 'left' }}>
-                    {weekday[group.meeting[0].beginsAt.getDay()]},
+                    {weekday[group.meeting[0].beginsAt.getDay()]},&nbsp;
                   </Typography>
                   <Typography variant="body2" style={{ textAlign: 'left' }}>
                     {group.date}

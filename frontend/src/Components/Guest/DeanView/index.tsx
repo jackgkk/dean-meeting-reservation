@@ -58,9 +58,9 @@ export default function DeanView () {
     <div className={styles.mainContainer}>
       <NavBar auth={true} />
       <div className={styles.contentContainer}>
-        {/* <div className={styles.info}>
+        <div className={styles.info}>
           <DeanInfo dean={dean} />
-        </div> */}
+        </div>
 
         <div className={styles.meetingsContainer}>
           <MeetingSuggestions

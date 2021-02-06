@@ -2,7 +2,7 @@ import { createStyles, makeStyles } from '@material-ui/core'
 
 export const useStyles = makeStyles({
   container: {
-    width: '37.5rem',
+    width: '37rem',
     background: 'white',
     boxShadow: '0px 15px 64px rgba(0, 0, 0, 0.26)',
     borderRadius: '5px',
@@ -31,5 +31,15 @@ export const useStyles = makeStyles({
     height: '196px',
     right: '-3rem',
     zIndex: 0
+  },
+  '@media (max-width: 1118px)': {
+    container: {
+      width: '100%'
+    }
+  },
+  '@media (max-width: 600px)': {
+    circle: {
+      right: '-6rem'
+    }
   }
 })
