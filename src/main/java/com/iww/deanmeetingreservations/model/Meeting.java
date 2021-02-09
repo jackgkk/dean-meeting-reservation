@@ -48,8 +48,7 @@ public class Meeting {
 
     public Meeting() {}
 
-    public Meeting(UUID id, Guest guest, Dean dean, String description, LocalDateTime beginsAt, int duration, boolean isOnline) {
-        this.id = id;
+    public Meeting(Guest guest, Dean dean, String description, LocalDateTime beginsAt, int duration, boolean isOnline) {
         this.guest = guest;
         this.dean = dean;
         this.description = description;
@@ -138,9 +137,9 @@ public class Meeting {
     }
 
     public MeetingReturnDto getReturnDto(){
-        return new MeetingReturnDto(id.toString(),description,
-                beginsAt.format(DateTimeFormatter.ofPattern("yyyy/MM/dd/kk:mm")),duration
-                ,guest.getName(),guest.getSurname(),guest.getEmail(),guest.getStatus(),isOnline);
+        return new MeetingReturnDto(id.toString(), description,
+                beginsAt.format(DateTimeFormatter.ofPattern("yyyy/MM/dd/kk:mm")), duration,
+                guest.getName(), guest.getSurname(), guest.getEmail(), guest.getStatus(), isOnline, isAcceptedByDean());
     }
 
     public void setAcceptedByDean(boolean acceptedByDean) {

@@ -18,7 +18,7 @@ export default function MeetingList ({ meetings, date }: MeetingProps) {
       {meetings
         ?.filter(
           (person) =>
-            person.isAccepted === true &&
+            person.accepted === true &&
             person.beginsAt.getDate() === date.getDate() &&
             person.beginsAt.getMonth() === date.getMonth() &&
             person.beginsAt.getFullYear() === date.getFullYear()

@@ -47,25 +47,21 @@ public class MeetingPropositionServiceImpl implements MeetingPropositionService 
             throw new Exception("Dean with provided ID do not exists");
 
         Guest guest;
-        UUID guestId;
 
         Optional<Guest> optionalGuest = guestRepository.findByEmail(guestEmail);
 
         if (optionalGuest.isPresent()) {
             guest = optionalGuest.get();
-            guestId = guest.getId();
         } else {
             String name = guestDto.getName();
             String surname = guestDto.getSurname();
             String status = guestDto.getStatus();
-            guestId = UUID.randomUUID();
 
-            guest = new Guest(guestId, name, surname, guestEmail, status);
+            guest = new Guest(name, surname, guestEmail, status);
 
             guestRepository.save(guest);
         }
 
-        UUID meetingId = UUID.randomUUID();
         String meetingDescription = meetingPropositionDto.getDescription();
         String meetingBeginsAtHour = meetingPropositionDto.getBeginsAt();
         int meetingDuration = meetingPropositionDto.getDuration();
@@ -76,12 +72,17 @@ public class MeetingPropositionServiceImpl implements MeetingPropositionService 
 
         LocalDateTime meetingBeginsAt = LocalDate.now().atTime(meetingBeginsAtHours, meetingBeginsAtMinutes);
 
-        Meeting meeting = new Meeting(
-                meetingId, guest, dean.get(),
+        Meeting meeting = new Meeting(guest, dean.get(),
                 meetingDescription, meetingBeginsAt,
                 meetingDuration, isMeetingOnline);
 
-        meetingRepository.save(meeting);
+        UUID meetingId;
+
+        try {
+            meetingId = meetingRepository.save(meeting).getId();
+        } catch (Exception e) {
+            throw new Exception("Error while saving meeting information: " + e.getMessage());
+        }
 
         String confirmationLink = hostUrl.concat("/confirm-meeting/").concat(meetingId.toString());
         sendConfirmationEmail(confirmationLink, guestEmail);
@@ -126,6 +127,9 @@ public class MeetingPropositionServiceImpl implements MeetingPropositionService 
 
             if (meeting.isGuestAndMeetingConfirmed())
                 throw new Exception("Meeting already confirmed");
+
+            if (meeting.isRejectedByDean())
+                throw new Exception("Cannot accept previously rejected meeting");
 
             meeting.setGuestAndMeetingConfirmed(true);
 

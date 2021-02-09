@@ -62,7 +62,7 @@ public class DeanMeetingPropositionsManagementServiceImpl implements DeanMeeting
         };
 
         try {
-            sendEmailMeetingConfirmedOrRejectedByDean(messageContent, guestEmail, System.getenv("DEAN_ACCEPTED_TEMPLATE_ID"));
+            sendEmailMeetingConfirmedOrRejectedByDean(messageContent, guestEmail, System.getenv("DEAN_CONFIRMED_TEMPLATE_ID"));
         } catch (IOException e) {
             return new ResponseEntity<>(
                     "Cannot confirm meeting: " + e.getMessage(),
@@ -84,9 +84,11 @@ public class DeanMeetingPropositionsManagementServiceImpl implements DeanMeeting
 
         Meeting meeting = optionalMeeting.get();
 
-        if (meeting.isAcceptedByDean()) {
+        if (meeting.isRejectedByDean())
             return new ResponseEntity<>("Meeting already rejected", HttpStatus.GONE);
-        }
+
+        if (meeting.isAcceptedByDean())
+            return new ResponseEntity<>("Cannot reject previously accepted meeting", HttpStatus.GONE);
 
         meeting.setRejectedByDean(true);
 
@@ -99,8 +101,10 @@ public class DeanMeetingPropositionsManagementServiceImpl implements DeanMeeting
 
         String[] messageContent = new String[]{
                 dean.getFirstname() + " " + dean.getLastname(),
-                startDateTime, endDateTime, location,
-                meeting.getDescription()
+                startDateTime,
+                endDateTime,
+                meeting.getDescription(),
+                location
         };
 
         try {
@@ -129,10 +133,13 @@ public class DeanMeetingPropositionsManagementServiceImpl implements DeanMeeting
         mail.personalization.get(0).addDynamicTemplateData("dean-name-surname", messageContent[0]);
         mail.personalization.get(0).addDynamicTemplateData("start-date", messageContent[1]);
         mail.personalization.get(0).addDynamicTemplateData("end-date", messageContent[2]);
-        mail.personalization.get(0).addDynamicTemplateData("new-start-date", messageContent[3]);
-        mail.personalization.get(0).addDynamicTemplateData("new-end-date", messageContent[4]);
-        mail.personalization.get(0).addDynamicTemplateData("description", messageContent[5]);
-        mail.personalization.get(0).addDynamicTemplateData("location", messageContent[6]);
+        mail.personalization.get(0).addDynamicTemplateData("description", messageContent[3]);
+        mail.personalization.get(0).addDynamicTemplateData("location", messageContent[4]);
+
+        if (messageContent.length == 7) {
+            mail.personalization.get(0).addDynamicTemplateData("new-start-date", messageContent[5]);
+            mail.personalization.get(0).addDynamicTemplateData("new-end-date", messageContent[6]);
+        }
 
         mail.setTemplateId(emailTemplate);
 
@@ -212,8 +219,9 @@ public class DeanMeetingPropositionsManagementServiceImpl implements DeanMeeting
 
         String[] messageContent = new String[]{
                 dean.getFirstname() + " " + dean.getLastname(),
-                startDateTime, endDateTime, newMeetingDateTime.toString(), newEndTime.toString(), location,
-                meeting.getDescription()
+                startDateTime, endDateTime, location,
+                meeting.getDescription(),
+                newMeetingDateTime.toString(), newEndTime.toString()
         };
 
         try {

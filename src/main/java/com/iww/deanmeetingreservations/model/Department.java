@@ -31,7 +31,6 @@ public class Department {
     }
 
     public Department(String departmentName) {
-        this.departmentId = UUID.randomUUID();
         this.departmentName = departmentName;
     }
 

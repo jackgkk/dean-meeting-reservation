@@ -263,6 +263,7 @@ export default function MeetingForm () {
               label='What this meeting is about'
               name='description'
               rowsMax={3}
+              inputProps={{ maxlength: '255' }}
               onChange={handleChange}
               value={formData.description}
             />

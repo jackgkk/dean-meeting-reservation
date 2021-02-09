@@ -130,7 +130,9 @@ public class DeanInfoServiceImpl implements DeanInfoService {
 
         return meetingRepository.getAllByDeanEmail(email)
                 .stream()
-                .filter(Meeting::isConfirmed)
+                .filter(Meeting::isGuestAndMeetingConfirmed)
+                .filter(meeting -> !meeting.isRejectedByDean())/*
+                .filter(meeting -> meeting.isAcceptedByDean() == accepted)*/
                 .map(Meeting::getReturnDto)
                 .collect(Collectors.toUnmodifiableList());
     }

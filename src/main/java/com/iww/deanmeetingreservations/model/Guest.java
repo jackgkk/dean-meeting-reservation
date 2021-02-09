@@ -84,8 +84,7 @@ public class Guest {
         this.status = status;
     }
 
-    public Guest(UUID id, String name, String surname, String email, String status) {
-        this.id = id;
+    public Guest(String name, String surname, String email, String status) {
         this.name = name;
         this.surname = surname;
         this.email = email;

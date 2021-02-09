@@ -12,20 +12,25 @@ import { CheckIcon, CancelIcon, ChangeTimeIcon } from './icons'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { useStyles } from './style'
 import teams from './icons/Teams.png'
+import ProposeChangesToSuggestionDialog from './ProposeChangesToSuggestionDialog'
+import { useState } from 'react'
 
 interface meetingProps {
   meeting: MeetingType
   acceptHandler: (id: string) => void
   cancelHandler: (id: string) => void
+  changeHandler: (id: string, beginsAt: Date, duration: number) => void
 }
 
 export default function MeetingSuggestion ({
   meeting,
   acceptHandler,
-  cancelHandler
+  cancelHandler,
+  changeHandler
 }: meetingProps) {
   const [expanded, setExpanded] = React.useState<string | false>(false)
   const [checked, setChecked] = React.useState(false)
+  const [showModifyMeetingDetailsDialog, setShowModifyMeetingDetailsDialog] = useState(false)
 
   const handleChange = (panel: string) => (
     event: React.ChangeEvent<{}>,
@@ -149,7 +154,6 @@ export default function MeetingSuggestion ({
               </div>
               <div
                 onClick={function (event) {
-                  cancelHandler(meeting.id)
                   event.stopPropagation()
                 }}
               >
@@ -161,4 +165,8 @@ export default function MeetingSuggestion ({
       </Accordion>
     </div>
   )
+}
+
+function requestNewMeetingDetails () {
+
 }
