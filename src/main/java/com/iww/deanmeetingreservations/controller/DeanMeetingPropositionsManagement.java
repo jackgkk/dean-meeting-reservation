@@ -6,7 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
+import javax.servlet.http.HttpServletRequest;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.UUID;
@@ -27,19 +28,41 @@ public class DeanMeetingPropositionsManagement {
         return deanMeetingPropositionsManagementService.rejectMeeting(id);
     }
 
-    @GetMapping("/counter-propose-meeting/{id}")
-    ResponseEntity<String> counterProposeMeeting(@PathVariable UUID id, @RequestParam(required = false) String date, @RequestParam(required = false) Integer duration) {
+    static class MeetingChanges {
+        private String date;
+        private Integer duration;
+
+        public String getDate() {
+            return date;
+        }
+
+        public Integer getDuration() {
+            return duration;
+        }
+    }
+
+    @PostMapping("/counter-propose-meeting/{id}")
+    ResponseEntity<String> counterProposeMeeting(HttpServletRequest request, @PathVariable UUID id, @RequestBody MeetingChanges meetingChanges) {
+        String referer = request.getHeader("referer");
+
         try {
+            URL refererUrl = new URL(referer);
+            String hostUrl  = refererUrl.getProtocol() + "://" + refererUrl.getAuthority();
+
             LocalDateTime newDateTime = null;
 
+            String date = meetingChanges.getDate();
+            Integer duration = meetingChanges.getDuration();
+
             if (date != null)
-                newDateTime = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("yyyy/MM/dd/HH:mm"));
+                newDateTime = LocalDateTime.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyy/HH:mm"));
 
             if (duration == null)
                 duration = 0;
 
-            return deanMeetingPropositionsManagementService.suggestChangesToMeeting(id, newDateTime, duration);
+            return deanMeetingPropositionsManagementService.suggestChangesToMeeting(id, newDateTime, duration, hostUrl);
         } catch (Exception e) {
+            System.out.println(e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }

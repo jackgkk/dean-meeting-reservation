@@ -8,7 +8,7 @@ interface MeetingProps{
   meetings: Array<MeetingType>|undefined
   acceptHandler: (id: string) => void
   cancelHandler: (id: string) => void
-  changeHandler: (id: string, beginsAt: Date, duration: number) => void
+  changeHandler: (id: string, beginsAt: Date|undefined, duration: number|undefined) => void
 }
 
 export default function SuggestionList ({ meetings, acceptHandler, cancelHandler, changeHandler }: MeetingProps) {

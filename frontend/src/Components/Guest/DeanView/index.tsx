@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import Calendar from '../Calendar'
 import MeetingSuggestions from '../Meeting Suggestions'
-import { InputMeetingType as MeetingType, Meeting as NewMeetingType } from '../types'
+import { Dean, InputMeetingType as MeetingType, Meeting as NewMeetingType } from '../types'
 import { fakeMeetings } from '../Data'
 import { Snackbar } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close'
 import IconButton from '@material-ui/core/IconButton'
+import DeanInfo from '../DeanInfo'
+import { uniqueId } from 'lodash'
+import NavBar from '../NavBar'
+import { useStyles } from './style'
 
 export default function DeanView () {
   const [meetings, setMeetings] = React.useState<Array<MeetingType>>(
@@ -36,6 +40,21 @@ export default function DeanView () {
   }
 
   const [propositionActionResult, setPropositionActionResult] = useState('')
+
+  const [dean, setDean] = React.useState<Dean>({
+    id: uniqueId.toString(),
+    name: 'Yevhen',
+    surname: 'Hukalo',
+    email: 'gukalo2001@gmail.com',
+    duties: [
+      {
+        dayOfWeek: 4,
+        begins: '14:00',
+        ends: '15.45'
+      }
+    ],
+    status: 'Dean'
+  })
 
   const meetingsToGroupByDate = meetings?.map((meeting) => {
     return new NewMeetingType(meeting)
@@ -78,30 +97,56 @@ export default function DeanView () {
       setPropositionActionResult('Meeting rejected. Guest will be notified')
       const index = meetings.findIndex((met) => met.id === id)
       const items = [...meetings]
-      items[index] = { ...items[index], accepted: true }
+      items[index] = { ...items[index], accepted: false }
       setMeetings(items)
     }).catch(({ message }) => {
       setPropositionActionResult(message)
     })
   }
 
-  function changeHandler (id: string, beginsAt: Date, duration: number) {
+  function changeHandler (id: string, beginsAt: Date|undefined, duration: number|undefined) {
+    let date = beginsAt
+      ? beginsAt
+          .toLocaleDateString()
+          .replaceAll('.', '/') + '/' +
+      beginsAt.toLocaleTimeString().substr(0, 5)
+      : undefined
 
+    date = date?.length === 15 ? `0${date}` : date
+
+    const authorizationToken = localStorage.getItem('token')
+
+    if (!authorizationToken) { throw new Error('User not authenticated') }
+
+    fetch(`/api/dean/counter-propose-meeting/${id}`, {
+      method: 'POST',
+      headers: { Authorization: authorizationToken, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ date, duration })
+    }).then(async res => {
+      if (!res.ok) {
+        throw new Error('Cannot send proposition changes: ' + await res.text())
+      }
+    }).then(() => {
+      setPropositionActionResult(
+        'Changes suggestions were send to guest.')
+      const index = meetings.findIndex((met) => met.id === id)
+      let items = [...meetings]
+      items = items.filter((_, i) => i !== index)
+      setMeetings(items)
+    }).catch(({ message }) => {
+      setPropositionActionResult(message)
+      console.log(message)
+    })
   }
 
   function handleCloseSnackbar () {
     setPropositionActionResult('')
   }
 
+  const styles = useStyles()
+
   return (
-    <div>
-      <MeetingSuggestions
-        meetings={meetingsToGroupByDate}
-        acceptHandler={acceptHandler}
-        cancelHandler={cancelHandler}
-        changeHandler={changeHandler}
-      />
-      <Calendar meetings={meetingsToGroupByDate} />
+    <>
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
@@ -119,6 +164,24 @@ export default function DeanView () {
           </React.Fragment>
         }
       />
-    </div>
+      <div className={styles.mainContainer}>
+        <NavBar auth={true} />
+        <div className={styles.contentContainer}>
+          <div className={styles.info}>
+            <DeanInfo dean={dean} />
+          </div>
+
+          <div className={styles.meetingsContainer}>
+            <MeetingSuggestions
+              meetings={meetingsToGroupByDate}
+              acceptHandler={acceptHandler}
+              cancelHandler={cancelHandler}
+              changeHandler={changeHandler}
+            />
+            <Calendar meetings={meetingsToGroupByDate} />
+          </div>
+        </div>
+      </div>
+    </>
   )
 }

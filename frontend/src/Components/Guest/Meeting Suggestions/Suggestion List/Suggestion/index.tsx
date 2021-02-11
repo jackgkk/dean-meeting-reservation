@@ -4,6 +4,8 @@ import {
   AccordionDetails,
   AccordionSummary,
   Grow,
+  Icon,
+  IconButton,
   Typography
 } from '@material-ui/core'
 import * as React from 'react'
@@ -14,12 +16,13 @@ import { useStyles } from './style'
 import teams from './icons/Teams.png'
 import ProposeChangesToSuggestionDialog from './ProposeChangesToSuggestionDialog'
 import { useState } from 'react'
+import { useMediaQueries } from '@react-hook/media-query'
 
 interface meetingProps {
   meeting: MeetingType
   acceptHandler: (id: string) => void
   cancelHandler: (id: string) => void
-  changeHandler: (id: string, beginsAt: Date, duration: number) => void
+  changeHandler: (id: string, beginsAt: Date|undefined, duration: number|undefined) => void
 }
 
 export default function MeetingSuggestion ({
@@ -32,6 +35,14 @@ export default function MeetingSuggestion ({
   const [checked, setChecked] = React.useState(false)
   const [showModifyMeetingDetailsDialog, setShowModifyMeetingDetailsDialog] = useState(false)
 
+  function setMeetingChanges (dateTime: Date|undefined, duration: number|undefined) {
+    const { id, beginsAt } = meeting
+
+    changeHandler(id, dateTime, duration)
+
+    console.log({ dateTime, duration })
+  }
+
   const handleChange = (panel: string) => (
     event: React.ChangeEvent<{}>,
     isExpanded: boolean
@@ -43,12 +54,17 @@ export default function MeetingSuggestion ({
   const endTime = new Date() // get current date
   endTime.setHours(
     meeting.beginsAt.getHours(),
-    meeting.beginsAt.getMinutes() + 15,
+    meeting.beginsAt.getMinutes() + meeting.duration,
     0,
     0
   )
 
   const styling = useStyles()
+
+  const { matches, matchesAny, matchesAll } = useMediaQueries({
+    screen: 'screen',
+    width: '(max-width: 500px)'
+  })
 
   return (
     <div>
@@ -135,7 +151,8 @@ export default function MeetingSuggestion ({
               </AccordionDetails>
             )}
             <div className={styling.actionButtonsContainer}>
-              <div
+              <IconButton
+                aria-label="accept"
                 onClick={function (event) {
                   acceptHandler(meeting.id)
                   event.stopPropagation()
@@ -143,26 +160,36 @@ export default function MeetingSuggestion ({
                 onFocus={(event) => event.stopPropagation()}
               >
                 <CheckIcon className={styling.actionButton} />
-              </div>
-              <div
+              </IconButton>
+              <IconButton
+                aria-label="cancel"
                 onClick={function (event) {
                   cancelHandler(meeting.id)
                   event.stopPropagation()
                 }}
               >
                 <CancelIcon className={styling.actionButton} />
-              </div>
-              <div
+              </IconButton>
+              <IconButton
+                aria-label="suggest other time"
                 onClick={function (event) {
+                  setShowModifyMeetingDetailsDialog(true)
                   event.stopPropagation()
                 }}
               >
                 <ChangeTimeIcon className={styling.actionButton} />
-              </div>
+              </IconButton>
             </div>
           </div>
         </AccordionSummary>
       </Accordion>
+      <ProposeChangesToSuggestionDialog
+        currentDate={meeting.beginsAt}
+        currentDuration={meeting.duration}
+        open={showModifyMeetingDetailsDialog}
+        onClose={() => setShowModifyMeetingDetailsDialog(false)}
+        sendMeetingChanges={setMeetingChanges}
+      />
     </div>
   )
 }

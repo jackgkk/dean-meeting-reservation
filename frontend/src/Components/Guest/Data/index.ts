@@ -4,7 +4,7 @@ import { v4 as _id } from 'uuid'
 
 const fakeMeetings = [
   {
-    id: '7851cb17-f0e7-49c0-abeb-82869231444e',
+    id: _id(),
     guest: {
       id: _id(),
       email: 'asd@gmail.com',
@@ -19,7 +19,7 @@ const fakeMeetings = [
     accepted: false
   },
   {
-    id: 'a7c8c269-8aa5-4e46-a5eb-99bf7fa625da',
+    id: _id(),
     guest: {
       id: _id(),
       email: 'asd@gmail.com',
@@ -34,7 +34,7 @@ const fakeMeetings = [
     accepted: false
   },
   {
-    id: 'd4209629-ae6c-40cc-b5ae-0c952e8476d6',
+    id: _id(),
     guest: {
       id: _id(),
       email: 'asd@gmail.com',
@@ -49,7 +49,7 @@ const fakeMeetings = [
     accepted: false
   },
   {
-    id: 'e98c409e-0eb6-427c-969d-2c3faf1a60ff',
+    id: _id(),
     guest: {
       id: _id(),
       email: 'asd@gmail.com',

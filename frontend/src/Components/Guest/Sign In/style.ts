@@ -21,7 +21,13 @@ export const useStyles = makeStyles({
     flexDirection: 'column',
     position: 'relative',
     justifyContent: 'space-between',
-    overflow: 'hidden'
+    overflow: 'hidden',
+    '& form': {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      width: '100%'
+    }
   },
   inputContainer: {
     // padding: 0,
@@ -29,7 +35,7 @@ export const useStyles = makeStyles({
     // display: 'flex',
     // flexDirection: 'column',
     // alignContent: 'center',
-    margin: '1rem 0px',
+    margin: '0.5rem 0px',
     '& #forgotPass': {
       cursor: 'pointer',
       '&:hover': {
@@ -144,6 +150,7 @@ export const useStyles = makeStyles({
   },
   '@media (max-width: 992px)': {
     inputContainer: {
+      width: '100%',
       padding: 0,
       display: 'block',
       margin: '1rem 0px'
@@ -173,6 +180,7 @@ export const useStyles = makeStyles({
       overflowY: 'scroll'
     },
     buttonsDiv: {
+      width: '100%',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',

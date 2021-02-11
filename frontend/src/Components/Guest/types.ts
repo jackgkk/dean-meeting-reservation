@@ -114,7 +114,7 @@ class Meeting {
       this.isOnline = meeting.isOnline
       this.accepted = meeting.accepted
       this.guest = meeting.guest
-      this.date = this.beginsAt.getDay().toString() + '.' + this.beginsAt.getMonth().toString() + '.' + this.beginsAt.getFullYear().toString()
+      this.date = (this.beginsAt.getDate() < 10 ? '0' + this.beginsAt.getDate().toString() : this.beginsAt.getDate().toString()) + '.' + (this.beginsAt.getMonth() + 1 < 10 ? '0' + (this.beginsAt.getMonth() + 1).toString() : (this.beginsAt.getMonth() + 1).toString()) + '.' + this.beginsAt.getFullYear().toString()
     }
 }
 

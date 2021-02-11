@@ -46,3 +46,4 @@ yarn-error.log*
 /.env
 /frontend/.env
 /sendgrid.env
+/dbvol

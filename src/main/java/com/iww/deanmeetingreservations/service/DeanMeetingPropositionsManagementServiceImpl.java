@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -136,9 +137,12 @@ public class DeanMeetingPropositionsManagementServiceImpl implements DeanMeeting
         mail.personalization.get(0).addDynamicTemplateData("description", messageContent[3]);
         mail.personalization.get(0).addDynamicTemplateData("location", messageContent[4]);
 
-        if (messageContent.length == 7) {
+        if (messageContent.length == 9) {
             mail.personalization.get(0).addDynamicTemplateData("new-start-date", messageContent[5]);
             mail.personalization.get(0).addDynamicTemplateData("new-end-date", messageContent[6]);
+
+            mail.personalization.get(0).addDynamicTemplateData("accept-url", messageContent[7]);
+            mail.personalization.get(0).addDynamicTemplateData("reject-url", messageContent[8]);
         }
 
         mail.setTemplateId(emailTemplate);
@@ -156,9 +160,10 @@ public class DeanMeetingPropositionsManagementServiceImpl implements DeanMeeting
         System.out.println(response.getHeaders());
     }
 
-    public ResponseEntity<String> suggestChangesToMeeting(UUID meetingId, LocalDateTime newMeetingDateTime, int newMeetingDuration) {
+    public ResponseEntity<String> suggestChangesToMeeting(UUID meetingId, LocalDateTime newMeetingDateTime, int newMeetingDuration, String hostUrl) {
         // TODO: Restrict possible dates to range defined by dean's duties, i.e cannot change meeting to wednesday, if
-        // TODO: office hours are only on mondays
+        // TODO: office hours are only on mondays.
+        // TODO: Don't do this
         Optional<Meeting> optionalMeeting = meetingRepository.findById(meetingId);
 
         if (optionalMeeting.isEmpty()) {
@@ -217,11 +222,20 @@ public class DeanMeetingPropositionsManagementServiceImpl implements DeanMeeting
             return new ResponseEntity<>("Something went not good", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+        String rejectUrl = hostUrl
+                .concat("/reject-meeting-changes/")
+                .concat(meetingId.toString());
+
+        String acceptUrl = hostUrl
+                .concat("/confirm-meeting/")
+                .concat(meetingId.toString());
+
         String[] messageContent = new String[]{
                 dean.getFirstname() + " " + dean.getLastname(),
-                startDateTime, endDateTime, location,
-                meeting.getDescription(),
-                newMeetingDateTime.toString(), newEndTime.toString()
+                startDateTime, endDateTime,
+                meeting.getDescription(), location,
+                newMeetingDateTime.toString(), newEndTime.toString(),
+                acceptUrl, rejectUrl
         };
 
         try {

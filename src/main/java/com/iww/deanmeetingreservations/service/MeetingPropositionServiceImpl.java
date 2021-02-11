@@ -16,7 +16,11 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -136,6 +140,15 @@ public class MeetingPropositionServiceImpl implements MeetingPropositionService 
             meetingRepository.save(meeting);
         } else {
             throw new Exception("No meeting associated with provided token exists");
+        }
+    }
+
+    public ResponseEntity<String> rejectMeetingChanges(UUID meetingId) {
+        try {
+            meetingRepository.deleteById(meetingId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

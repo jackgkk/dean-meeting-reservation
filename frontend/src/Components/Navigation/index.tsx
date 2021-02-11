@@ -7,6 +7,7 @@ import MeetingConfirmation from '../Guest/MeetingConfirmation'
 import Registration from '../Guest/Registration'
 import SignIn from '../Guest/Sign In'
 import NavBar from '../Guest/NavBar'
+import MeetingChangesRejection from '../Guest/MeetingChangesRejection'
 
 export default function Navigation () {
   return (
@@ -29,6 +30,9 @@ export default function Navigation () {
         </Route>
         <Route path="/confirm-meeting/:token">
           <MeetingConfirmation />
+        </Route>
+        <Route path="/reject-meeting-changes/:token">
+          <MeetingChangesRejection />
         </Route>
         <Route path="/find-duty">
           <FindDuty />
