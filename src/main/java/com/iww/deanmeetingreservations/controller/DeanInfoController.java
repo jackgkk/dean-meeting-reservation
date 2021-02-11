@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.Authentication;
@@ -39,7 +40,7 @@ public class DeanInfoController {
             DeanInfoDto deanInfoDto = deanInfoService.findUserById(id, token);
             return ResponseEntity.ok(deanInfoDto);
         } catch (ResourceNotFoundException e) {
-            return new ResponseEntity(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -56,12 +57,12 @@ public class DeanInfoController {
         }
     }
 
+    /* Get meetings confirmed by guests. If only-accepted=true, return only meetings
+    * confirmed by Dean. */
     @RequestMapping(value = "/api/dean/calendar/get-confirmed-meetings")
-    public ResponseEntity<List<MeetingReturnDto>> getConfirmedMeetings(@RequestParam(name="only-accepted") Optional<Boolean> accepted,
-                                                                       @RequestHeader(name = HEADER_STRING) String token){
+    public ResponseEntity<List<MeetingReturnDto>> getConfirmedMeetings(@RequestParam(name="only-accepted") Optional<Boolean> accepted, @RequestHeader(name = HEADER_STRING) String token){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        return new ResponseEntity(deanInfoService.getConfirmedMeetings(authentication.getName(),
-                accepted.isPresent()? accepted.get() : true),HttpStatus.OK);
+        return new ResponseEntity<>(deanInfoService.getConfirmedMeetings(authentication.getName(), accepted.orElse(false)), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/api/dean/calendar/cancel-meeting/{id}",method = RequestMethod.DELETE)

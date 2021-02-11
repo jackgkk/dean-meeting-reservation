@@ -10,7 +10,5 @@ import java.util.UUID;
 
 @Repository
 public interface MeetingRepository extends JpaRepository<Meeting, UUID> {
-    Optional<Meeting> findByGuestVerificationToken(String token);
-    List<Meeting> getAllByDeanDeanIdEqualsAndConfirmedEquals(String deanId,boolean confirmed);
-    List<Meeting> getAllByDeanEmailEqualsAndConfirmedEquals(String email,boolean confirmed);
+    List<Meeting> getAllByDeanEmail(String email);
 }

@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,7 +56,7 @@ public class DeanInfoServiceImpl implements DeanInfoService {
 
     @Override
     public void updateProfile(DeanDto deanDto, String id, String token) {
-        Optional<Dean> dean = deanRepository.findById(id);
+        Optional<Dean> dean = deanRepository.findById(UUID.fromString(id));
         token = token.substring(7);
         if (dean.isPresent()) {
             if(jwtTokenUtil.validateToken(token, deanService.loadUserByUsername(dean.get().getEmail()))){
@@ -102,7 +103,7 @@ public class DeanInfoServiceImpl implements DeanInfoService {
 
     @Override
     public DeanInfoDto findUserById(String id, String token) {
-        Optional<Dean> dean = deanRepository.findById(id);
+        Optional<Dean> dean = deanRepository.findById(UUID.fromString(id));
         token = token.substring(7);
         if (dean.isPresent()) {
             if(jwtTokenUtil.validateToken(token, deanService.loadUserByUsername(dean.get().getEmail()))){
@@ -126,8 +127,14 @@ public class DeanInfoServiceImpl implements DeanInfoService {
 
     @Override
     public List<MeetingReturnDto> getConfirmedMeetings(String email, boolean accepted) {
-        return meetingRepository.getAllByDeanEmailEqualsAndConfirmedEquals(email,accepted).stream().
-                map(Meeting::getReturnDto).collect(Collectors.toUnmodifiableList());
+
+        return meetingRepository.getAllByDeanEmail(email)
+                .stream()
+                .filter(Meeting::isGuestAndMeetingConfirmed)
+                .filter(meeting -> !meeting.isRejectedByDean())/*
+                .filter(meeting -> meeting.isAcceptedByDean() == accepted)*/
+                .map(Meeting::getReturnDto)
+                .collect(Collectors.toUnmodifiableList());
     }
 
     @Override

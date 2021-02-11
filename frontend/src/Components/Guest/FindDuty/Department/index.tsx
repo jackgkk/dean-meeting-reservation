@@ -41,10 +41,10 @@ export default function Department ({ department }: DepartmentProps) {
   const { name: departmentName } = department
   const [deans, setDeans] = useState<Array<DeanType>|undefined>([
     new DeanType(
-      '82cfb68d-9019-4b2a-af69-22ca93889ccb',
+      '1aeaf5af-aed0-4b45-9dca-7d26502eda48',
       'Izabella',
       'Nowakowska',
-      'izabella.nowakowska@wmii.uni.lodz.pl',
+      'jean.paul1@vati.kan',
       'professor',
       [
         new DutyType(

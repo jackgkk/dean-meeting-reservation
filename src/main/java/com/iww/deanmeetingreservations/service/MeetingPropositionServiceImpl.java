@@ -16,7 +16,11 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -38,23 +42,10 @@ public class MeetingPropositionServiceImpl implements MeetingPropositionService 
 
     @Override
     public Meeting addMeeting(MeetingPropositionDto meetingPropositionDto, String hostUrl) throws Exception {
-        String deanId = meetingPropositionDto.getDeanId().toString();
-
+        UUID deanId = meetingPropositionDto.getDeanId();
         Optional<Dean> dean = deanRepository.findById(deanId);
-
-        String guestVerificationToken = UUID.randomUUID().toString().replace("-", "");
-
-        String confirmationLink = hostUrl.concat("/confirm-meeting/").concat(guestVerificationToken);
-
-
-        System.out.println(confirmationLink);
-
-
         GuestDto guestDto = meetingPropositionDto.getGuest();
-
         String guestEmail = guestDto.getEmail();
-
-        sendConfirmationEmail(confirmationLink, guestEmail);
 
         if (dean.isEmpty())
             throw new Exception("Dean with provided ID do not exists");
@@ -69,9 +60,8 @@ public class MeetingPropositionServiceImpl implements MeetingPropositionService 
             String name = guestDto.getName();
             String surname = guestDto.getSurname();
             String status = guestDto.getStatus();
-            UUID id = UUID.randomUUID();
 
-            guest = new Guest(id, name, surname, guestEmail, status);
+            guest = new Guest(name, surname, guestEmail, status);
 
             guestRepository.save(guest);
         }
@@ -81,19 +71,25 @@ public class MeetingPropositionServiceImpl implements MeetingPropositionService 
         int meetingDuration = meetingPropositionDto.getDuration();
         boolean isMeetingOnline = meetingPropositionDto.isOnline();
 
-
         int meetingBeginsAtHours = Integer.parseInt(meetingBeginsAtHour.substring(0, meetingBeginsAtHour.indexOf(':')));
         int meetingBeginsAtMinutes = Integer.parseInt(meetingBeginsAtHour.substring(meetingBeginsAtHour.indexOf(':') + 1));
 
         LocalDateTime meetingBeginsAt = LocalDate.now().atTime(meetingBeginsAtHours, meetingBeginsAtMinutes);
 
-        Meeting meeting = new Meeting(
-                UUID.randomUUID(), guest, dean.get(),
+        Meeting meeting = new Meeting(guest, dean.get(),
                 meetingDescription, meetingBeginsAt,
-                meetingDuration, isMeetingOnline,
-                guestVerificationToken);
+                meetingDuration, isMeetingOnline);
 
-        meetingRepository.save(meeting);
+        UUID meetingId;
+
+        try {
+            meetingId = meetingRepository.save(meeting).getId();
+        } catch (Exception e) {
+            throw new Exception("Error while saving meeting information: " + e.getMessage());
+        }
+
+        String confirmationLink = hostUrl.concat("/confirm-meeting/").concat(meetingId.toString());
+        sendConfirmationEmail(confirmationLink, guestEmail);
 
         return meeting;
     }
@@ -108,7 +104,7 @@ public class MeetingPropositionServiceImpl implements MeetingPropositionService 
 
         mail.personalization.get(0).addDynamicTemplateData("confirmationLink", messageContent);
 
-        mail.setTemplateId(System.getenv("TEMPLATE_ID"));
+        mail.setTemplateId(System.getenv("GUEST_CONFIRM_TEMPLATE_ID"));
 
         System.out.println("SendGrid API: " + System.getenv("SENDGRID_API_KEY"));
 
@@ -125,19 +121,34 @@ public class MeetingPropositionServiceImpl implements MeetingPropositionService 
     }
 
     @Override
-    public void confirmMeeting(String confirmationToken) throws Exception {
+    public void confirmMeeting(String id) throws Exception {
         meetingRepository.flush();
 
-        Optional<Meeting> optionalMeeting = meetingRepository.findByGuestVerificationToken(confirmationToken);
+        Optional<Meeting> optionalMeeting = meetingRepository.findById(UUID.fromString(id));
 
         if (optionalMeeting.isPresent()) {
             Meeting meeting = optionalMeeting.get();
 
-            meeting.setConfirmed(true);
+            if (meeting.isGuestAndMeetingConfirmed())
+                throw new Exception("Meeting already confirmed");
+
+            if (meeting.isRejectedByDean())
+                throw new Exception("Cannot accept previously rejected meeting");
+
+            meeting.setGuestAndMeetingConfirmed(true);
 
             meetingRepository.save(meeting);
         } else {
             throw new Exception("No meeting associated with provided token exists");
+        }
+    }
+
+    public ResponseEntity<String> rejectMeetingChanges(UUID meetingId) {
+        try {
+            meetingRepository.deleteById(meetingId);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

@@ -11,12 +11,12 @@ const fakeMeetings = [
       name: 'Andrew',
       surname: 'Simpson'
     },
-    goal: 'Need to sign some papers',
-    beginsAt: new Date(2021, 0, 5, 11, 15),
+    description: 'Need to sign some papers',
+    date: new Date(2021, 0, 5, 11, 15),
     duration: 15,
     deanId: 'abdf7a9b3830485b0g',
     isOnline: true,
-    isAccepted: false
+    accepted: false
   },
   {
     id: _id(),
@@ -26,12 +26,12 @@ const fakeMeetings = [
       name: 'Mark',
       surname: 'Tompson'
     },
-    goal: 'Need to sign some papers',
-    beginsAt: new Date(2021, 0, 5, 15, 15),
+    description: 'Need to sign some papers',
+    date: new Date(2021, 0, 5, 15, 15),
     duration: 15,
     deanId: 'abdf7a9b3830485b0g',
     isOnline: true,
-    isAccepted: false
+    accepted: false
   },
   {
     id: _id(),
@@ -41,12 +41,12 @@ const fakeMeetings = [
       name: 'Sam',
       surname: 'Kilton'
     },
-    goal: 'Need to sign some papers',
-    beginsAt: new Date(2021, 0, 5, 14, 15),
+    description: 'Need to sign some papers',
+    date: new Date(2021, 0, 5, 14, 15),
     duration: 15,
     deanId: 'abdf7a9b3830485b0g',
     isOnline: true,
-    isAccepted: false
+    accepted: false
   },
   {
     id: _id(),
@@ -56,27 +56,12 @@ const fakeMeetings = [
       name: 'Jack',
       surname: 'Daniels'
     },
-    goal: 'Need to sign some papers',
-    beginsAt: new Date(2021, 0, 5, 12, 15),
+    description: 'Need to sign some papers',
+    date: new Date(2021, 0, 5, 12, 15),
     duration: 30,
     deanId: 'abdf7a9b3830485b0g',
     isOnline: true,
-    isAccepted: false
-  },
-  {
-    id: _id(),
-    guest: {
-      id: _id(),
-      email: 'asd@gmail.com',
-      name: 'Jack',
-      surname: 'Daniels'
-    },
-    goal: 'Need to sign some papers',
-    beginsAt: new Date(2021, 1, 6, 12, 15),
-    duration: 30,
-    deanId: 'abdf7a9b3830485b0g',
-    isOnline: true,
-    isAccepted: false
+    accepted: false
   }
 ]
 

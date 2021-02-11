@@ -14,21 +14,34 @@ import { CheckIcon, CancelIcon, ChangeTimeIcon } from './icons'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { useStyles } from './style'
 import teams from './icons/Teams.png'
+import ProposeChangesToSuggestionDialog from './ProposeChangesToSuggestionDialog'
+import { useState } from 'react'
 import { useMediaQueries } from '@react-hook/media-query'
 
 interface meetingProps {
   meeting: MeetingType
   acceptHandler: (id: string) => void
   cancelHandler: (id: string) => void
+  changeHandler: (id: string, beginsAt: Date|undefined, duration: number|undefined) => void
 }
 
 export default function MeetingSuggestion ({
   meeting,
   acceptHandler,
-  cancelHandler
+  cancelHandler,
+  changeHandler
 }: meetingProps) {
   const [expanded, setExpanded] = React.useState<string | false>(false)
   const [checked, setChecked] = React.useState(false)
+  const [showModifyMeetingDetailsDialog, setShowModifyMeetingDetailsDialog] = useState(false)
+
+  function setMeetingChanges (dateTime: Date|undefined, duration: number|undefined) {
+    const { id, beginsAt } = meeting
+
+    changeHandler(id, dateTime, duration)
+
+    console.log({ dateTime, duration })
+  }
 
   const handleChange = (panel: string) => (
     event: React.ChangeEvent<{}>,
@@ -41,7 +54,7 @@ export default function MeetingSuggestion ({
   const endTime = new Date() // get current date
   endTime.setHours(
     meeting.beginsAt.getHours(),
-    meeting.beginsAt.getMinutes() + 15,
+    meeting.beginsAt.getMinutes() + meeting.duration,
     0,
     0
   )
@@ -160,7 +173,7 @@ export default function MeetingSuggestion ({
               <IconButton
                 aria-label="suggest other time"
                 onClick={function (event) {
-                  cancelHandler(meeting.id)
+                  setShowModifyMeetingDetailsDialog(true)
                   event.stopPropagation()
                 }}
               >
@@ -170,6 +183,17 @@ export default function MeetingSuggestion ({
           </div>
         </AccordionSummary>
       </Accordion>
+      <ProposeChangesToSuggestionDialog
+        currentDate={meeting.beginsAt}
+        currentDuration={meeting.duration}
+        open={showModifyMeetingDetailsDialog}
+        onClose={() => setShowModifyMeetingDetailsDialog(false)}
+        sendMeetingChanges={setMeetingChanges}
+      />
     </div>
   )
+}
+
+function requestNewMeetingDetails () {
+
 }

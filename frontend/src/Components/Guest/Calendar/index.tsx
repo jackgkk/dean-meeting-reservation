@@ -34,7 +34,7 @@ export default function Calendar ({ meetings }: MeetingProps) {
     setDay({ day: weekday[currentDate.getDay()], date: getPrettyDate(currentDate) })
   }
 
-  const tommorowUpdateHandler = () => {
+  const tomorrowUpdateHandler = () => {
     today.setDate(today.getDate() + 1)
     setCurrentDate(today)
     setDay({ day: weekday[currentDate.getDay()], date: getPrettyDate(currentDate) })
@@ -47,7 +47,7 @@ export default function Calendar ({ meetings }: MeetingProps) {
         <div className="dateDiv">
           <h2>{day.day}, {day.date}</h2>
         </div>
-        <button onClick={tommorowUpdateHandler}>next day</button>
+        <button onClick={tomorrowUpdateHandler}>next day</button>
       </div>
       <div className="meetingList">
         <MeetingList date={currentDate} meetings={meetings}/>
