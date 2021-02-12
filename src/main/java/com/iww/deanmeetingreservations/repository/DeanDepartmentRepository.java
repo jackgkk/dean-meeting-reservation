@@ -8,4 +8,5 @@ import java.util.UUID;
 
 @Repository
 public interface DeanDepartmentRepository extends JpaRepository<DeanDepartment, UUID> {
+
 }

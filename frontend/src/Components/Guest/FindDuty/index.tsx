@@ -9,6 +9,7 @@ import { meetingForm, showMeetingFormState, submittingStatusState } from './stat
 import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/Close'
 import Snackbar from '@material-ui/core/Snackbar'
+import Typography from '@material-ui/core/Typography'
 
 const fakeDepartments = [
   { name: 'Computer science and mathematics', id: 'k342bjh23y4u2y' },
@@ -25,9 +26,12 @@ const useStyles = makeStyles({
 export default function FindDuty () {
   const styles = useStyles()
   const [departments, setDepartments] = useState<Array<DepartmentType>>(fakeDepartments)
-  const [isFormOpen] = useRecoilState(showMeetingFormState)
-  const meetingState = useRecoilState(meetingForm)[0]
+  const [isFormOpen, setIsFormOpen] = useRecoilState(showMeetingFormState)
   const [submittingStatus, setSubmittingStatus] = useRecoilState(submittingStatusState)
+
+  function closeForm () {
+    setIsFormOpen(false)
+  }
 
   useEffect(getDepartments, [])
 
@@ -56,11 +60,13 @@ export default function FindDuty () {
 
   return (
     <section className={styles.root}>
-      <h1>Find Dean&apos;s duty by department</h1>
-      <Card style={{ boxShadow: '0 0 2rem rgb(130, 130, 130)' }}>
+      <Card style={{ padding: '.25rem 1rem 1rem', boxShadow: '0px 15px 64px rgb(0 0 0 / 26%)' }}>
+        <Typography variant={'h1'} style={{ padding: '1rem' }}>
+          Find Dean&apos;s duty by department
+        </Typography>
         {departments.map(dep => <Department key={dep.id} department={dep} />)}
       </Card>
-      {isFormOpen && <MeetingForm />}
+      <MeetingForm isOpen={isFormOpen} onClose={closeForm} />
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
