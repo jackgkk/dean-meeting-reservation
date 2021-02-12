@@ -4,6 +4,7 @@ import { Theme } from '@material-ui/core/styles/createMuiTheme'
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
+      position: 'relative',
       justifyContent: 'space-between',
       paddingRight: '3rem',
       paddingLeft: '3rem'
@@ -14,7 +15,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     title: {
       flexGrow: 1
     },
-    '@media (max-width: 992px)': {
+    '@media (max-width: 2000px)': {
       root: {
         display: 'none'
       }

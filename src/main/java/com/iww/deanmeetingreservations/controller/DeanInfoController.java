@@ -61,7 +61,7 @@ public class DeanInfoController {
                                                                        @RequestHeader(name = HEADER_STRING) String token){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return new ResponseEntity(deanInfoService.getConfirmedMeetings(authentication.getName(),
-                accepted.isPresent()? accepted.get() : true),HttpStatus.OK);
+                accepted. ()? accepted.get() : true),HttpStatus.OK);
     }
 
     @RequestMapping(value = "/api/dean/calendar/cancel-meeting/{id}",method = RequestMethod.DELETE)

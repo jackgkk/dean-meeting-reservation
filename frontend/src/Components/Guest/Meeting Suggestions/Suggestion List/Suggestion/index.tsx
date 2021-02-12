@@ -4,6 +4,8 @@ import {
   AccordionDetails,
   AccordionSummary,
   Grow,
+  Icon,
+  IconButton,
   Typography
 } from '@material-ui/core'
 import * as React from 'react'
@@ -12,6 +14,7 @@ import { CheckIcon, CancelIcon, ChangeTimeIcon } from './icons'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { useStyles } from './style'
 import teams from './icons/Teams.png'
+import { useMediaQueries } from '@react-hook/media-query'
 
 interface meetingProps {
   meeting: MeetingType
@@ -44,6 +47,11 @@ export default function MeetingSuggestion ({
   )
 
   const styling = useStyles()
+
+  const { matches, matchesAny, matchesAll } = useMediaQueries({
+    screen: 'screen',
+    width: '(max-width: 500px)'
+  })
 
   return (
     <div>
@@ -130,7 +138,8 @@ export default function MeetingSuggestion ({
               </AccordionDetails>
             )}
             <div className={styling.actionButtonsContainer}>
-              <div
+              <IconButton
+                aria-label="accept"
                 onClick={function (event) {
                   acceptHandler(meeting.id)
                   event.stopPropagation()
@@ -138,23 +147,25 @@ export default function MeetingSuggestion ({
                 onFocus={(event) => event.stopPropagation()}
               >
                 <CheckIcon className={styling.actionButton} />
-              </div>
-              <div
+              </IconButton>
+              <IconButton
+                aria-label="cancel"
                 onClick={function (event) {
                   cancelHandler(meeting.id)
                   event.stopPropagation()
                 }}
               >
                 <CancelIcon className={styling.actionButton} />
-              </div>
-              <div
+              </IconButton>
+              <IconButton
+                aria-label="suggest other time"
                 onClick={function (event) {
                   cancelHandler(meeting.id)
                   event.stopPropagation()
                 }}
               >
                 <ChangeTimeIcon className={styling.actionButton} />
-              </div>
+              </IconButton>
             </div>
           </div>
         </AccordionSummary>

@@ -124,13 +124,14 @@ const Registration: React.SFC<RegistrationProps> = () => {
     setIsValid(formValid(newDean))
     if (isValid) {
       const regDean = new DeanVerifiedReg(
-        Math.random().toString(),
         newDean.name,
         newDean.surname,
         newDean.email,
         newDean.password,
-        newDean.department
+        newDean.department.name
       )
+
+      console.log(regDean)
 
       fetch('/api/dean/register', {
         method: 'POST',
@@ -149,7 +150,9 @@ const Registration: React.SFC<RegistrationProps> = () => {
   function handleSuccessfulSubmit (response: Response) {
     if (response.status === 200) {
       console.log(response)
+      handleLogIn()
     } else {
+      console.log('asgasg')
       console.log(response)
     }
   }
@@ -262,7 +265,7 @@ const Registration: React.SFC<RegistrationProps> = () => {
                 >
                   Password
                 </Typography>
-                <div>
+                <div style={{ width: 'min-content' }}>
                   <input
                     className={styling.inputForm}
                     id={

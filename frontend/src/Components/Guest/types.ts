@@ -114,7 +114,7 @@ class Meeting {
       this.isOnline = meeting.isOnline
       this.isAccepted = meeting.isAccepted
       this.guest = meeting.guest
-      this.date = this.beginsAt.getDay().toString() + '.' + this.beginsAt.getMonth().toString() + '.' + this.beginsAt.getFullYear().toString()
+      this.date = (this.beginsAt.getDate() < 10 ? '0' + this.beginsAt.getDate().toString() : this.beginsAt.getDate().toString()) + '.' + (this.beginsAt.getMonth() + 1 < 10 ? '0' + (this.beginsAt.getMonth() + 1).toString() : (this.beginsAt.getMonth() + 1).toString()) + '.' + this.beginsAt.getFullYear().toString()
     }
 }
 
@@ -153,19 +153,17 @@ class DeanUnregistered {
 }
 
 class DeanVerifiedReg {
-  constructor (username: string, name: string, surname: string, email: string, password: string, department: Department) {
+  constructor (name: string, surname: string, email: string, password: string, department: string) {
     this.name = name
     this.surname = surname
     this.email = email
     this.password = password
     this.department = department
-    this.username = username
 
     Object.freeze(this)
   }
 
-  username: string
-  department: Department
+  department: string
   name: string;
   surname: string;
   email: string;

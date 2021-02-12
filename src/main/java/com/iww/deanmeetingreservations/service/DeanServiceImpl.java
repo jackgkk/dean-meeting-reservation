@@ -85,6 +85,7 @@ public class DeanServiceImpl implements DeanService {
 
     @Override
     public Dean saveDeanThroughForm(RegistrationForm form) throws ResourceAlreadyExistsError {
+        System.out.println(form);
         if(deanRepository.existsByEmailEquals(form.getEmail()))
             throw new ResourceAlreadyExistsError("User with " + form.getEmail() + " email already exists");
         Dean newDean = new Dean(encoder.encode(form.getPassword()), form.getName(), form.getSurname(),form.getEmail());

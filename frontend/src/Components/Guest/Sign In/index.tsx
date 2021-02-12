@@ -9,8 +9,12 @@ import {
 import { values } from 'lodash'
 import * as React from 'react'
 import { useHistory } from 'react-router-dom'
-import { LogInDean, UnLogedInDean } from '../types'
+import { Dean, LogInDean, UnLogedInDean } from '../types'
 import { useStyles } from './style'
+
+interface SignInProps {
+  handleSuccesfullLogIn: (dean: Dean) => void
+}
 
 const emailRegex = /^[a-zA-Z0-9._-]+@(([a-zA-Z]+\.)?)+(uni.lodz.pl)$/
 
@@ -29,7 +33,7 @@ const formValid = (newDean: UnLogedInDean) => {
   return valid
 }
 
-export default function SignIn () {
+export default function SignIn ({ handleSuccesfullLogIn }: SignInProps) {
   const [newDean, setNewDean] = React.useState<UnLogedInDean>({
     email: '',
     password: '',
@@ -85,10 +89,13 @@ export default function SignIn () {
   function handleSuccessfulSubmit (response: Response) {
     if (response.status === 200) {
       console.log(response)
+      setIsLogedIn(true)
     } else {
+      console.log(response)
       setIsLogedIn(false)
     }
   }
+
   function handleRegistr () {
     const path = '/registration'
     history.push(path)
