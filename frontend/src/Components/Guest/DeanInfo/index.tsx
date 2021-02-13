@@ -5,9 +5,11 @@ import { IconButton, Typography } from '@material-ui/core'
 import CreateIcon from '@material-ui/icons/Create'
 import { useState } from 'react'
 import ModifyDuties from './ModifyDuties'
+import { Duty } from '../types'
 
 interface DeanInfoProps {
   dean: Dean
+  updateOfficeHours: (officeHours: Array<Duty>) => void
 }
 
 const weekday = new Array(7)
@@ -21,7 +23,7 @@ weekday[6] = 'Saturday'
 
 export { weekday }
 
-export default function DeanInfo ({ dean }: DeanInfoProps) {
+export default function DeanInfo ({ dean, updateOfficeHours }: DeanInfoProps) {
   const styles = useStyles()
 
   const [isDialogOpen, setIsDialogOpen] = useState(false)
@@ -54,11 +56,21 @@ export default function DeanInfo ({ dean }: DeanInfoProps) {
           </div>
         ))}
       </div>
-      <ModifyDuties
-        isOpen={isDialogOpen}
-        onClose={() => setIsDialogOpen(false)}
-        currentDuties={dean.duties}
-      />
+      {isDialogOpen && <ModifyDuties
+          isOpen={isDialogOpen}
+          onClose={handleClose}
+          currentDuties={dean.duties}
+          onChange={handleChange}
+      />}
     </div>
   )
+
+  function handleClose () {
+    setIsDialogOpen(false)
+  }
+
+  function handleChange (officeHours: Array<Duty>) {
+    updateOfficeHours(officeHours)
+    handleClose()
+  }
 }

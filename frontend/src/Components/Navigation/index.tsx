@@ -23,6 +23,14 @@ export default function Navigation () {
   function handleLogInStatus (value: Boolean) {
     setIsLogedIn(value)
   }
+
+  React.useEffect(checkIfLogged, [])
+
+  function checkIfLogged () {
+    if (localStorage.getItem('token')) {
+      setIsLogedIn(true)
+    }
+  }
   return (
     <Router>
       <Switch>

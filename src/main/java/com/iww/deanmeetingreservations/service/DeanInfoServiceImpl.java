@@ -3,6 +3,7 @@ package com.iww.deanmeetingreservations.service;
 import com.iww.deanmeetingreservations.config.JwtTokenUtil;
 import com.iww.deanmeetingreservations.dto.DeanDto;
 import com.iww.deanmeetingreservations.dto.DeanInfoDto;
+import com.iww.deanmeetingreservations.dto.DutyDto;
 import com.iww.deanmeetingreservations.dto.MeetingReturnDto;
 import com.iww.deanmeetingreservations.model.Dean;
 import com.iww.deanmeetingreservations.model.DeanDepartment;
@@ -88,11 +89,11 @@ public class DeanInfoServiceImpl implements DeanInfoService {
                     departmentRepository.saveAndFlush(department);
                 }
                 if (deanDto.getDuties()!=null) {
-                    Duty newDuty;
-                    for (Duty d : deanDto.getDuties()) {
-                        newDuty = new Duty(d.getDayOfTheWeek(), d.getStartsAt(), d.getEndsAt());
-                        deanModel.addDuty(newDuty);
-                    }
+                    deanModel.replaceDuties(
+                            deanDto.getDuties()
+                                    .stream()
+                                    .map(d -> new Duty(d.getDayOfWeek(), d.getBegins(), d.getEnds()))
+                                    .collect(Collectors.toList()));
                 }
                 deanRepository.saveAndFlush(deanModel);
             }
@@ -102,14 +103,14 @@ public class DeanInfoServiceImpl implements DeanInfoService {
     }
 
     @Override
-    public DeanInfoDto findUserById(String id, String token) {
-        Optional<Dean> dean = deanRepository.findById(UUID.fromString(id));
+    public DeanInfoDto findUserById(UUID id, String token) {
+        Optional<Dean> dean = deanRepository.findById(id);
         token = token.substring(7);
         if (dean.isPresent()) {
             if(jwtTokenUtil.validateToken(token, deanService.loadUserByUsername(dean.get().getEmail()))){
                 return new DeanInfoDto(dean.get().getFirstname(), dean.get().getLastname(), dean.get().getEmail(),
                         dean.get().getDuties().stream().map(duty ->
-                                new DeanInfoDto.DutyDto(duty.getDayOfTheWeek(), duty.getStartsAt(), duty.getEndsAt()))
+                                new DutyDto(duty.getDayOfTheWeek(), duty.getStartsAt(), duty.getEndsAt()))
                                 .collect(Collectors.toList()));
             }
             throw new SecurityException();

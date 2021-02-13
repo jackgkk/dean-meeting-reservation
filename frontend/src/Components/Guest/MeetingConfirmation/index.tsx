@@ -31,7 +31,7 @@ function MeetingConfirmation () {
   }
 
   const pending = <h1>Confirmation in progress...</h1>
-  const success = <h1>Meeting confirmed! Have a great meeting.</h1>
+  const success = <h1>Meeting confirmed! Now wait for email from Dean with his acceptance.</h1>
   const error = <h1>Something went wrong</h1>
 
   if (confirmationState === 'success') return success

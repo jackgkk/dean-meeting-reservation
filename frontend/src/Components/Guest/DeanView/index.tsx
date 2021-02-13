@@ -3,6 +3,7 @@ import Calendar from '../Calendar'
 import MeetingSuggestions from '../Meeting Suggestions'
 import {
   Dean,
+  Duty,
   InputMeetingType as MeetingType,
   Meeting as NewMeetingType
 } from '../types'
@@ -23,14 +24,14 @@ export default function DeanView () {
     name: '',
     surname: '',
     email: '',
-    duties: [
-      {
-        dayOfWeek: 0,
-        begins: '',
-        ends: ''
-      }
-    ],
+    duties: [new Duty(0, '', '')],
     status: 'Dean'
+  })
+
+  const [actionResult, setActionResult] = useState('')
+
+  const meetingsToGroupByDate = meetings?.map((meeting) => {
+    return new NewMeetingType(meeting)
   })
 
   useEffect(fetchMeetingPropositions, [])
@@ -85,15 +86,38 @@ export default function DeanView () {
       })
   }
 
-  const [propositionActionResult, setPropositionActionResult] = useState('')
+  function updateOfficeHours (officeHours: Array<Duty>) {
+    const authorizationToken = localStorage.getItem('token')
 
-  const meetingsToGroupByDate = meetings?.map((meeting) => {
-    return new NewMeetingType(meeting)
-  })
+    if (!authorizationToken) {
+      throw new Error('User not authenticated')
+    }
+
+    fetch('/api/dean/update-info', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: authorizationToken
+      },
+      body: JSON.stringify({ duties: officeHours })
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          throw new Error('Can not update office hours: ' + (await res.text()))
+        }
+
+        setActionResult('Office hours was successfully updated!')
+        fetchDeanInfo()
+
+        return await res.json()
+      })
+      .catch(({ message }) => {
+        console.error('Can not update office hours: ' + message)
+      })
+  }
 
   function acceptHandler (id: string) {
     const authorizationToken = localStorage.getItem('token')
-    console.log(authorizationToken)
 
     if (!authorizationToken) {
       throw new Error('User not authenticated')
@@ -108,14 +132,14 @@ export default function DeanView () {
         }
       })
       .then(() => {
-        setPropositionActionResult('Meeting accepted. Guest will be notified')
+        setActionResult('Meeting accepted. Guest will be notified')
         const index = meetings.findIndex((met) => met.id === id)
         const items = [...meetings]
         items[index] = { ...items[index], accepted: true }
         setMeetings(items)
       })
       .catch(({ message }) => {
-        setPropositionActionResult(message)
+        setActionResult(message)
       })
   }
 
@@ -135,14 +159,14 @@ export default function DeanView () {
         }
       })
       .then(() => {
-        setPropositionActionResult('Meeting rejected. Guest will be notified')
+        setActionResult('Meeting rejected. Guest will be notified')
         const index = meetings.findIndex((met) => met.id === id)
         const items = [...meetings]
         items[index] = { ...items[index], accepted: false }
         setMeetings(items)
       })
       .catch(({ message }) => {
-        setPropositionActionResult(message)
+        setActionResult(message)
       })
   }
 
@@ -181,20 +205,20 @@ export default function DeanView () {
         }
       })
       .then(() => {
-        setPropositionActionResult('Changes suggestions were send to guest.')
+        setActionResult('Changes suggestions were send to guest.')
         const index = meetings.findIndex((met) => met.id === id)
         let items = [...meetings]
         items = items.filter((_, i) => i !== index)
         setMeetings(items)
       })
       .catch(({ message }) => {
-        setPropositionActionResult(message)
+        setActionResult(message)
         console.log(message)
       })
   }
 
   function handleCloseSnackbar () {
-    setPropositionActionResult('')
+    setActionResult('')
   }
 
   const styles = useStyles()
@@ -206,10 +230,10 @@ export default function DeanView () {
           vertical: 'bottom',
           horizontal: 'left'
         }}
-        open={propositionActionResult !== ''}
+        open={actionResult !== ''}
         autoHideDuration={6000}
         onClose={handleCloseSnackbar}
-        message={propositionActionResult}
+        message={actionResult}
         action={
           <React.Fragment>
             <IconButton size="small" aria-label="close" color="inherit">
@@ -221,7 +245,7 @@ export default function DeanView () {
       <div className={styles.mainContainer}>
         <div className={styles.contentContainer}>
           <div className={styles.info}>
-            <DeanInfo dean={dean} />
+            <DeanInfo updateOfficeHours={updateOfficeHours} dean={dean} />
           </div>
 
           <div className={styles.meetingsContainer}>

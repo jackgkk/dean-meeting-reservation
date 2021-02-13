@@ -13,6 +13,6 @@ public interface DeanInfoService {
     List<MeetingReturnDto> getConfirmedMeetings(String email, boolean accepted);
     void deleteMeeting(UUID meetingId,String email) throws ResourceNotFoundException, AccessDeniedException;
     void updateProfile(DeanDto deanDto, String id, String token);
-    DeanInfoDto findUserById(String id, String token);
+    DeanInfoDto findUserById(UUID id, String token);
     void deleteByDutyId(String dutyId, String email);
 }
