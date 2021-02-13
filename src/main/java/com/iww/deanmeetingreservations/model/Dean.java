@@ -142,4 +142,10 @@ public class Dean {
         duty.setDean(this);
     }
 
+    public void replaceDuties(List<Duty> duties) {
+        this.duties.removeAll(this.duties);
+        duties.forEach(duty -> duty.setDean(this));
+        this.duties.addAll(duties);
+
+    }
 }

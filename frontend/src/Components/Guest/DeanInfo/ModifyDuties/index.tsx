@@ -4,7 +4,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  DialogTitle, FormControl, InputLabel,
+  DialogTitle, FormControl, FormHelperText, InputLabel,
   ListItem, ListItemSecondaryAction,
   ListItemText, MenuItem, Select
 } from '@material-ui/core'
@@ -22,19 +22,32 @@ import AddIcon from '@material-ui/icons/Add'
 interface props {
   isOpen: boolean
   onClose: (arg: any) => void
-  currentDuties: Array<Duty>
+  currentDuties: Array<Duty>,
+  onChange: (officeHours: Array<Duty>) => void
 }
 
-export default function ModifyDuties ({ isOpen, onClose, currentDuties }: props) {
+function areDutiesEqual (duty: Duty, anotherDuty: Duty): boolean {
+  if (!duty || !anotherDuty) return false
+  return anotherDuty.dayOfWeek === duty.dayOfWeek && anotherDuty.begins === duty.begins && anotherDuty.ends === duty.ends
+}
+
+export default function ModifyDuties ({ isOpen, onClose, currentDuties, onChange }: props) {
   const [declaredOfficeHours, setDeclaredOfficeHours] = useState(currentDuties)
+  const [endsTimeErrorMessage, setEndsTimeErrorMessage] = useState('')
 
   useEffect(function () {
-    setDeclaredOfficeHours([...currentDuties])
-  }, [])
+    setDeclaredOfficeHours(currentDuties)
+  }, [currentDuties, isOpen])
 
-  const [starts, setStarts] = useState<Date|null>()
-  const [ends, setEnds] = useState<Date|null>()
+  const [starts, setStarts] = useState<Date|null>(new Date())
+  const [ends, setEnds] = useState<Date|null>(new Date())
   const [dayOfWeek, setDayOfWeek] = useState(0)
+
+  function wasCurrentMeetingsModified (): boolean {
+    return declaredOfficeHours.every((duty, i) =>
+      areDutiesEqual(duty, currentDuties[i])) && currentDuties.every((duty, i) =>
+      areDutiesEqual(duty, declaredOfficeHours[i]))
+  }
 
   function handleDayOfWeek (e: React.ChangeEvent<{ value: unknown }>) {
     setDayOfWeek(e.target.value as number)
@@ -42,26 +55,58 @@ export default function ModifyDuties ({ isOpen, onClose, currentDuties }: props)
 
   function handleStartsChange (date: Date|null) {
     setStarts(date)
+    isEndDateValid(date as Date, ends as Date)
   }
 
   function handleEndsChange (date: Date|null) {
     setEnds(date)
+    isEndDateValid(starts as Date, date as Date)
+  }
+
+  function diffMinutes (dt2: Date, dt1: Date): number {
+    let diff = (dt1.getTime() - dt2.getTime()) / 1000
+    diff /= 60
+    return Math.round(diff)
+  }
+
+  function isEndDateValid (startDate: Date, endDate: Date): boolean {
+    if (diffMinutes(startDate, endDate) < 5) {
+      const startPlus5min = new Date(startDate.getTime())
+      startPlus5min.setMinutes(startPlus5min.getMinutes() + 5)
+
+      const message = 'Must be after ' + startPlus5min.toLocaleTimeString().substr(0, 5)
+      setEndsTimeErrorMessage(message)
+
+      return false
+    } else {
+      setEndsTimeErrorMessage('')
+
+      return true
+    }
   }
 
   function addNewOfficeHour () {
-    setDeclaredOfficeHours(oo => [...oo,
-      new Duty(
-        dayOfWeek,
-        starts?.toTimeString().substr(0, 5) as string,
-        ends?.toTimeString().substr(0, 5) as string
-      )
-    ])
+    if (!isEndDateValid(starts as Date, ends as Date)) return
+
+    const duty = new Duty(
+      dayOfWeek,
+      starts?.toTimeString().substr(0, 5) as string,
+      ends?.toTimeString().substr(0, 5) as string
+    )
+
+    if (declaredOfficeHours.some(currentDuty => areDutiesEqual(currentDuty, duty))) return
+
+    setDeclaredOfficeHours(oo => [...oo, duty])
   }
 
   function prepareRemoveOfficeHour (index: number) {
     return function removeOfficeHour () {
       setDeclaredOfficeHours(declaredOfficeHours.filter((_, i) => index !== i))
     }
+  }
+
+  function sendChanges () {
+    onChange(declaredOfficeHours)
   }
 
   return (
@@ -92,33 +137,37 @@ export default function ModifyDuties ({ isOpen, onClose, currentDuties }: props)
                   Add new office hour
                 </DialogTitle>
                 <ListItem button>
-                  <FormControl style={{ minWidth: '20rem', flexDirection: 'initial', alignItems: 'baseline' }}>
-                    <div>
-                      <InputLabel style={{ top: 'unset' }} htmlFor={'day-of-week'}>On</InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={dayOfWeek}
-                        onChange={handleDayOfWeek}
-                        style={{ maxWidth: '8rem' }}
-                        inputProps={{ id: 'day-of-week' }}
-                      >
-                        <MenuItem value={0}>Mondays</MenuItem>
-                        <MenuItem value={1}>Tuesdays</MenuItem>
-                        <MenuItem value={2}>Wednesdays</MenuItem>
-                        <MenuItem value={3}>Thursdays</MenuItem>
-                        <MenuItem value={4}>Fridays</MenuItem>
-                        <MenuItem value={5}>Saturdays</MenuItem>
-                        <MenuItem value={6}>Sundays</MenuItem>
-                      </Select>
-                    </div>
+                  <div>
+                    <FormControl
+                      style={{ top: '1rem', flexDirection: 'initial', alignItems: 'baseline' }}
+                    >
+                      <div>
+                        <InputLabel style={{ top: 'unset' }} htmlFor={'day-of-week'}>On</InputLabel>
+                        <Select
+                          labelId="demo-simple-select-label"
+                          id="demo-simple-select"
+                          value={dayOfWeek}
+                          onChange={handleDayOfWeek}
+                          style={{ maxWidth: '8rem' }}
+                          inputProps={{ id: 'day-of-week' }}
+                        >
+                          <MenuItem value={0}>Mondays</MenuItem>
+                          <MenuItem value={1}>Tuesdays</MenuItem>
+                          <MenuItem value={2}>Wednesdays</MenuItem>
+                          <MenuItem value={3}>Thursdays</MenuItem>
+                          <MenuItem value={4}>Fridays</MenuItem>
+                          <MenuItem value={5}>Saturdays</MenuItem>
+                          <MenuItem value={6}>Sundays</MenuItem>
+                        </Select>
+                      </div>
+                    </FormControl>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                       <KeyboardTimePicker
                         style={{ maxWidth: '8rem', padding: '0 .25rem' }}
                         margin="normal"
                         id="begins-time-picker"
                         label="Begins"
-                        value={new Date()}
+                        value={starts}
                         onChange={handleStartsChange}
                         KeyboardButtonProps={{
                           'aria-label': 'change time'
@@ -130,24 +179,31 @@ export default function ModifyDuties ({ isOpen, onClose, currentDuties }: props)
                         margin="normal"
                         id="ends-time-picker"
                         label="Ends"
-                        value={new Date()}
+                        value={ends}
                         onChange={handleEndsChange}
                         KeyboardButtonProps={{
                           'aria-label': 'change time'
                         }}
                         ampm={false}
+                        helperText={endsTimeErrorMessage}
+                        error={!!endsTimeErrorMessage}
                       />
-                      <IconButton onClick={addNewOfficeHour}>
-                        <AddIcon />
-                      </IconButton>
                     </MuiPickersUtilsProvider>
-                  </FormControl>
+                  </div>
+                  <IconButton onClick={addNewOfficeHour}>
+                    <AddIcon />
+                  </IconButton>
                 </ListItem>
               </List>
             </DialogContent>
             <DialogActions>
-              <Button color='primary' variant={'contained'}>save</Button>
-              <Button color='primary' variant='outlined'>cancel</Button>
+              <Button
+                color='primary'
+                variant={'contained'}
+                disabled={wasCurrentMeetingsModified()}
+                onClick={sendChanges}
+              >save</Button>
+              <Button color='primary' variant='outlined' onClick={onClose}>cancel</Button>
             </DialogActions>
           </div>
         </ClickAwayListener>

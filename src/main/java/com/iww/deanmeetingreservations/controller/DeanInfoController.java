@@ -42,25 +42,27 @@ public class DeanInfoController {
 
     Logger logger = LoggerFactory.getLogger(DeanMeetingReservationsApplication.class);
 
+    private UUID getDeanIDFromToken(String token) {
+        String email = jwtTokenUtil.getEmailFromToken(token.startsWith(TOKEN_PREFIX) ? token.replace(TOKEN_PREFIX, "") : token);
+        return deanRepository.findByEmail(email).getDeanId();
+    }
+
     @RequestMapping(value = "/api/dean", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<DeanInfoDto> getDeanWithId(@RequestHeader ("Authorization") String token) throws ResourceNotFoundException {
         try {
-            String email = jwtTokenUtil.getEmailFromToken(token.startsWith(TOKEN_PREFIX) ? token.replace(TOKEN_PREFIX, "") : token);
-            String id = deanRepository.findByEmail(email).getDeanId().toString();
-
-            DeanInfoDto deanInfoDto = deanInfoService.findUserById(id, token);
+            DeanInfoDto deanInfoDto = deanInfoService.findUserById(getDeanIDFromToken(token), token);
             return ResponseEntity.ok(deanInfoDto);
         } catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @RequestMapping(value = "/api/dean/update-info/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/dean/update-info", method = RequestMethod.PUT)
     @ResponseBody
-    public ResponseEntity<String> updateDeanInfo(@PathVariable String id, @RequestBody DeanDto deanDto,  @RequestHeader ("Authorization") String token) throws ResourceNotFoundException {
+    public ResponseEntity<String> updateDeanInfo(@RequestBody DeanDto deanDto,  @RequestHeader ("Authorization") String token) throws ResourceNotFoundException {
         try {
-            deanInfoService.updateProfile(deanDto, id, token);
+            deanInfoService.updateProfile(deanDto, getDeanIDFromToken(token).toString(), token);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
