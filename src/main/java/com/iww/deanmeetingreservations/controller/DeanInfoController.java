@@ -1,9 +1,11 @@
 package com.iww.deanmeetingreservations.controller;
 
 import com.iww.deanmeetingreservations.DeanMeetingReservationsApplication;
+import com.iww.deanmeetingreservations.config.JwtTokenUtil;
 import com.iww.deanmeetingreservations.dto.DeanDto;
 import com.iww.deanmeetingreservations.dto.DeanInfoDto;
 import com.iww.deanmeetingreservations.dto.MeetingReturnDto;
+import com.iww.deanmeetingreservations.repository.DeanRepository;
 import com.iww.deanmeetingreservations.service.DeanInfoServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static com.iww.deanmeetingreservations.security.SecurityConstants.HEADER_STRING;
+import static com.iww.deanmeetingreservations.security.SecurityConstants.TOKEN_PREFIX;
 
 @RestController
 public class DeanInfoController {
@@ -31,12 +34,21 @@ public class DeanInfoController {
     @Autowired
     private DeanInfoServiceImpl deanInfoService;
 
+    @Autowired
+    private DeanRepository deanRepository;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
+
     Logger logger = LoggerFactory.getLogger(DeanMeetingReservationsApplication.class);
 
-    @RequestMapping(value = "/api/dean/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/dean", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<DeanInfoDto> getDeanWithId(@PathVariable("id") String id, @RequestHeader ("Authorization") String token) throws ResourceNotFoundException {
+    public ResponseEntity<DeanInfoDto> getDeanWithId(@RequestHeader ("Authorization") String token) throws ResourceNotFoundException {
         try {
+            String email = jwtTokenUtil.getEmailFromToken(token.startsWith(TOKEN_PREFIX) ? token.replace(TOKEN_PREFIX, "") : token);
+            String id = deanRepository.findByEmail(email).getDeanId().toString();
+
             DeanInfoDto deanInfoDto = deanInfoService.findUserById(id, token);
             return ResponseEntity.ok(deanInfoDto);
         } catch (ResourceNotFoundException e) {

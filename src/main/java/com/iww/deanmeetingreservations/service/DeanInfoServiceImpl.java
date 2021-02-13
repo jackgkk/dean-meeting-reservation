@@ -107,7 +107,10 @@ public class DeanInfoServiceImpl implements DeanInfoService {
         token = token.substring(7);
         if (dean.isPresent()) {
             if(jwtTokenUtil.validateToken(token, deanService.loadUserByUsername(dean.get().getEmail()))){
-                return new DeanInfoDto(dean.get().getFirstname(), dean.get().getLastname(), dean.get().getEmail(), dean.get().getDuties());
+                return new DeanInfoDto(dean.get().getFirstname(), dean.get().getLastname(), dean.get().getEmail(),
+                        dean.get().getDuties().stream().map(duty ->
+                                new DeanInfoDto.DutyDto(duty.getDayOfTheWeek(), duty.getStartsAt(), duty.getEndsAt()))
+                                .collect(Collectors.toList()));
             }
             throw new SecurityException();
         } else {

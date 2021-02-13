@@ -16,7 +16,23 @@ export default function DeanView () {
     fakeMeetings
   )
 
+  const [dean, setDean] = React.useState<Dean>({
+    id: uniqueId.toString(),
+    name: '',
+    surname: '',
+    email: '',
+    duties: [
+      {
+        dayOfWeek: 0,
+        begins: '',
+        ends: ''
+      }
+    ],
+    status: 'Dean'
+  })
+
   useEffect(fetchMeetingPropositions, [])
+  useEffect(fetchDeanInfo, [])
 
   function fetchMeetingPropositions () {
     const authorizationToken = localStorage.getItem('token')
@@ -39,22 +55,27 @@ export default function DeanView () {
       })
   }
 
-  const [propositionActionResult, setPropositionActionResult] = useState('')
+  function fetchDeanInfo () {
+    const authorizationToken = localStorage.getItem('token')
 
-  const [dean, setDean] = React.useState<Dean>({
-    id: uniqueId.toString(),
-    name: 'Yevhen',
-    surname: 'Hukalo',
-    email: 'gukalo2001@gmail.com',
-    duties: [
-      {
-        dayOfWeek: 4,
-        begins: '14:00',
-        ends: '15.45'
-      }
-    ],
-    status: 'Dean'
-  })
+    if (!authorizationToken) { throw new Error('User not authenticated') }
+
+    fetch('/api/dean', {
+      headers: { Authorization: authorizationToken }
+    })
+      .then(async res => {
+        if (!res.ok) {
+          throw new Error('Can not get Dean info: ' + await res.text())
+        }
+
+        return await res.json()
+      }).then(setDean)
+      .catch(({ message }) => {
+        console.error('Can not get Dean info: ' + message)
+      })
+  }
+
+  const [propositionActionResult, setPropositionActionResult] = useState('')
 
   const meetingsToGroupByDate = meetings?.map((meeting) => {
     return new NewMeetingType(meeting)
