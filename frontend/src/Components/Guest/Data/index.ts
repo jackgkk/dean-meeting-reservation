@@ -31,7 +31,7 @@ const fakeMeetings = [
     duration: 15,
     deanId: 'abdf7a9b3830485b0g',
     isOnline: true,
-    accepted: false
+    accepted: true
   },
   {
     id: _id(),
@@ -46,7 +46,7 @@ const fakeMeetings = [
     duration: 15,
     deanId: 'abdf7a9b3830485b0g',
     isOnline: true,
-    accepted: false
+    accepted: true
   },
   {
     id: _id(),
@@ -62,6 +62,81 @@ const fakeMeetings = [
     deanId: 'abdf7a9b3830485b0g',
     isOnline: true,
     accepted: false
+  },
+  {
+    id: _id(),
+    guest: {
+      id: _id(),
+      email: 'asd@gmail.com',
+      name: 'Sam',
+      surname: 'Kilton'
+    },
+    description: 'Need to sign some papers',
+    date: new Date(2021, 0, 9, 14, 15),
+    duration: 15,
+    deanId: 'abdf7a9b3830485b0g',
+    isOnline: true,
+    accepted: true
+  },
+  {
+    id: _id(),
+    guest: {
+      id: _id(),
+      email: 'asd@gmail.com',
+      name: 'Sam',
+      surname: 'Kilton'
+    },
+    description: 'Need to sign some papers',
+    date: new Date(2021, 0, 7, 14, 15),
+    duration: 15,
+    deanId: 'abdf7a9b3830485b0g',
+    isOnline: true,
+    accepted: true
+  },
+  {
+    id: _id(),
+    guest: {
+      id: _id(),
+      email: 'asd@gmail.com',
+      name: 'Sam',
+      surname: 'Kilton'
+    },
+    description: 'Need to sign some papers',
+    date: new Date(2021, 0, 7, 14, 15),
+    duration: 15,
+    deanId: 'abdf7a9b3830485b0g',
+    isOnline: true,
+    accepted: true
+  },
+  {
+    id: _id(),
+    guest: {
+      id: _id(),
+      email: 'asd@gmail.com',
+      name: 'Sam',
+      surname: 'Kilton'
+    },
+    description: 'Need to sign some papers',
+    date: new Date(2021, 0, 17, 14, 15),
+    duration: 15,
+    deanId: 'abdf7a9b3830485b0g',
+    isOnline: true,
+    accepted: true
+  },
+  {
+    id: _id(),
+    guest: {
+      id: _id(),
+      email: 'asd@gmail.com',
+      name: 'Sam',
+      surname: 'Kilton'
+    },
+    description: 'Need to sign some papers',
+    date: new Date(2021, 0, 8, 14, 15),
+    duration: 15,
+    deanId: 'abdf7a9b3830485b0g',
+    isOnline: true,
+    accepted: true
   }
 ]
 

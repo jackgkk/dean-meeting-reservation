@@ -22,7 +22,11 @@ interface meetingProps {
   meeting: MeetingType
   acceptHandler: (id: string) => void
   cancelHandler: (id: string) => void
-  changeHandler: (id: string, beginsAt: Date|undefined, duration: number|undefined) => void
+  changeHandler: (
+    id: string,
+    beginsAt: Date | undefined,
+    duration: number | undefined
+  ) => void
 }
 
 export default function MeetingSuggestion ({
@@ -33,9 +37,15 @@ export default function MeetingSuggestion ({
 }: meetingProps) {
   const [expanded, setExpanded] = React.useState<string | false>(false)
   const [checked, setChecked] = React.useState(false)
-  const [showModifyMeetingDetailsDialog, setShowModifyMeetingDetailsDialog] = useState(false)
+  const [
+    showModifyMeetingDetailsDialog,
+    setShowModifyMeetingDetailsDialog
+  ] = useState(false)
 
-  function setMeetingChanges (dateTime: Date|undefined, duration: number|undefined) {
+  function setMeetingChanges (
+    dateTime: Date | undefined,
+    duration: number | undefined
+  ) {
     const { id, beginsAt } = meeting
 
     changeHandler(id, dateTime, duration)
@@ -194,6 +204,4 @@ export default function MeetingSuggestion ({
   )
 }
 
-function requestNewMeetingDetails () {
-
-}
+function requestNewMeetingDetails () {}

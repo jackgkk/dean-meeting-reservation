@@ -141,7 +141,8 @@ export const useStyles = makeStyles({
     background: '#E5231B',
     color: 'white',
     padding: '0.3rem 0.5rem',
-    display: 'inline-block'
+    display: 'inline-block',
+    marginLeft: '34px'
   },
   '@media (max-height: 30rem)': {
     mainContentContainer: {
@@ -149,6 +150,9 @@ export const useStyles = makeStyles({
     }
   },
   '@media (max-width: 992px)': {
+    responseErrorDiv: {
+      marginLeft: 'none'
+    },
     inputContainer: {
       width: '100%',
       padding: 0,

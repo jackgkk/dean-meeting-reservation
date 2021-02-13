@@ -9,6 +9,13 @@ export const useStyles = makeStyles({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  responseErrorDiv: {
+    marginTop: '1rem',
+    background: '#E5231B',
+    color: 'white',
+    padding: '0.5rem 0.5rem',
+    display: 'inline-block'
+  },
   signUpContainer: {
     width: '54rem',
     minHeight: '30rem',

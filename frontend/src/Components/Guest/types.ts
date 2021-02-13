@@ -153,19 +153,17 @@ class DeanUnregistered {
 }
 
 class DeanVerifiedReg {
-  constructor (username: string, name: string, surname: string, email: string, password: string, department: Department) {
+  constructor (name: string, surname: string, email: string, password: string, department: string) {
     this.name = name
     this.surname = surname
     this.email = email
     this.password = password
     this.department = department
-    this.username = username
 
     Object.freeze(this)
   }
 
-  username: string
-  department: Department
+  department: string
   name: string;
   surname: string;
   email: string;

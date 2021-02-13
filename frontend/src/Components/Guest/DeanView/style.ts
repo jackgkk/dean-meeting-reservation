@@ -19,6 +19,7 @@ export const useStyles = makeStyles({
     position: 'relative',
     width: '1220px',
     padding: '0 6.6rem'
+
   },
   meetingsContainer: {
     display: 'flex',
