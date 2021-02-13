@@ -22,22 +22,22 @@ export default function DeanView () {
   )
   const [dean, setDean] = React.useState<Dean>({
     id: uniqueId.toString(),
-    name: 'Yevhen',
-    surname: 'Hukalo',
+    name: 'Not Found',
+    surname: 'Error',
     email: 'asfafsas@g',
     duties: [
       {
-        dayOfWeek: 3,
-        begins: '12.13',
-        ends: '12.14'
+        dayOfWeek: 8,
+        begins: 'error',
+        ends: 'error'
       }
     ],
-    status: 'student'
+    status: ''
   })
 
   useEffect(() => {
     fetchMeetingPropositions()
-    // fetchDeanInfo()
+    fetchDeanInfo()
   }, [])
 
   function fetchDeanInfo () {
@@ -46,6 +46,7 @@ export default function DeanView () {
     if (!authorizationToken) {
       throw new Error('User not authenticated dean info')
     }
+
     fetch('api/dean', {
       headers: { Authorization: authorizationToken }
     })
@@ -69,7 +70,6 @@ export default function DeanView () {
     if (!authorizationToken) {
       throw new Error('User not authenticated')
     }
-    console.log(authorizationToken)
 
     fetch('/api/dean/calendar/get-confirmed-meetings', {
       headers: { Authorization: authorizationToken }

@@ -84,7 +84,10 @@ export default function SignIn () {
 
   function handleSuccessfulSubmit (response: Response) {
     if (response.status === 200) {
-      response.json().then((token) => {})
+      response.json().then(({ token }) => {
+        localStorage.setItem('token', 'Bearer ' + token)
+      })
+      console.log(localStorage)
       setIsLogedIn(true)
       handleRedirect()
     } else {
