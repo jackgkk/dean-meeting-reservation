@@ -1,11 +1,12 @@
 package com.iww.deanmeetingreservations.dto;
 
 public class MeetingReturnDto {
-
     String id;
     String description;
     String date;
     int duration;
+    boolean isAccepted;
+
     private class MRDtoGuest{
         String name;
         String surname;
@@ -39,13 +40,14 @@ public class MeetingReturnDto {
     boolean isOnlineMeeting;
 
     public MeetingReturnDto(String id, String description, String date, int duration,
-            String name,String surname,String email,String status, boolean isOnlineMeeting) {
+            String name,String surname,String email,String status, boolean isOnlineMeeting, boolean isAccepted) {
         this.id = id;
         this.description = description;
         this.date = date;
         this.duration = duration;
         this.guest = new MRDtoGuest(name, surname, email, status);
         this.isOnlineMeeting = isOnlineMeeting;
+        this.isAccepted = isAccepted;
     }
 
 
@@ -92,5 +94,13 @@ public class MeetingReturnDto {
 
     public void setOnlineMeeting(boolean onlineMeeting) {
         isOnlineMeeting = onlineMeeting;
+    }
+
+    public boolean isAccepted() {
+        return isAccepted;
+    }
+
+    public void setAccepted(boolean isAccepted) {
+        this.isAccepted = isAccepted;
     }
 }

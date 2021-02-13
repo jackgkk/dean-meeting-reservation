@@ -5,6 +5,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "DEPARTMENTS")
@@ -16,8 +17,8 @@ public class Department {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "DEPARTMENT_ID")
-    private String departmentId;
+    @Column(name = "DEPARTMENT_ID", columnDefinition = "BINARY(16)")
+    private UUID departmentId;
 
     @Basic
     @Column(name = "NAME", nullable = false)
@@ -33,11 +34,11 @@ public class Department {
         this.departmentName = departmentName;
     }
 
-    public String getDepartmentId() {
+    public UUID getDepartmentId() {
         return departmentId;
     }
 
-    public void setDepartmentId(String departmentId) {
+    public void setDepartmentId(UUID departmentId) {
         this.departmentId = departmentId;
     }
 

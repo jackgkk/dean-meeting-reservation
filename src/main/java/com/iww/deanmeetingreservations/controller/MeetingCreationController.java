@@ -24,7 +24,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/meeting")
 public class MeetingCreationController {
 
     @Autowired
@@ -36,46 +36,12 @@ public class MeetingCreationController {
     @Autowired
     DeanRepository deanRepository;
 
-    @GetMapping("/hello")
-    public String sayHello() {
-        Optional<Dean> dean = deanRepository.findById(UUID.fromString("b49b68b6-c7ec-4a50-8fea-00aa66d00941").toString());
-
-        if (dean.isPresent()) {
-            System.out.println(dean.get());
-        } else {
-            System.out.println("Not found!");
-
-            Dean newDean1 = new Dean(UUID.randomUUID().toString(), bCryptPasswordEncoder.encode("test"), "Izabella", "Nowakowska", "izabella.nowakowska@wmii.uni.lodz.pl");
-            deanRepository.save(newDean1);
-            /* Dean newDean2 = new Dean(UUID.randomUUID(), d.getUsername(), d.getPassword(), d.getFirstname(), d.getLastname(), d.getEmail());
-            deanRepository.save(newDean2);
-            Dean newDean3 = new Dean(UUID.randomUUID(), d.getUsername(), d.getPassword(), d.getFirstname(), d.getLastname(), d.getEmail());
-            deanRepository.save(newDean3);
-            Dean newDean4 = new Dean(UUID.randomUUID(), d.getUsername(), d.getPassword(), d.getFirstname(), d.getLastname(), d.getEmail());
-            deanRepository.save(newDean4);
-            Dean newDean5 = new Dean(UUID.randomUUID(), d.getUsername(), d.getPassword(), d.getFirstname(), d.getLastname(), d.getEmail());
-            deanRepository.save(newDean5);
-            */
-        }
-
-        return "Hello, world!";
-    }
-
-    @PostMapping("/meeting/create-proposition")
+    @PostMapping("/create-proposition")
     void newMeeting(HttpServletRequest request, @RequestBody MeetingPropositionDto meetingProposition) {
         String referer = request.getHeader("referer");
 
         try {
             URL refererUrl = new URL(referer);
-
-            System.out.println(refererUrl.getProtocol() + "://" + refererUrl.getAuthority());
-        } catch (MalformedURLException e) {
-            System.out.println(e.getMessage());
-        }
-
-        try {
-            URL refererUrl = new URL(referer);
-
             String hostUrl  = refererUrl.getProtocol() + "://" + refererUrl.getAuthority();
 
              meetingPropositionService.addMeeting(meetingProposition, hostUrl);
@@ -84,31 +50,18 @@ public class MeetingCreationController {
         }
     }
 
-    @GetMapping("/meeting/confirm-meeting/{confirmationToken}")
-    ResponseEntity<String> confirmMeeting(@PathVariable String confirmationToken) {
+    @GetMapping("/confirm-meeting/{id}")
+    ResponseEntity<String> confirmMeeting(@PathVariable String id) {
         try {
-            meetingPropositionService.confirmMeeting(confirmationToken);
+            meetingPropositionService.confirmMeeting(id);
             return new ResponseEntity<>(HttpStatus.ACCEPTED);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-}
 
-class MeetingForm {
-    Guest guest;
-    UUID deanId;
-    String description;
-    String beginsAt;
-    int duration;
-    boolean isOnline;
-
-    public MeetingForm(Guest guest, UUID deanId, String description, String beginsAt, int duration, boolean isOnline) {
-        this.guest = guest;
-        this.deanId = deanId;
-        this.description = description;
-        this.beginsAt = beginsAt;
-        this.duration = duration;
-        this.isOnline = isOnline;
+    @DeleteMapping("/reject-meeting-changes/{id}")
+    ResponseEntity<String> rejectCounterProposeMeeting(@PathVariable UUID id) {
+        return meetingPropositionService.rejectMeetingChanges(id);
     }
 }

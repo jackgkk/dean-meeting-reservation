@@ -9,21 +9,13 @@ import Meeting from './Meeting'
 
 interface MeetingProps {
   meetings: Array<MeetingType> | undefined
-  date: Date
 }
 
-export default function MeetingList ({ meetings, date }: MeetingProps) {
+export default function MeetingList ({ meetings }: MeetingProps) {
   return (
     <div className="MeetingListDiv">
       {meetings
-        ?.filter(
-          (person) =>
-            person.isAccepted === true &&
-            person.beginsAt.getDate() === date.getDate() &&
-            person.beginsAt.getMonth() === date.getMonth() &&
-            person.beginsAt.getFullYear() === date.getFullYear()
-        )
-        .sort((a, b) => (a.date > b.date ? 1 : -1))
+        ?.sort((a, b) => (a.beginsAt > b.beginsAt ? 1 : -1))
         .map((filteredPerson) => (
           <div key={filteredPerson.id}>
             <Meeting meeting={filteredPerson} />

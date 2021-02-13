@@ -13,18 +13,9 @@ import Registration from '../Guest/Registration'
 import SignIn from '../Guest/Sign In'
 import NavBar from '../Guest/NavBar'
 import { Dean } from '../Guest/types'
+import MeetingChangesRejection from '../Guest/MeetingChangesRejection'
 
 export default function Navigation () {
-  const [dean, setDean] = React.useState<Dean>()
-
-  const history = useHistory()
-
-  function handleSuccesfullLogIn (dean: Dean) {
-    setDean(dean)
-    const path = '/dashboard'
-    history.push(path)
-  }
-
   return (
     <Router>
       <Switch>
@@ -40,11 +31,14 @@ export default function Navigation () {
         <Route path="/signin">
           <div style={{ width: '100%' }}>
             <NavBar auth={false} />
-            <SignIn handleSuccesfullLogIn={handleSuccesfullLogIn} />
+            <SignIn />
           </div>
         </Route>
         <Route path="/confirm-meeting/:token">
           <MeetingConfirmation />
+        </Route>
+        <Route path="/reject-meeting-changes/:token">
+          <MeetingChangesRejection />
         </Route>
         <Route path="/find-duty">
           <FindDuty />

@@ -8,15 +8,21 @@ interface MeetingProps{
   meetings: Array<MeetingType>|undefined
   acceptHandler: (id: string) => void
   cancelHandler: (id: string) => void
+  changeHandler: (id: string, beginsAt: Date|undefined, duration: number|undefined) => void
 }
 
-export default function SuggestionList ({ meetings, acceptHandler, cancelHandler }: MeetingProps) {
+export default function SuggestionList ({ meetings, acceptHandler, cancelHandler, changeHandler }: MeetingProps) {
   return (
         <div className="SuggestionListDiv" >
-            {meetings?.filter(person => person.isAccepted === false)
+            {meetings?.filter(person => person.accepted === false)
               .map(filteredPerson => (
                 <div key={filteredPerson.id} style={{ margin: '1.5rem 0rem' }}>
-                    <MeetingSuggestion meeting={filteredPerson} acceptHandler={acceptHandler} cancelHandler={cancelHandler} />
+                    <MeetingSuggestion
+                      meeting={filteredPerson}
+                      acceptHandler={acceptHandler}
+                      cancelHandler={cancelHandler}
+                      changeHandler={changeHandler}
+                    />
                 </div>
               ))}
         </div>

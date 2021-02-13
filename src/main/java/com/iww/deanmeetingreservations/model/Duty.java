@@ -3,6 +3,7 @@ package com.iww.deanmeetingreservations.model;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 @Table(name = "DUTIES")
@@ -14,8 +15,8 @@ public class Duty {
             name = "UUID",
             strategy = "org.hibernate.id.UUIDGenerator"
     )
-    @Column(name = "DUTY_ID")
-    private String dutyId;
+    @Column(name = "DUTY_ID", columnDefinition = "BINARY(16)")
+    private UUID dutyId;
 
     @Basic
     @Column(name = "DAY_OF_THE_WEEK", nullable = false)

@@ -19,7 +19,8 @@ export interface RegistrationProps {}
 
 const fakeDepartments = [
   { name: 'Computer science and mathematics', id: 'k342bjh23y4u2y' },
-  { name: 'Biology', id: '09jdsfiu898ds' }
+  { name: 'Biology', id: '09jdsfiu898ds' },
+  { name: 'Filology', id: '09jdsfiu898ds' }
 ]
 
 const emailRegex = /^[a-zA-Z0-9._-]+@(([a-zA-Z]+\.)?)+(uni.lodz.pl)$/
@@ -54,8 +55,11 @@ const Registration: React.SFC<RegistrationProps> = () => {
       .then(setDepartments)
       .catch(handleError)
 
+    console.log(departments)
+
     function handleResponse (res: Response) {
       if (res.ok) {
+        console.log('asgasgas', res.json() as Promise<Array<DepartmentType>>)
         return res.json() as Promise<Array<DepartmentType>>
       } else {
         throw new Error(

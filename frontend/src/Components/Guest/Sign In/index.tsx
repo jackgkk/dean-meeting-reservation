@@ -12,10 +12,6 @@ import { useHistory } from 'react-router-dom'
 import { Dean, LogInDean, UnLogedInDean } from '../types'
 import { useStyles } from './style'
 
-interface SignInProps {
-  handleSuccesfullLogIn: (dean: Dean) => void
-}
-
 const emailRegex = /^[a-zA-Z0-9._-]+@(([a-zA-Z]+\.)?)+(uni.lodz.pl)$/
 
 const formValid = (newDean: UnLogedInDean) => {
@@ -33,7 +29,7 @@ const formValid = (newDean: UnLogedInDean) => {
   return valid
 }
 
-export default function SignIn ({ handleSuccesfullLogIn }: SignInProps) {
+export default function SignIn () {
   const [newDean, setNewDean] = React.useState<UnLogedInDean>({
     email: '',
     password: '',
@@ -88,12 +84,18 @@ export default function SignIn ({ handleSuccesfullLogIn }: SignInProps) {
 
   function handleSuccessfulSubmit (response: Response) {
     if (response.status === 200) {
-      console.log(response)
+      response.json().then((token) => {})
       setIsLogedIn(true)
+      handleRedirect()
     } else {
       console.log(response)
       setIsLogedIn(false)
     }
+  }
+
+  function handleRedirect () {
+    const path = '/dashboard'
+    history.push(path)
   }
 
   function handleRegistr () {

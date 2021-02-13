@@ -21,6 +21,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class DeanServiceImpl implements DeanService {
 
@@ -95,7 +97,7 @@ public class DeanServiceImpl implements DeanService {
             department = departmentRepository.save(department);
         }
         deanRepository.save(newDean);
-        DeanDepartment deanDepartment = new DeanDepartment(newDean,department);
+        DeanDepartment deanDepartment = new DeanDepartment(newDean, department);
         newDean.addDeanDepartment(deanDepartment);
         department.addDeanDepartment(deanDepartment);
         deanDepartmentRepository.save(deanDepartment);

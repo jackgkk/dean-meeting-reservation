@@ -73,21 +73,21 @@ class Guest {
 class InputMeetingType {
   id: string
   guest: Guest
-  goal: string
-  beginsAt: Date
+  description: string
+  date: Date
   duration: number
   deanId: string
   isOnline: Boolean
-  isAccepted: Boolean
+  accepted: Boolean
 
-  constructor (id: string, guest: Guest, goal: string, beginsAt: Date, duration: number, deanId: string, isOnline: Boolean, isAccepted: Boolean = false) {
+  constructor (id: string, guest: Guest, goal: string, beginsAt: Date, duration: number, deanId: string, isOnline: Boolean, accepted: Boolean = false) {
     this.id = id
-    this.goal = goal
-    this.beginsAt = beginsAt
+    this.description = goal
+    this.date = beginsAt
     this.duration = duration
     this.deanId = deanId
     this.isOnline = isOnline
-    this.isAccepted = isAccepted
+    this.accepted = accepted
     this.guest = guest
 
     Object.freeze(this)
@@ -102,17 +102,17 @@ class Meeting {
     duration: number
     deanId: string
     isOnline: Boolean
-    isAccepted: Boolean
+    accepted: Boolean
     date: string
 
     constructor (meeting: InputMeetingType) {
       this.id = meeting.id
-      this.goal = meeting.goal
-      this.beginsAt = meeting.beginsAt
+      this.goal = meeting.description
+      this.beginsAt = new Date(meeting.date)
       this.duration = meeting.duration
       this.deanId = meeting.deanId
       this.isOnline = meeting.isOnline
-      this.isAccepted = meeting.isAccepted
+      this.accepted = meeting.accepted
       this.guest = meeting.guest
       this.date = (this.beginsAt.getDate() < 10 ? '0' + this.beginsAt.getDate().toString() : this.beginsAt.getDate().toString()) + '.' + (this.beginsAt.getMonth() + 1 < 10 ? '0' + (this.beginsAt.getMonth() + 1).toString() : (this.beginsAt.getMonth() + 1).toString()) + '.' + this.beginsAt.getFullYear().toString()
     }

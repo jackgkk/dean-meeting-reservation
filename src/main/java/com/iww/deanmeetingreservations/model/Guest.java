@@ -12,12 +12,15 @@ import java.util.UUID;
 public class Guest {
     @Id
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id", updatable = false, nullable = false)
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "id", updatable = false, nullable = false, columnDefinition = "BINARY(16)")
     private UUID id;
 
     @OneToMany(mappedBy = "guest")
-    private List<Meeting> meetings = new ArrayList<Meeting>();
+    private List<Meeting> meetings = new ArrayList<>();
 
     @Column(name = "name")
     private String name;
@@ -81,8 +84,7 @@ public class Guest {
         this.status = status;
     }
 
-    public Guest(UUID id, String name, String surname, String email, String status) {
-        this.id = id;
+    public Guest(String name, String surname, String email, String status) {
         this.name = name;
         this.surname = surname;
         this.email = email;

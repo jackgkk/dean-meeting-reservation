@@ -42,24 +42,22 @@ public class Meeting {
 
     private boolean acceptedByDean;
 
-    private String guestVerificationToken;
+    private boolean rejectedByDean;
 
-    private boolean confirmed;
+    private boolean guestAndMeetingConfirmed;
 
     public Meeting() {}
 
-    public Meeting(UUID id, Guest guest, Dean dean, String description, LocalDateTime beginsAt, int duration, boolean isOnline, String guestVerificationToken) {
-        this.id = id;
+    public Meeting(Guest guest, Dean dean, String description, LocalDateTime beginsAt, int duration, boolean isOnline) {
         this.guest = guest;
         this.dean = dean;
         this.description = description;
         this.beginsAt = beginsAt;
         this.duration = duration;
         this.isOnline = isOnline;
-        this.guestVerificationToken = guestVerificationToken;
     }
 
-    public Meeting(UUID id, Guest guest, Dean dean, String description, LocalDateTime beginsAt, int duration, boolean isOnline, String guestVerificationToken, boolean guestAndMeetingConfirmed) {
+    public Meeting(UUID id, Guest guest, Dean dean, String description, LocalDateTime beginsAt, int duration, boolean isOnline, boolean guestAndMeetingConfirmed) {
         this.id = id;
         this.guest = guest;
         this.dean = dean;
@@ -67,8 +65,7 @@ public class Meeting {
         this.beginsAt = beginsAt;
         this.duration = duration;
         this.isOnline = isOnline;
-        this.guestVerificationToken = guestVerificationToken;
-        this.confirmed = guestAndMeetingConfirmed;
+        this.guestAndMeetingConfirmed = guestAndMeetingConfirmed;
     }
 
     public UUID getId() {
@@ -127,25 +124,37 @@ public class Meeting {
         isOnline = online;
     }
 
-    public void setConfirmed(boolean guestAndMeetingConfirmed) {
-        this.confirmed = guestAndMeetingConfirmed;
+    public void setGuestAndMeetingConfirmed(boolean guestAndMeetingConfirmed) {
+        this.guestAndMeetingConfirmed = guestAndMeetingConfirmed;
     }
 
     public boolean isAcceptedByDean() {
         return acceptedByDean;
     }
 
-    public String getGuestVerificationToken() {
-        return guestVerificationToken;
-    }
-
     public boolean isConfirmed() {
-        return confirmed;
+        return this.guestAndMeetingConfirmed && this.acceptedByDean;
     }
 
     public MeetingReturnDto getReturnDto(){
-        return new MeetingReturnDto(id.toString(),description,
-                beginsAt.format(DateTimeFormatter.ofPattern("yyyy/MM/dd/kk:mm")),duration
-                ,guest.getName(),guest.getSurname(),guest.getEmail(),guest.getStatus(),isOnline);
+        return new MeetingReturnDto(id.toString(), description,
+                beginsAt.format(DateTimeFormatter.ofPattern("yyyy/MM/dd/kk:mm")), duration,
+                guest.getName(), guest.getSurname(), guest.getEmail(), guest.getStatus(), isOnline, isAcceptedByDean());
+    }
+
+    public void setAcceptedByDean(boolean acceptedByDean) {
+        this.acceptedByDean = acceptedByDean;
+    }
+
+    public boolean isRejectedByDean() {
+        return rejectedByDean;
+    }
+
+    public void setRejectedByDean(boolean rejectedByDean) {
+        this.rejectedByDean = rejectedByDean;
+    }
+
+    public boolean isGuestAndMeetingConfirmed() {
+        return guestAndMeetingConfirmed;
     }
 }

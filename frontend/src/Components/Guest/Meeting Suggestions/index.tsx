@@ -1,4 +1,5 @@
-import { makeStyles, Typography } from '@material-ui/core'
+import { Typography, createStyles } from '@material-ui/core'
+import makeStyles from '@material-ui/core/styles/makeStyles'
 import * as React from 'react'
 import SuggestionList from './Suggestion List'
 import './styling/index.scss'
@@ -18,13 +19,21 @@ import TimelineContent from '@material-ui/lab/TimelineContent'
 import TimelineDot from '@material-ui/lab/TimelineDot'
 import TimelineOppositeContent from '@material-ui/lab/TimelineOppositeContent'
 import clsx from 'clsx'
-import { useStyle } from './styling/style'
+import getStyle from './styling/style'
+import { Theme } from '@material-ui/core/styles/createMuiTheme'
+import ProposeChangesToSuggestionDialog from './Suggestion List/Suggestion/ProposeChangesToSuggestionDialog'
+// import { useStyle } from './styling/style'
 import { useMediaQueries } from '@react-hook/media-query'
 
 interface MeetingProps {
   meetings: Array<MeetingType> | undefined
   acceptHandler: (id: string) => void
   cancelHandler: (id: string) => void
+  changeHandler: (
+    id: string,
+    beginsAt: Date | undefined,
+    duration: number | undefined
+  ) => void
 }
 
 const weekday = new Array(7)
@@ -36,13 +45,14 @@ weekday[4] = 'Thursday'
 weekday[5] = 'Friday'
 weekday[6] = 'Saturday'
 
-export default function MeetingSuggestions ({
+function MeetingSuggestions ({
   meetings,
   acceptHandler,
-  cancelHandler
+  cancelHandler,
+  changeHandler
 }: MeetingProps) {
   const groupedByDateMeetings = _(
-    meetings?.filter((meeting) => meeting.isAccepted === false)
+    meetings?.filter((meeting) => meeting.accepted === false)
   )
     .groupBy('date')
     .map((meeting, date) => {
@@ -53,7 +63,10 @@ export default function MeetingSuggestions ({
     })
     .value()
 
-  const style = useStyle()
+  const style = makeStyles(function (theme: Theme) {
+    // @ts-ignore
+    return createStyles(getStyle(theme))
+  })()
 
   const { matches, matchesAny, matchesAll } = useMediaQueries({
     screen: 'screen',
@@ -91,7 +104,8 @@ export default function MeetingSuggestions ({
                         meetings={group.meeting}
                         acceptHandler={acceptHandler}
                         cancelHandler={cancelHandler}
-                      ></SuggestionList>
+                        changeHandler={changeHandler}
+                      />
                     </Typography>
                   </TimelineContent>
                 </TimelineItem>
@@ -114,7 +128,8 @@ export default function MeetingSuggestions ({
                     meetings={group.meeting}
                     acceptHandler={acceptHandler}
                     cancelHandler={cancelHandler}
-                  ></SuggestionList>
+                    changeHandler={changeHandler}
+                  />
                 </Typography>
               </div>
             )}
@@ -124,3 +139,5 @@ export default function MeetingSuggestions ({
     </div>
   )
 }
+
+export default MeetingSuggestions

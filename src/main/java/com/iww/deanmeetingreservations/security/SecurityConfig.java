@@ -50,8 +50,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/css/**",
                         "/img/**",
                         "/webjars/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/meeting/**", "/api/hello", "/api/dean/isLogged").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/meeting/**", "/api/hello", "/api/dean/isLogged", "/api/departments/**").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/dean/login", "/api/meeting/**","/api/dean/register").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/api/meeting/**").permitAll()
                 .antMatchers("/api/dean/**").authenticated()
                 .anyRequest().authenticated()
                 .and()
