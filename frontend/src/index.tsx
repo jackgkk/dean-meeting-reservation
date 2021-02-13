@@ -49,6 +49,17 @@ const theme = createMuiTheme({
       fontWeight: 500,
       fontSize: '19px',
       lineHeight: '23px'
+    },
+    h4: {
+      fontSize: '62px',
+      fontWeight: 800,
+      color: 'black'
+    },
+    h5: {
+      fontSize: '24px',
+      fontWeight: 500,
+      color: 'black',
+      lineHeight: '170%'
     }
   },
   overrides: {

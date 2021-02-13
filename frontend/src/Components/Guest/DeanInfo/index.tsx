@@ -3,6 +3,8 @@ import { useStyles } from './style'
 import Dean from '../../../Dean'
 import { IconButton, Typography } from '@material-ui/core'
 import CreateIcon from '@material-ui/icons/Create'
+import { useState } from 'react'
+import ModifyDuties from './ModifyDuties'
 
 interface DeanInfoProps {
   dean: Dean
@@ -17,11 +19,16 @@ weekday[4] = 'Thursday'
 weekday[5] = 'Friday'
 weekday[6] = 'Saturday'
 
+export { weekday }
+
 export default function DeanInfo ({ dean }: DeanInfoProps) {
   const styles = useStyles()
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+
   return (
     <div className={styles.container}>
-      <div className={styles.circle}></div>
+      <div className={styles.circle}/>
       <div className={styles.nameAndEdit}>
         <Typography variant="h1">
           {dean.name} {dean.surname}
@@ -29,6 +36,7 @@ export default function DeanInfo ({ dean }: DeanInfoProps) {
         <IconButton
           aria-label="accept"
           style={{ height: '25px', color: 'white' }}
+          onClick={() => setIsDialogOpen(true)}
         >
           <CreateIcon style={{ height: '16px' }} />
           <Typography variant="body1">edit</Typography>
@@ -46,6 +54,11 @@ export default function DeanInfo ({ dean }: DeanInfoProps) {
           </div>
         ))}
       </div>
+      <ModifyDuties
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        currentDuties={dean.duties}
+      />
     </div>
   )
 }

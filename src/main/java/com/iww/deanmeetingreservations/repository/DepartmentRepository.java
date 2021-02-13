@@ -11,5 +11,5 @@ import java.util.UUID;
 public interface DepartmentRepository extends JpaRepository<Department, UUID> {
     Optional<Department> getFirstByDepartmentNameEquals(String name);
     Boolean existsByDepartmentNameEquals(String name);
-    Department findByDepartmentId(String id);
+    Department findByDepartmentId(UUID id);
 }

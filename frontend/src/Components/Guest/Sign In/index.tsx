@@ -12,6 +12,10 @@ import { useHistory } from 'react-router-dom'
 import { Dean, LogInDean, UnLogedInDean } from '../types'
 import { useStyles } from './style'
 
+interface SignInProps {
+  handleLogInStatus: (value: Boolean) => void
+}
+
 const emailRegex = /^[a-zA-Z0-9._-]+@(([a-zA-Z]+\.)?)+(uni.lodz.pl)$/
 
 const formValid = (newDean: UnLogedInDean) => {
@@ -29,7 +33,7 @@ const formValid = (newDean: UnLogedInDean) => {
   return valid
 }
 
-export default function SignIn () {
+export default function SignIn ({ handleLogInStatus }: SignInProps) {
   const [newDean, setNewDean] = React.useState<UnLogedInDean>({
     email: '',
     password: '',
@@ -84,12 +88,20 @@ export default function SignIn () {
 
   function handleSuccessfulSubmit (response: Response) {
     if (response.status === 200) {
-      response.json().then(({ token }) => {
-        localStorage.setItem('token', 'Bearer ' + token)
-      })
-      console.log(localStorage)
-      setIsLogedIn(true)
-      handleRedirect()
+      response
+        .json()
+        .then(async ({ token }) => {
+          localStorage.setItem('token', 'Bearer ' + token)
+        })
+        .then(() => {
+          console.log(response)
+          console.log(localStorage)
+          setIsLogedIn(true)
+          handleLogInStatus(true)
+          if (localStorage.getItem('token')) {
+            handleRedirect()
+          } else console.log('u fucked up')
+        })
     } else {
       console.log(response)
       setIsLogedIn(false)

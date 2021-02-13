@@ -17,10 +17,20 @@ import DepartmentType from '../../../Department'
 
 export interface RegistrationProps {}
 
-const fakeDepartments = [
-  { name: 'Computer science and mathematics', id: 'k342bjh23y4u2y' },
-  { name: 'Biology', id: '09jdsfiu898ds' },
-  { name: 'Filology', id: '09jdsfiu898ds' }
+const realDepartments = [
+  { name: 'Faculty of Mathematics and Computer Science', id: '0' },
+  { name: 'Faculty of Biology and Environmental Protection', id: '1' },
+  { name: 'The Chemistry Department', id: '2' },
+  { name: 'Faculty of Economics and Sociology', id: '3' },
+  { name: 'Philological Faculty', id: '4' },
+  { name: 'Faculty of Philosophy and History', id: '5' },
+  { name: 'Faculty of Physics and Chemistry', id: '6' },
+  { name: 'Faculty of Physics and Applied Computer Science', id: '7' },
+  { name: 'Faculty of Geographical Sciences', id: '8' },
+  { name: 'Faculty of Educational Sciences', id: '9' },
+  { name: 'Faculty of Law and Administration', id: '10' },
+  { name: 'Faculty of International and Political Studies', id: '11' },
+  { name: 'Faculty of Management', id: '12' }
 ]
 
 const emailRegex = /^[a-zA-Z0-9._-]+@(([a-zA-Z]+\.)?)+(uni.lodz.pl)$/
@@ -39,40 +49,15 @@ const formValid = (newDean: DeanUnregistered) => {
     val === '' && (valid = false)
   })
 
+  console.log(valid)
+
   return valid
 }
 
 const Registration: React.SFC<RegistrationProps> = () => {
   const [departments, setDepartments] = React.useState<Array<DepartmentType>>(
-    fakeDepartments
+    realDepartments
   )
-
-  React.useEffect(getDepartments, [])
-
-  function getDepartments () {
-    fetch('/api/departments/all')
-      .then(handleResponse)
-      .then(setDepartments)
-      .catch(handleError)
-
-    console.log(departments)
-
-    function handleResponse (res: Response) {
-      if (res.ok) {
-        console.log('asgasgas', res.json() as Promise<Array<DepartmentType>>)
-        return res.json() as Promise<Array<DepartmentType>>
-      } else {
-        throw new Error(
-          `Error while fetching departments: Request ended with: ${res.status}`
-        )
-      }
-    }
-
-    function handleError ({ message }: Error) {
-      console.error(message)
-    }
-  }
-
   const [newDean, setNewDean] = React.useState<DeanUnregistered>({
     name: '',
     surname: '',
@@ -91,6 +76,7 @@ const Registration: React.SFC<RegistrationProps> = () => {
   })
 
   const [isValid, setIsValid] = React.useState<Boolean>(true)
+  const [sameEmail, setSameEmail] = React.useState<Boolean>(false)
 
   function handleChange (event: React.ChangeEvent<HTMLInputElement>) {
     const value = event.target.value
@@ -126,7 +112,7 @@ const Registration: React.SFC<RegistrationProps> = () => {
   function handleSubmit (event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault()
     setIsValid(formValid(newDean))
-    if (isValid) {
+    if (formValid(newDean)) {
       const regDean = new DeanVerifiedReg(
         newDean.name,
         newDean.surname,
@@ -153,11 +139,13 @@ const Registration: React.SFC<RegistrationProps> = () => {
 
   function handleSuccessfulSubmit (response: Response) {
     if (response.status === 200) {
+      setSameEmail(false)
       console.log(response)
       handleLogIn()
     } else {
       console.log('asgasg')
       console.log(response)
+      setSameEmail(true)
     }
   }
 
@@ -206,6 +194,13 @@ const Registration: React.SFC<RegistrationProps> = () => {
             </Typography>
           </div>
           <div style={{ width: '100%' }}>
+            {sameEmail && (
+              <div className={styling.responseErrorDiv}>
+                <Typography variant="body1">
+                  Entered email is already used by another account
+                </Typography>
+              </div>
+            )}
             <form onSubmit={handleSubmit}>
               <div className={styling.inputContainer}>
                 <Typography className={styling.label} variant="h2">
@@ -359,7 +354,7 @@ const Registration: React.SFC<RegistrationProps> = () => {
                     id="alreadyHave"
                     variant="contained"
                   >
-                    I already have an account
+                    I arleady have an account
                   </Button>
                 )}
                 <Button

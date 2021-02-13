@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 import * as React from 'react'
 import './index.scss'
 import MeetingList from './MeetingList'
@@ -77,6 +78,11 @@ export default function Calendar ({ meetings }: MeetingProps) {
         <div className="dateDiv">
           <h2>Incomming Meetings</h2>
         </div>
+        {groupedByDateMeetings.length === 0 ? (
+          <Typography variant="subtitle1">(empty)</Typography>
+        ) : (
+          ''
+        )}
       </div>
       <div className="meetingList">
         {groupedByDateMeetings.map((group) => {

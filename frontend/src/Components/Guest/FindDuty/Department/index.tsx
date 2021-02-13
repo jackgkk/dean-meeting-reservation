@@ -18,7 +18,7 @@ interface DepartmentProps {
 
 async function getDeans (departmentId: string): Promise<Array<DeanType>|undefined> {
   try {
-    return await handleResponse(await fetch(`/api/department/${departmentId}`))
+    return await handleResponse(await fetch(`/api/departments/${departmentId}`))
   } catch (e) {
     handleError(e)
     throw e
@@ -39,37 +39,7 @@ async function getDeans (departmentId: string): Promise<Array<DeanType>|undefine
 
 export default function Department ({ department }: DepartmentProps) {
   const { name: departmentName } = department
-  const [deans, setDeans] = useState<Array<DeanType>|undefined>([
-    new DeanType(
-      '1aeaf5af-aed0-4b45-9dca-7d26502eda48',
-      'Izabella',
-      'Nowakowska',
-      'jean.paul1@vati.kan',
-      'professor',
-      [
-        new DutyType(
-          2,
-          '12:00',
-          '15:00'),
-        new DutyType(
-          0,
-          '09:00',
-          '12:00')
-      ]
-    ),
-    new DeanType(
-      '5dfg565g',
-      'John',
-      'Doe',
-      'john.doe@uni.org',
-      'professor',
-      [
-        new DutyType(
-          5,
-          '9:00',
-          '11:00')
-      ]
-    )])
+  const [deans, setDeans] = useState<Array<DeanType>|undefined>([])
 
   const classes = makeStyles(function (theme: Theme) {
     return createStyles(Style(theme))
@@ -78,9 +48,9 @@ export default function Department ({ department }: DepartmentProps) {
   const [isExpanded, setIsExpanded] = useState(false)
 
   async function handleShowDuties () {
-    setIsExpanded(isExpanded => !isExpanded)
+    if (isExpanded) return
 
-    if (!isExpanded) return
+    setIsExpanded(isExpanded => !isExpanded)
 
     try {
       setDeans(await getDeans(department.id))
@@ -90,10 +60,12 @@ export default function Department ({ department }: DepartmentProps) {
   }
 
   return (
-    <Accordion style={{ backgroundColor: '#f5f5f5' }}>
+    <Accordion style={{
+      backgroundColor: 'white'
+    }}>
       <Tooltip title='Show dean&apos;s duties'>
         <AccordionSummary
-          style={{ backgroundColor: '#f5f5f5' }}
+          style={{ backgroundColor: '#eee', border: 'none', boxShadow: 'none' }}
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1a-content"
           id="panel1a-header"

@@ -17,58 +17,32 @@ import { useStyles } from './style'
 import { de } from 'date-fns/locale'
 
 export default function DeanView () {
-  const [meetings, setMeetings] = React.useState<Array<MeetingType>>(
-    fakeMeetings
-  )
+  const [meetings, setMeetings] = React.useState<Array<MeetingType>>([])
   const [dean, setDean] = React.useState<Dean>({
     id: uniqueId.toString(),
-    name: 'Not Found',
-    surname: 'Error',
-    email: 'asfafsas@g',
+    name: '',
+    surname: '',
+    email: '',
     duties: [
       {
-        dayOfWeek: 8,
-        begins: 'error',
-        ends: 'error'
+        dayOfWeek: 0,
+        begins: '',
+        ends: ''
       }
     ],
-    status: ''
+    status: 'Dean'
   })
 
-  useEffect(() => {
-    fetchMeetingPropositions()
-    fetchDeanInfo()
-  }, [])
-
-  function fetchDeanInfo () {
-    const authorizationToken = localStorage.getItem('token')
-
-    if (!authorizationToken) {
-      throw new Error('User not authenticated dean info')
-    }
-
-    fetch('api/dean', {
-      headers: { Authorization: authorizationToken }
-    })
-      .then(async (res) => {
-        if (!res.ok) {
-          throw new Error('Can not get dean info: ' + (await res.text()))
-        }
-        return await res.json()
-      })
-      .then((dean) => {
-        setDean(dean)
-      })
-      .catch(({ message }) => {
-        console.error('Can not get dean info: ' + message)
-      })
-  }
+  useEffect(fetchMeetingPropositions, [])
+  useEffect(fetchDeanInfo, [])
 
   function fetchMeetingPropositions () {
     const authorizationToken = localStorage.getItem('token')
+    console.log('local', localStorage)
+    console.log('tok', authorizationToken)
 
     if (!authorizationToken) {
-      throw new Error('User not authenticated')
+      throw new Error('User not authenticated ggg')
     }
 
     fetch('/api/dean/calendar/get-confirmed-meetings', {
@@ -85,6 +59,29 @@ export default function DeanView () {
       })
       .catch(({ message }) => {
         console.error('Can not get propositions: ' + message)
+      })
+  }
+
+  function fetchDeanInfo () {
+    const authorizationToken = localStorage.getItem('token')
+
+    if (!authorizationToken) {
+      throw new Error('User not authenticated www')
+    }
+
+    fetch('/api/dean', {
+      headers: { Authorization: authorizationToken }
+    })
+      .then(async (res) => {
+        if (!res.ok) {
+          throw new Error('Can not get Dean info: ' + (await res.text()))
+        }
+
+        return await res.json()
+      })
+      .then(setDean)
+      .catch(({ message }) => {
+        console.error('Can not get Dean info: ' + message)
       })
   }
 
@@ -222,7 +219,6 @@ export default function DeanView () {
         }
       />
       <div className={styles.mainContainer}>
-        <NavBar auth={true} />
         <div className={styles.contentContainer}>
           <div className={styles.info}>
             <DeanInfo dean={dean} />

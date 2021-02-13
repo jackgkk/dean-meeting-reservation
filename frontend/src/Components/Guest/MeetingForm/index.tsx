@@ -4,7 +4,7 @@ import DialogTitle from '@material-ui/core/DialogTitle'
 import TextField from '@material-ui/core/TextField'
 import makeStyles from '@material-ui/core/styles/makeStyles'
 import Style from './style'
-import { createStyles, MenuItem } from '@material-ui/core'
+import { createStyles, DialogActions, MenuItem } from '@material-ui/core'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogContent from '@material-ui/core/DialogContent'
 import Select from '@material-ui/core/Select'
@@ -37,7 +37,7 @@ interface MeetingFormData {
   isNotRobot: boolean
 }
 
-export default function MeetingForm () {
+export default function MeetingForm ({ onClose, isOpen }: {onClose: (e: any) => void, isOpen: boolean}) {
   const classes = makeStyles(theme => {
     return createStyles(Style(theme))
   })()
@@ -186,189 +186,200 @@ export default function MeetingForm () {
 
   return (
     <Dialog
-      open={true}
+      open={isOpen}
       fullWidth={true}
       className={classes.meetingForm}
       fullScreen={fullScreen}
     >
-      <DialogTitle>New meeting</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          We need some info about you and meeting you&apos;re planning
-        </DialogContentText>
-        <DialogContentText style={{ marginTop: '2rem' }}>
-          <Typography color='textPrimary' style={{ fontSize: '1.25rem' }}>
-            Personal info
-          </Typography>
-        </DialogContentText>
-        <form onSubmit={handleSubmit}>
-          <p>
-            <TextField
-              fullWidth
-              color="primary"
-              label='Name'
-              name='name'
-              required
-              onChange={handleChange}
-              value={formData.guest.name}
-            />
-          </p>
-          <p>
-            <TextField
-              fullWidth
-              required
-              label='Surname'
-              name='surname'
-              onChange={handleChange}
-              value={formData.guest.surname}
-            />
-          </p>
-          <p>
-            <TextField
-              fullWidth
-              required
-              type='email'
-              label='Email'
-              name='email'
-              onChange={handleChange}
-              value={formData.guest.email}
-            />
-          </p>
-          <p style={{ marginTop: '2rem' }}>
-            <Select
-              fullWidth
-              required
-              label='Status'
-              labelId='label-for-status'
-              name='status'
-              defaultValue='Student'
-              onChange={handleChange}
-              value={formData.guest.status}
-            >
-              <MenuItem value='Student'>Student</MenuItem>
-              <MenuItem value='Faculty employee'>Faculty employee</MenuItem>
-              <MenuItem value='University employee'>University employee</MenuItem>
-              <MenuItem value='Other'>Other</MenuItem>
-            </Select>
-          </p>
-          <DialogContentText style={{ marginTop: '2rem' }}>
-            <Typography color='textPrimary' style={{ fontSize: '1.25rem' }}>
-              Meeting details
-            </Typography>
-          </DialogContentText>
-          <p>
-            <TextField
-              fullWidth
-              multiline
-              label='What this meeting is about'
-              name='description'
-              rowsMax={3}
-              inputProps={{ maxlength: '255' }}
-              onChange={handleChange}
-              value={formData.description}
-            />
-          </p>
-          <p style={{ display: 'flex' }}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <KeyboardTimePicker
-                fullWidth
-                margin="normal"
-                id="time-picker"
-                label="Meeting time"
-                value={selectedDate}
-                onChange={handleBeginsAtChange}
-                ampm={false}
-                error={meetingTimeOutOfRange}
-                helperText={meetingTimeErrorMessage}
-              />
-            </MuiPickersUtilsProvider>
-            <ClickAwayListener onClickAway={() => setTimeHelpOpen(false)}>
-              <p style={{ padding: '.5rem 0 0 .5rem' }}>
-                <Tooltip
-                  onClose={() => setTimeHelpOpen(false)}
-                  open={timeHelpOpen}
-                  disableFocusListener
-                  disableHoverListener
-                  disableTouchListener
-                  title='Pick time that suits you the most.
+       {/* <ClickAwayListener onClickAway={onClose}> */}
+        <div>
+          <DialogTitle>New meeting</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              We need some info about you and meeting you&apos;re planning
+            </DialogContentText>
+            <DialogContentText style={{ marginTop: '2rem' }}>
+              <Typography color='textPrimary' style={{ fontSize: '1.25rem' }}>
+                Personal info
+              </Typography>
+            </DialogContentText>
+            <form onSubmit={handleSubmit}>
+              <p>
+                <TextField
+                  fullWidth
+                  color="primary"
+                  label='Name'
+                  name='name'
+                  required
+                  onChange={handleChange}
+                  value={formData.guest.name}
+                />
+              </p>
+              <p>
+                <TextField
+                  fullWidth
+                  required
+                  label='Surname'
+                  name='surname'
+                  onChange={handleChange}
+                  value={formData.guest.surname}
+                />
+              </p>
+              <p>
+                <TextField
+                  fullWidth
+                  required
+                  type='email'
+                  label='Email'
+                  name='email'
+                  onChange={handleChange}
+                  value={formData.guest.email}
+                />
+              </p>
+              <p style={{ marginTop: '2rem' }}>
+                <Select
+                  fullWidth
+                  required
+                  label='Status'
+                  labelId='label-for-status'
+                  name='status'
+                  defaultValue='Student'
+                  onChange={handleChange}
+                  value={formData.guest.status}
+                >
+                  <MenuItem value='Student'>Student</MenuItem>
+                  <MenuItem value='Faculty employee'>Faculty employee</MenuItem>
+                  <MenuItem value='University employee'>University employee</MenuItem>
+                  <MenuItem value='Other'>Other</MenuItem>
+                </Select>
+              </p>
+              <DialogContentText style={{ marginTop: '2rem' }}>
+                <Typography color='textPrimary' style={{ fontSize: '1.25rem' }}>
+                  Meeting details
+                </Typography>
+              </DialogContentText>
+              <p>
+                <TextField
+                  fullWidth
+                  multiline
+                  label='What this meeting is about'
+                  name='description'
+                  rowsMax={3}
+                  inputProps={{ maxlength: '255' }}
+                  onChange={handleChange}
+                  value={formData.description}
+                />
+              </p>
+              <p style={{ display: 'flex' }}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardTimePicker
+                    fullWidth
+                    margin="normal"
+                    id="time-picker"
+                    label="Meeting time"
+                    value={selectedDate}
+                    onChange={handleBeginsAtChange}
+                    ampm={false}
+                    error={meetingTimeOutOfRange}
+                    helperText={meetingTimeErrorMessage}
+                  />
+                </MuiPickersUtilsProvider>
+                <ClickAwayListener onClickAway={() => setTimeHelpOpen(false)}>
+                  <p style={{ padding: '.5rem 0 0 .5rem' }}>
+                    <Tooltip
+                      onClose={() => setTimeHelpOpen(false)}
+                      open={timeHelpOpen}
+                      disableFocusListener
+                      disableHoverListener
+                      disableTouchListener
+                      title='Pick time that suits you the most.
                 If Dean already have appointment at this time, they
                 can either refuse this meeting or propose more suitable hour.'
-                >
-                  <IconButton onClick={() => setTimeHelpOpen(isOpen => !isOpen)}>
-                    <HelpIcon />
-                  </IconButton>
-                </Tooltip>
+                    >
+                      <IconButton onClick={() => setTimeHelpOpen(isOpen => !isOpen)}>
+                        <HelpIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </p>
+                </ClickAwayListener>
               </p>
-            </ClickAwayListener>
-          </p>
-          <p>
-            <Typography>Estimated meeting time</Typography>
-            <Slider
-              name='estTime'
-              defaultValue={5}
-              step={null}
-              marks={meetingTimeMarks}
-              valueLabelDisplay='auto'
-              onChange={handleEstMeetingTime}
-            />
-          </p>
-          <p>
-            <FormGroup>
-              <FormControlLabel
-                label='Online meeting'
-                control={
-                  <Tooltip
-                    title='Check if you want to meet using online platform, i.e MS Teams'
-                  >
-                    <Checkbox
-                      name='isOnline'
-                      checked={formData.isOnline}
-                      value={formData.isOnline}
-                      onChange={handleCheckboxChange}
-                      color='primary'
-                    />
-                  </Tooltip>
-                }
-              />
-            </FormGroup>
-          </p>
-          <p>
-            {/* Integrate real captcha later */}
-            <FormGroup>
-              <FormControlLabel
-                label='I&apos;m not a robot'
-                control={
-                  <Checkbox
-                    name='isNotRobot'
-                    checked={formData.isNotRobot}
-                    required
-                    onChange={handleCheckboxChange}
-                    color='primary'
+              <p>
+                <Typography>Estimated meeting time</Typography>
+                <Slider
+                  name='estTime'
+                  defaultValue={5}
+                  step={null}
+                  marks={meetingTimeMarks}
+                  valueLabelDisplay='auto'
+                  onChange={handleEstMeetingTime}
+                />
+              </p>
+              <p>
+                <FormGroup>
+                  <FormControlLabel
+                    label='Online meeting'
+                    control={
+                      <Tooltip
+                        title='Check if you want to meet using online platform, i.e MS Teams'
+                      >
+                        <Checkbox
+                          name='isOnline'
+                          checked={formData.isOnline}
+                          value={formData.isOnline}
+                          onChange={handleCheckboxChange}
+                          color='primary'
+                        />
+                      </Tooltip>
+                    }
                   />
-                }
-              />
-            </FormGroup>
-          </p>
-          <p>
-            <Button
-              style={{ alignItems: 'center' }}
-              disabled={submittingStatus === 'submitting'}
-              color='primary'
-              variant={'contained'}
-              type='submit'
-            >
+                </FormGroup>
+              </p>
+              <p>
+                {/* Integrate real captcha later */}
+                <FormGroup>
+                  <FormControlLabel
+                    label='I&apos;m not a robot'
+                    control={
+                      <Checkbox
+                        name='isNotRobot'
+                        checked={formData.isNotRobot}
+                        required
+                        onChange={handleCheckboxChange}
+                        color='primary'
+                      />
+                    }
+                  />
+                </FormGroup>
+              </p>
+              <DialogActions>
+                <Button
+                  style={{ alignItems: 'center' }}
+                  disabled={submittingStatus === 'submitting'}
+                  color='primary'
+                  variant={'contained'}
+                  type='submit'
+                >
               <span style={{ paddingRight: submittingStatus === 'submitting' ? '1rem' : '' }}>
               Send meeting request
               </span>
-              {submittingStatus === 'submitting' &&
-              <CircularProgress
-                size={20}
-                color='primary'
-              />}
-            </Button>
-          </p>
-        </form>
-      </DialogContent>
+                  {submittingStatus === 'submitting' &&
+                  <CircularProgress
+                      size={20}
+                      color='primary'
+                  />}
+                </Button>
+                <Button
+                  variant={'outlined'}
+                  onClick={onClose}
+                  color={'primary'}
+                >
+                  cancel
+                </Button>
+              </DialogActions>
+            </form>
+          </DialogContent>
+        </div>
+       {/* </ClickAwayListener> */}
     </Dialog>
   )
 }
