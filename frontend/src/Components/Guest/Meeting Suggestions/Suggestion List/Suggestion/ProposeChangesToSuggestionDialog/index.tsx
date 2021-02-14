@@ -93,8 +93,6 @@ export default function ProposeChangesToSuggestionDialog ({ open, onClose, sendM
                         ampm={false}
                         value={newDateTime}
                         onChange={handleDateChange}
-                        /* error={meetingTimeOutOfRange}
-                        helperText={meetingTimeErrorMessage} */
                       />
                     </MuiPickersUtilsProvider>
                   </Grid>
@@ -116,7 +114,13 @@ export default function ProposeChangesToSuggestionDialog ({ open, onClose, sendM
                   variant={'contained'}
                   onClick={handleSendChanges}
                   color="primary"
-                  disabled={newDateTime?.toDateString() === currentDate.toDateString() && estMeetingTime === currentDuration}
+                  disabled={
+                    newDateTime?.toDateString() ===
+                    currentDate.toDateString() &&
+                    estMeetingTime === currentDuration &&
+                      newDateTime?.toTimeString().substr(0, 5) ===
+                      currentDate.toTimeString().substr(0, 5)
+                  }
                 >
                   send changes
                 </Button>

@@ -47,10 +47,17 @@ export default function Calendar ({ meetings }: MeetingProps) {
   )
     .groupBy('date')
     .map((meeting, date) => {
+      console.log(date)
       return {
         date,
         meeting
       }
+    }).filter(({ date }) => {
+      const parsedDate = new Date(Date.parse(date.split('.').reverse().join('.')))
+      const yesterday = new Date()
+      yesterday.setDate(yesterday.getDate() - 1)
+
+      return parsedDate > yesterday
     })
     .value()
 
