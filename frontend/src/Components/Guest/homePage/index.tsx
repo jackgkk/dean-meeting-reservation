@@ -19,14 +19,23 @@ export default function HomePage () {
   return (
     <div className={style.body}>
       <div className={style.contentCont}>
+        <div className={style.shadowDiv}></div>
         <div className={style.textCont}>
-          <Typography variant="h4">
-            Bring your meeting managment to the next level
-          </Typography>
-          <Typography variant="h5" style={{ marginTop: '-3rem' }}>
-            Easily manage your office hour meetings and avoid queues and email
-            mess requesting a meeting through the app
-          </Typography>
+          <div>
+            <Typography variant="h4" id="heading">
+              Bring your meeting managment to the next level
+            </Typography>
+            <Typography
+              variant="h5"
+              style={{
+                marginTop: '1rem'
+              }}
+              id="subheading"
+            >
+              Easily manage your office hour meetings and avoid queues and email
+              mess requesting a meeting through the app
+            </Typography>
+          </div>
           <div className={style.buttonDiv}>
             <Button
               className={style.button}

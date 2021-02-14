@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 import React, { useEffect, useState } from 'react'
 import Calendar from '../Calendar'
 import MeetingSuggestions from '../Meeting Suggestions'
@@ -8,7 +9,9 @@ import {
   Meeting as NewMeetingType
 } from '../types'
 import { fakeMeetings } from '../Data'
-import { Snackbar } from '@material-ui/core'
+import { Breadcrumbs, Link, Snackbar } from '@material-ui/core'
+import { emphasize, withStyles, Theme } from '@material-ui/core/styles'
+import Chip from '@material-ui/core/Chip'
 import CloseIcon from '@material-ui/icons/Close'
 import IconButton from '@material-ui/core/IconButton'
 import DeanInfo from '../DeanInfo'
@@ -16,6 +19,23 @@ import { uniqueId } from 'lodash'
 import NavBar from '../NavBar'
 import { useStyles } from './style'
 import { de } from 'date-fns/locale'
+import { useMediaQueries } from '@react-hook/media-query'
+
+const StyledBreadcrumb = withStyles((theme: Theme) => ({
+  root: {
+    backgroundColor: 'transparent',
+    height: theme.spacing(3),
+    color: theme.palette.grey[800],
+    fontWeight: theme.typography.fontWeightRegular,
+    '&:hover, &:focus': {
+      backgroundColor: '#E5231B',
+      color: 'white'
+    },
+    '&:active': {
+      boxShadow: theme.shadows[1]
+    }
+  }
+}))(Chip) as typeof Chip
 
 export default function DeanView () {
   const [meetings, setMeetings] = React.useState<Array<MeetingType>>([])
@@ -221,6 +241,11 @@ export default function DeanView () {
     setActionResult('')
   }
 
+  const [calendar, setCalendar] = React.useState(false)
+  const { matches, matchesAny, matchesAll } = useMediaQueries({
+    screen: 'screen',
+    width: '(max-width: 1118px)'
+  })
   const styles = useStyles()
 
   return (
@@ -247,16 +272,51 @@ export default function DeanView () {
           <div className={styles.info}>
             <DeanInfo updateOfficeHours={updateOfficeHours} dean={dean} />
           </div>
-
-          <div className={styles.meetingsContainer}>
-            <MeetingSuggestions
-              meetings={meetingsToGroupByDate}
-              acceptHandler={acceptHandler}
-              cancelHandler={cancelHandler}
-              changeHandler={changeHandler}
-            />
-            <Calendar meetings={meetingsToGroupByDate} />
-          </div>
+          {matches.width ? (
+            <>
+              <Breadcrumbs
+                className={styles.breadcrumbs}
+                aria-label="breadcrumb"
+              >
+                <StyledBreadcrumb
+                  component="a"
+                  href="#"
+                  label="Meeting Suggestions"
+                  onClick={() => {
+                    setCalendar(false)
+                  }}
+                />
+                <StyledBreadcrumb
+                  label="Calendar"
+                  onClick={() => {
+                    setCalendar(true)
+                  }}
+                />
+              </Breadcrumbs>
+              <div className={styles.meetingsContainer}>
+                {calendar ? (
+                  <Calendar meetings={meetingsToGroupByDate} />
+                ) : (
+                  <MeetingSuggestions
+                    meetings={meetingsToGroupByDate}
+                    acceptHandler={acceptHandler}
+                    cancelHandler={cancelHandler}
+                    changeHandler={changeHandler}
+                  />
+                )}
+              </div>
+            </>
+          ) : (
+            <div className={styles.meetingsContainer}>
+              <MeetingSuggestions
+                meetings={meetingsToGroupByDate}
+                acceptHandler={acceptHandler}
+                cancelHandler={cancelHandler}
+                changeHandler={changeHandler}
+              />
+              <Calendar meetings={meetingsToGroupByDate} />
+            </div>
+          )}
         </div>
       </div>
     </>
