@@ -52,13 +52,11 @@ const theme = createMuiTheme({
     },
     h4: {
       fontSize: '62px',
-      fontWeight: 800,
-      color: 'black'
+      fontWeight: 800
     },
     h5: {
       fontSize: '24px',
       fontWeight: 500,
-      color: 'black',
       lineHeight: '170%'
     }
   },

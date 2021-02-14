@@ -37,12 +37,10 @@ export default function NavBar ({ auth, handleLogInStatus }: navbarProps) {
     const path = '/find-duty'
     history.push(path)
   }
+
   return (
-    <div>
-      <AppBar
-        position="absolute"
-        style={{ boxShadow: 'none', marginBottom: '60px' }}
-      >
+    <div style={{ marginBottom: '60px' }}>
+      <AppBar style={{ boxShadow: 'none' }}>
         <Toolbar className={classes.root}>
           <img
             src={uniLodzLogo}

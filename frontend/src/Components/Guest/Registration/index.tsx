@@ -264,7 +264,7 @@ const Registration: React.SFC<RegistrationProps> = () => {
                 >
                   Password
                 </Typography>
-                <div style={{ width: 'min-content' }}>
+                <div>
                   <input
                     className={styling.inputForm}
                     id={
