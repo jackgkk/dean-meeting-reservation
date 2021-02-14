@@ -17,7 +17,7 @@ import Button from '@material-ui/core/Button'
 import FormGroup from '@material-ui/core/FormGroup'
 import Checkbox from '@material-ui/core/Checkbox'
 import Tooltip from '@material-ui/core/Tooltip'
-import { KeyboardTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
+import { KeyboardDatePicker, KeyboardDateTimePicker, KeyboardTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers'
 import DateFnsUtils from '@date-io/date-fns'
 import HelpIcon from '@material-ui/icons/Help'
 import IconButton from '@material-ui/core/IconButton'
@@ -27,6 +27,7 @@ import Guest from '../../../Guest'
 import { meetingDutyState, meetingForm, showMeetingFormState, submittingStatusState } from '../FindDuty/state'
 import MeetingProposition from '../../../MeetingProposition'
 import CircularProgress from '@material-ui/core/CircularProgress'
+import './style.sass'
 
 interface MeetingFormData {
   guest: Guest,
@@ -143,16 +144,39 @@ export default function MeetingForm ({ onClose, isOpen }: {onClose: (e: any) => 
 
     setSelectedDate(date)
 
-    const beginsAt = `${date.getHours().toString()}:${date.getMinutes().toString()}`
+    const beginsAtTime = `${date.getHours().toString()}:${date.getMinutes().toString()}`
+    const beginsAt = `${date.toLocaleDateString().replaceAll('.', '/')}/${date.toLocaleTimeString().substr(0, 5)}`
     const { begins, ends } = meetingDuty
 
     setFormData(prevState => ({ ...prevState, beginsAt }))
 
-    if (!isInTimeRange(beginsAt, begins, ends)) {
+    if (!isInTimeRange(beginsAtTime, begins, ends)) {
       setMeetingTimeOutOfRange(true)
     } else {
       setMeetingTimeOutOfRange(false)
     }
+  }
+
+  useEffect(findClosestMatchingDate, [isOpen, meetingDuty.dayOfWeek])
+
+  function findClosestMatchingDate () {
+    const { dayOfWeek, begins } = meetingDuty
+
+    let date = new Date()
+
+    let i = 0
+
+    while (date.getDay().toString() !== dayOfWeek.toString()) {
+      date.setDate(date.getDate() + 1)
+      if (i++ === 30) break
+    }
+
+    if (i === 30) date = new Date()
+
+    date.setHours(parseInt(begins.split(':')[0]))
+    date.setMinutes(parseInt(begins.split(':')[1]))
+
+    handleBeginsAtChange(date)
   }
 
   function isInTimeRange (time: string, start: string, end: string) {
@@ -191,7 +215,7 @@ export default function MeetingForm ({ onClose, isOpen }: {onClose: (e: any) => 
       className={classes.meetingForm}
       fullScreen={fullScreen}
     >
-       {/* <ClickAwayListener onClickAway={onClose}> */}
+        <ClickAwayListener onClickAway={onClose} mouseEvent={'onMouseUp'}>
         <div>
           <DialogTitle>New meeting</DialogTitle>
           <DialogContent>
@@ -272,14 +296,17 @@ export default function MeetingForm ({ onClose, isOpen }: {onClose: (e: any) => 
               </p>
               <p style={{ display: 'flex' }}>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <KeyboardTimePicker
+                  <KeyboardDateTimePicker
                     fullWidth
+                    disablePast
+                    ampm={false}
+                    shouldDisableDate={day => day?.getDay().toString() !== meetingDuty.dayOfWeek.toString()}
                     margin="normal"
-                    id="time-picker"
-                    label="Meeting time"
+                    id="date-picker-dialog"
+                    label="Change date"
+                    format="dd/MM/yyyy HH:mm"
                     value={selectedDate}
                     onChange={handleBeginsAtChange}
-                    ampm={false}
                     error={meetingTimeOutOfRange}
                     helperText={meetingTimeErrorMessage}
                   />
@@ -379,7 +406,7 @@ export default function MeetingForm ({ onClose, isOpen }: {onClose: (e: any) => 
             </form>
           </DialogContent>
         </div>
-       {/* </ClickAwayListener> */}
+        </ClickAwayListener>
     </Dialog>
   )
 }

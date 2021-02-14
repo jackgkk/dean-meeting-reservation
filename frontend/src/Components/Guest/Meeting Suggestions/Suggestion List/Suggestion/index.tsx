@@ -15,7 +15,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { useStyles } from './style'
 import teams from './icons/Teams.png'
 import ProposeChangesToSuggestionDialog from './ProposeChangesToSuggestionDialog'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useMediaQueries } from '@react-hook/media-query'
 
 interface meetingProps {
@@ -61,13 +61,13 @@ export default function MeetingSuggestion ({
     setChecked((prev) => !prev)
   }
 
-  const endTime = new Date() // get current date
-  endTime.setHours(
-    meeting.beginsAt.getHours(),
-    meeting.beginsAt.getMinutes() + meeting.duration,
-    0,
-    0
-  )
+  const [endTime, setEndTime] = useState(new Date())
+
+  useEffect(function () {
+    const ends = meeting.beginsAt
+    ends.setMinutes(ends.getMinutes() + meeting.duration)
+    setEndTime(ends)
+  }, [])
 
   const styling = useStyles()
 
@@ -99,21 +99,7 @@ export default function MeetingSuggestion ({
               {expanded && (
                 <div className={styling.meetingPeriodDiv}>
                   <Typography variant="h3">
-                    {meeting.beginsAt.getHours() < 10
-                      ? '0' + meeting.beginsAt.getHours()
-                      : meeting.beginsAt.getHours()}
-                    :
-                    {meeting.beginsAt.getMinutes() < 10
-                      ? '0' + meeting.beginsAt.getMinutes()
-                      : meeting.beginsAt.getMinutes()}
-                    -
-                    {endTime.getHours() < 10
-                      ? '0' + endTime.getHours()
-                      : endTime.getHours()}
-                    :
-                    {endTime.getMinutes() < 10
-                      ? '0' + endTime.getMinutes()
-                      : endTime.getMinutes()}
+                    {`${meeting.beginsAt.toTimeString().substr(0, 5)}-${endTime.toTimeString().substr(0, 5)}`}
                   </Typography>
                 </div>
               )}
@@ -134,21 +120,7 @@ export default function MeetingSuggestion ({
             {!expanded ? (
               <div className={styling.meetingPeriodDiv}>
                 <Typography variant="h3">
-                  {meeting.beginsAt.getHours() < 10
-                    ? '0' + meeting.beginsAt.getHours()
-                    : meeting.beginsAt.getHours()}
-                  :
-                  {meeting.beginsAt.getMinutes() < 10
-                    ? '0' + meeting.beginsAt.getMinutes()
-                    : meeting.beginsAt.getMinutes()}
-                  -
-                  {endTime.getHours() < 10
-                    ? '0' + endTime.getHours()
-                    : endTime.getHours()}
-                  :
-                  {endTime.getMinutes() < 10
-                    ? '0' + endTime.getMinutes()
-                    : endTime.getMinutes()}
+                  {`${meeting.beginsAt.toTimeString().substr(0, 5)}-${endTime.toTimeString().substr(0, 5)}`}
                 </Typography>
               </div>
             ) : (

@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -71,10 +72,16 @@ public class MeetingPropositionServiceImpl implements MeetingPropositionService 
         int meetingDuration = meetingPropositionDto.getDuration();
         boolean isMeetingOnline = meetingPropositionDto.isOnline();
 
-        int meetingBeginsAtHours = Integer.parseInt(meetingBeginsAtHour.substring(0, meetingBeginsAtHour.indexOf(':')));
-        int meetingBeginsAtMinutes = Integer.parseInt(meetingBeginsAtHour.substring(meetingBeginsAtHour.indexOf(':') + 1));
+        LocalDateTime meetingBeginsAt;
 
-        LocalDateTime meetingBeginsAt = LocalDate.now().atTime(meetingBeginsAtHours, meetingBeginsAtMinutes);
+        try {
+            meetingBeginsAt = LocalDateTime.parse(meetingBeginsAtHour, DateTimeFormatter.ofPattern("dd/MM/yyy/HH:mm"));
+        } catch (Exception e) {
+            int meetingBeginsAtHours = Integer.parseInt(meetingBeginsAtHour.substring(0, meetingBeginsAtHour.indexOf(':')));
+            int meetingBeginsAtMinutes = Integer.parseInt(meetingBeginsAtHour.substring(meetingBeginsAtHour.indexOf(':') + 1));
+
+            meetingBeginsAt = LocalDate.now().atTime(meetingBeginsAtHours, meetingBeginsAtMinutes);
+        }
 
         Meeting meeting = new Meeting(guest, dean.get(),
                 meetingDescription, meetingBeginsAt,

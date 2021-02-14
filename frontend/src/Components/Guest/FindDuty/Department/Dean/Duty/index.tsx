@@ -22,13 +22,13 @@ interface DutyProps {
 }
 
 const dayNames = [
+  'Sunday',
   'Monday',
   'Thursday',
   'Wednesday',
   'Thursday',
   'Friday',
-  'Saturday',
-  'Sunday'
+  'Saturday'
 ]
 
 export default function Duty (props: DutyProps) {

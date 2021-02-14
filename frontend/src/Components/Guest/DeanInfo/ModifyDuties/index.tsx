@@ -151,13 +151,13 @@ export default function ModifyDuties ({ isOpen, onClose, currentDuties, onChange
                           style={{ maxWidth: '8rem' }}
                           inputProps={{ id: 'day-of-week' }}
                         >
-                          <MenuItem value={0}>Mondays</MenuItem>
-                          <MenuItem value={1}>Tuesdays</MenuItem>
-                          <MenuItem value={2}>Wednesdays</MenuItem>
-                          <MenuItem value={3}>Thursdays</MenuItem>
-                          <MenuItem value={4}>Fridays</MenuItem>
-                          <MenuItem value={5}>Saturdays</MenuItem>
-                          <MenuItem value={6}>Sundays</MenuItem>
+                          <MenuItem value={0}>Sundays</MenuItem>
+                          <MenuItem value={1}>Mondays</MenuItem>
+                          <MenuItem value={2}>Tuesdays</MenuItem>
+                          <MenuItem value={3}>Wednesdays</MenuItem>
+                          <MenuItem value={4}>Thursdays</MenuItem>
+                          <MenuItem value={5}>Fridays</MenuItem>
+                          <MenuItem value={6}>Saturdays</MenuItem>
                         </Select>
                       </div>
                     </FormControl>

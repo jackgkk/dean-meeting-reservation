@@ -66,7 +66,7 @@ export default function FindDuty () {
         </Typography>
         {departments.map(dep => <Department key={dep.id} department={dep} />)}
       </Card>
-      <MeetingForm isOpen={isFormOpen} onClose={closeForm} />
+      {isFormOpen && <MeetingForm isOpen={isFormOpen} onClose={closeForm}/>}
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',

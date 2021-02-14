@@ -8,6 +8,12 @@ export default function Style (theme: Theme) {
     textInput: {
       maxWidth: '300rem',
       width: '100%'
+    },
+    h3: {
+      fontSize: '3rem !important'
+    },
+    h4: {
+      fontSize: '2.125rem !important'
     }
   }
 }
