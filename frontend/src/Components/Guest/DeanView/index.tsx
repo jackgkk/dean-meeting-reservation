@@ -180,10 +180,7 @@ export default function DeanView () {
       })
       .then(() => {
         setActionResult('Meeting rejected. Guest will be notified')
-        const index = meetings.findIndex((met) => met.id === id)
-        const items = [...meetings]
-        items[index] = { ...items[index], accepted: false }
-        setMeetings(items)
+        setMeetings(meetings.filter(({ id: mId }) => mId !== id))
       })
       .catch(({ message }) => {
         setActionResult(message)
