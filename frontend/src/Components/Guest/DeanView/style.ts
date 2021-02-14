@@ -10,7 +10,9 @@ export const useStyles = makeStyles({
     alignItems: 'center',
     overflow: 'scroll',
     paddingTop: '2rem',
-    paddingBottom: '5rem'
+    paddingBottom: '5rem',
+    boxSizing: 'border-box',
+    height: '-webkit-fill-available'
   },
   contentContainer: {
     display: 'flex',
@@ -30,6 +32,9 @@ export const useStyles = makeStyles({
   },
   info: {
     marginTop: '0rem'
+  },
+  breadcrumbs: {
+    marginTop: '3rem'
   },
   '@media (max-width: 1px)': {
 
@@ -55,7 +60,9 @@ export const useStyles = makeStyles({
     meetingsContainer: {
       flexDirection: 'column',
       alignItems: 'center',
-      height: '60rem'
+      height: 'auto',
+      marginTop: '1.5rem'
+
     },
     contentContainer: {
       width: '100%',
@@ -73,7 +80,6 @@ export const useStyles = makeStyles({
       padding: '0'
     },
     meetingsContainer: {
-      marginTop: '2rem',
       justifyContent: 'space-around'
     }
   }
